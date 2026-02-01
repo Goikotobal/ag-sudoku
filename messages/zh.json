@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "数独",
+    "home": "主页"
+  },
+  "sudoku": {
+    "title": "AG 数独",
+    "subtitle": "AI驱动",
+    "landing": {
+      "hero": "挑战你的思维",
+      "description": "用我们的AI增强数独游戏挑战你的思维。获取智能提示，教你解题技巧！",
+      "playNow": "立即游戏",
+      "backToHome": "返回主页",
+      "viewLeaderboard": "查看排行榜",
+      "features": {
+        "aiHints": "AI驱动的提示，教你解题技巧",
+        "difficulties": "3个难度级别：中级、专家、职业",
+        "offline": "离线可用 - 随时随地游戏",
+        "autoSave": "自动保存进度",
+        "notes": "智能笔记系统",
+        "tracking": "追踪你的最佳时间"
+      }
+    },
+    "stats": {
+      "time": "时间",
+      "mistakes": "错误",
+      "hints": "提示"
+    },
+    "difficulties": {
+      "medium": "中级",
+      "expert": "专家",
+      "pro": "职业",
+      "locked": "职业模式已锁定！\n\n在15分钟内完成专家难度以解锁职业模式。"
+    },
+    "controls": {
+      "notes": "笔记",
+      "pause": "暂停",
+      "resume": "继续",
+      "hint": "提示",
+      "new": "新游戏",
+      "none": "无"
+    },
+    "modals": {
+      "pause": {
+        "title": "游戏已暂停",
+        "time": "时间",
+        "mistakes": "错误",
+        "difficulty": "难度",
+        "resumeBtn": "继续游戏",
+        "restartBtn": "重新开始游戏",
+        "quitBtn": "退出到主页",
+        "confirmRestart": "确定要重新开始吗？你的进度将丢失。"
+      },
+      "win": {
+        "title": "做得好！",
+        "message": "你已完成拼图！",
+        "time": "时间",
+        "mistakes": "错误",
+        "tryHarderBtn": "尝试更难的级别",
+        "playAgainBtn": "再玩一次",
+        "quitBtn": "退出到主页"
+      },
+      "gameOver": {
+        "title": "游戏结束",
+        "message": "你犯了{count}个错误。不要放弃！",
+        "time": "时间",
+        "difficulty": "难度",
+        "tryAgainBtn": "再试一次",
+        "tryEasierBtn": "尝试更简单的级别",
+        "quitBtn": "退出到主页"
+      },
+      "hint": {
+        "title": "找到一步！",
+        "foundMove": "找到一步！",
+        "whereToPlace": "寻找放置位置",
+        "targetCell": "目标单元格",
+        "location": "位置",
+        "row": "行",
+        "column": "列",
+        "box": "宫",
+        "placeHere": "放置在这里",
+        "rowCol": "第 {row} 行，第 {col} 列",
+        "technique": "技巧",
+        "logicTitle": "逻辑解释",
+        "visualTitle": "视觉指南",
+        "targetLabel": "目标：放置 {value}",
+        "conflictsLabel": "冲突阻止其他选项",
+        "afterApplyTitle": "点击「应用提示」后：",
+        "afterApply1": "黄色单元格显示 {value} 放置的位置",
+        "afterApply2": "红色单元格显示阻止的数字",
+        "afterApply3": "高亮显示持续3秒！",
+        "applyBtn": "应用提示并显示视觉指南",
+        "closeBtn": "关闭",
+        "noHints": "没有可用提示",
+        "techniques": {
+          "nakedSingle": "唯一候选数",
+          "hiddenSingle": "隐性唯一",
+          "pointingPair": "指向对",
+          "boxLineReduction": "宫线删减"
+        },
+        "legend": {
+          "target": "目标",
+          "conflicts": "冲突",
+          "related": "相关"
+        },
+        "logic": {
+          "checkRow": "检查行",
+          "checkColumn": "检查列",
+          "checkBox": "检查3x3宫",
+          "canAccept": "可以接受",
+          "noExists": "此{number}不存在于",
+          "noIn": "此中无{number}",
+          "conclusion": "结论",
+          "mustBe": "单元格({row}, {col})必须是{number}！"
+        },
+        "afterApplying": {
+          "title": "应用此提示后",
+          "instruction": "学习视觉指南！"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "AI正在解决...请稍候",
+      "autoFinish": "自动完成拼图"
+    },
+    "difficultyInfo": {
+      "medium": "允许3次错误，3个提示，AI求解可用",
+      "expert": "允许1次错误，1个提示，撤销可用",
+      "pro": "允许1次错误，1个提示，无自动完成"
+    },
+    "features": {
+      "aiHints": "AI提示",
+      "languages": "12种语言",
+      "autoSave": "自动保存",
+      "offline": "离线模式"
+    }
+  }
+}

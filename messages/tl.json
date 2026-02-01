@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Home"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "Pinapagana ng AI",
+    "landing": {
+      "hero": "Hamunin ang Iyong Isip",
+      "description": "Hamunin ang iyong isip gamit ang aming AI-enhanced na Sudoku puzzle game. Kumuha ng mga matalinong pahiwatig na nagtuturo ng mga solving technique!",
+      "playNow": "Maglaro Ngayon",
+      "backToHome": "Bumalik sa Home",
+      "viewLeaderboard": "Tingnan ang Leaderboard",
+      "features": {
+        "aiHints": "AI-powered na mga pahiwatig na nagtuturo ng solving techniques",
+        "difficulties": "3 antas ng kahirapan: Katamtaman, Dalubhasa, Pro",
+        "offline": "Gumagana offline - maglaro kahit saan",
+        "autoSave": "Auto-save ng iyong progreso",
+        "notes": "Matalinong sistema ng mga tala",
+        "tracking": "Subaybayan ang iyong pinakamahusay na oras"
+      }
+    },
+    "stats": {
+      "time": "ORAS",
+      "mistakes": "MGA MALI",
+      "hints": "MGA PAHIWATIG"
+    },
+    "difficulties": {
+      "medium": "Katamtaman",
+      "expert": "Dalubhasa",
+      "pro": "Pro",
+      "locked": "NAKAKANDADO ANG PRO MODE!\n\nKumpletuhin ang Dalubhasa na kahirapan sa loob ng 15 minuto upang i-unlock ang Pro mode."
+    },
+    "controls": {
+      "notes": "Mga Tala",
+      "pause": "I-pause",
+      "resume": "Ipagpatuloy",
+      "hint": "Pahiwatig",
+      "new": "Bago",
+      "none": "Wala"
+    },
+    "modals": {
+      "pause": {
+        "title": "Naka-pause ang Laro",
+        "time": "Oras",
+        "mistakes": "Mga Mali",
+        "difficulty": "Kahirapan",
+        "resumeBtn": "Ipagpatuloy ang Laro",
+        "restartBtn": "Simulan Muli ang Laro",
+        "quitBtn": "Bumalik sa Home",
+        "confirmRestart": "Sigurado ka bang gusto mong magsimula muli? Mawawala ang iyong progreso."
+      },
+      "win": {
+        "title": "Mahusay!",
+        "message": "Nakumpleto mo ang puzzle!",
+        "time": "Oras",
+        "mistakes": "Mga Mali",
+        "tryHarderBtn": "Subukan ang Mas Mahirap na Level",
+        "playAgainBtn": "Maglaro Muli",
+        "quitBtn": "Bumalik sa Home"
+      },
+      "gameOver": {
+        "title": "Tapos na ang Laro",
+        "message": "Gumawa ka ng {count} mga pagkakamali. Huwag sumuko!",
+        "time": "Oras",
+        "difficulty": "Kahirapan",
+        "tryAgainBtn": "Subukan Muli",
+        "tryEasierBtn": "Subukan ang Mas Madaling Level",
+        "quitBtn": "Bumalik sa Home"
+      },
+      "hint": {
+        "title": "Nakahanap ng Galaw!",
+        "foundMove": "Nakahanap ng Galaw!",
+        "whereToPlace": "Naghahanap kung saan ilagay",
+        "targetCell": "Target na Cell",
+        "location": "Lokasyon",
+        "row": "Hilera",
+        "column": "Haligi",
+        "box": "Kahon",
+        "placeHere": "Ilagay Dito",
+        "rowCol": "Hilera {row}, Kolum {col}",
+        "technique": "Diskarte",
+        "logicTitle": "Lohikal na Paliwanag",
+        "visualTitle": "Visual na Gabay",
+        "targetLabel": "Target: Ilagay ang {value}",
+        "conflictsLabel": "Ang mga salungatan ay humahadlang sa iba pang mga opsyon",
+        "afterApplyTitle": "Pagkatapos mag-click ng \"Ilapat ang Pahiwatig\":",
+        "afterApply1": "Ang dilaw na cell ay nagpapakita kung saan inilagay ang {value}",
+        "afterApply2": "Ang mga pulang cell ay nagpapakita ng mga humahadlang na numero",
+        "afterApply3": "Ang mga highlight ay nananatili ng 3 segundo!",
+        "applyBtn": "Ilapat ang Pahiwatig at Ipakita ang Visual na Gabay",
+        "closeBtn": "Isara",
+        "noHints": "Walang Available na Pahiwatig",
+        "techniques": {
+          "nakedSingle": "Naked Single",
+          "hiddenSingle": "Hidden Single",
+          "pointingPair": "Pointing Pair",
+          "boxLineReduction": "Box/Line Reduction"
+        },
+        "legend": {
+          "target": "Target",
+          "conflicts": "Salungatan",
+          "related": "Kaugnay"
+        },
+        "logic": {
+          "checkRow": "Suriin ang Hilera",
+          "checkColumn": "Suriin ang Haligi",
+          "checkBox": "Suriin ang 3x3 na Kahon",
+          "canAccept": "maaaring tanggapin",
+          "noExists": "Walang {number} sa",
+          "noIn": "Walang {number} dito",
+          "conclusion": "Konklusyon",
+          "mustBe": "Ang cell ({row}, {col}) ay dapat {number}!"
+        },
+        "afterApplying": {
+          "title": "Pagkatapos Ilapat ang Pahiwatig na Ito",
+          "instruction": "Pag-aralan ang visual guide!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "Ang AI ay naglulutos... Mangyaring maghintay",
+      "autoFinish": "Awtomatikong Tapusin ang Puzzle"
+    },
+    "difficultyInfo": {
+      "medium": "3 pagkakamaling pinahihintulutan, 3 pahiwatig, AI solusyon available",
+      "expert": "1 pagkakamaling pinahihintulutan, 1 pahiwatig, i-undo available",
+      "pro": "1 pagkakamaling pinahihintulutan, 1 pahiwatig, walang auto-finish"
+    },
+    "features": {
+      "aiHints": "AI Hints",
+      "languages": "12 Wika",
+      "autoSave": "Auto-Save",
+      "offline": "Offline"
+    }
+  }
+}

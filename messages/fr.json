@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Accueil"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "Propulse par l'IA",
+    "landing": {
+      "hero": "Défiez Votre Esprit",
+      "description": "Défiez votre esprit avec notre jeu de Sudoku amélioré par l'IA. Obtenez des indices intelligents qui vous enseignent les techniques de résolution!",
+      "playNow": "Jouer Maintenant",
+      "backToHome": "Retour à l'accueil",
+      "viewLeaderboard": "Voir le Classement",
+      "features": {
+        "aiHints": "Indices alimentés par l'IA qui enseignent les techniques de résolution",
+        "difficulties": "3 niveaux de difficulté: Moyen, Expert, Pro",
+        "offline": "Fonctionne hors ligne - jouez partout",
+        "autoSave": "Sauvegarde automatique de votre progression",
+        "notes": "Système de notes intelligent",
+        "tracking": "Suivez vos meilleurs temps"
+      }
+    },
+    "stats": {
+      "time": "TEMPS",
+      "mistakes": "ERREURS",
+      "hints": "INDICES"
+    },
+    "difficulties": {
+      "medium": "Moyen",
+      "expert": "Expert",
+      "pro": "Pro",
+      "locked": "MODE PRO VERROUILLE !\n\nTerminez la difficulte Expert en moins de 15 minutes pour debloquer le mode Pro."
+    },
+    "controls": {
+      "notes": "Notes",
+      "pause": "Pause",
+      "resume": "Reprendre",
+      "hint": "Indice",
+      "new": "Nouveau",
+      "none": "Aucun"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jeu en Pause",
+        "time": "Temps",
+        "mistakes": "Erreurs",
+        "difficulty": "Difficulte",
+        "resumeBtn": "Reprendre le Jeu",
+        "restartBtn": "Recommencer le Jeu",
+        "quitBtn": "Quitter vers l'Accueil",
+        "confirmRestart": "Etes-vous sur de vouloir recommencer ? Votre progression sera perdue."
+      },
+      "win": {
+        "title": "Bien Joue !",
+        "message": "Vous avez termine le puzzle !",
+        "time": "Temps",
+        "mistakes": "Erreurs",
+        "tryHarderBtn": "Essayer Niveau Superieur",
+        "playAgainBtn": "Rejouer",
+        "quitBtn": "Quitter vers l'Accueil"
+      },
+      "gameOver": {
+        "title": "Jeu Termine",
+        "message": "Vous avez fait {count} erreurs. N'abandonnez pas !",
+        "time": "Temps",
+        "difficulty": "Difficulte",
+        "tryAgainBtn": "Reessayer",
+        "tryEasierBtn": "Essayer Niveau Inferieur",
+        "quitBtn": "Quitter vers l'Accueil"
+      },
+      "hint": {
+        "title": "Coup Trouve!",
+        "foundMove": "Coup Trouve!",
+        "whereToPlace": "Recherche ou placer",
+        "targetCell": "Cellule Cible",
+        "location": "Emplacement",
+        "row": "Ligne",
+        "column": "Colonne",
+        "box": "Bloc",
+        "placeHere": "Placer Ici",
+        "rowCol": "Ligne {row}, Col {col}",
+        "technique": "Technique",
+        "logicTitle": "Explication Logique",
+        "visualTitle": "Guide Visuel",
+        "targetLabel": "Cible : Placer {value}",
+        "conflictsLabel": "Les conflits bloquent d'autres options",
+        "afterApplyTitle": "Apres avoir clique sur \"Appliquer l'Indice\" :",
+        "afterApply1": "La cellule jaune montre ou {value} a ete place",
+        "afterApply2": "Les cellules rouges montrent les numeros bloquants",
+        "afterApply3": "Les surbrillances restent 3 secondes !",
+        "applyBtn": "Appliquer l'Indice et Afficher le Guide Visuel",
+        "closeBtn": "Fermer",
+        "noHints": "Aucun Indice Disponible",
+        "techniques": {
+          "nakedSingle": "Single Nu",
+          "hiddenSingle": "Single Cache",
+          "pointingPair": "Paire Pointante",
+          "boxLineReduction": "Reduction Bloc/Ligne"
+        },
+        "legend": {
+          "target": "Cible",
+          "conflicts": "Conflits",
+          "related": "Lie"
+        },
+        "logic": {
+          "checkRow": "Verifier Ligne",
+          "checkColumn": "Verifier Colonne",
+          "checkBox": "Verifier Bloc 3x3",
+          "canAccept": "peut accepter",
+          "noExists": "Aucun {number} existe dans cette",
+          "noIn": "Pas de {number} dans cette",
+          "conclusion": "Conclusion",
+          "mustBe": "La cellule ({row}, {col}) doit etre {number}!"
+        },
+        "afterApplying": {
+          "title": "Apres Application de Cet Indice",
+          "instruction": "Etudiez le guide visuel!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "L'IA resout... Veuillez patienter",
+      "autoFinish": "Finir Automatiquement le Puzzle"
+    },
+    "difficultyInfo": {
+      "medium": "3 erreurs autorisées, 3 indices, résolution IA disponible",
+      "expert": "1 erreur autorisée, 1 indice, annuler disponible",
+      "pro": "1 erreur autorisée, 1 indice, pas de finition automatique"
+    },
+    "features": {
+      "aiHints": "Indices IA",
+      "languages": "12 Langues",
+      "autoSave": "Sauvegarde Auto",
+      "offline": "Hors Ligne"
+    }
+  }
+}

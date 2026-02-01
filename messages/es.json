@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Inicio"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "Potenciado por IA",
+    "landing": {
+      "hero": "Desafía Tu Mente",
+      "description": "Desafia tu mente con nuestro juego de Sudoku mejorado con IA. Obtén pistas inteligentes que te enseñan técnicas de resolución!",
+      "playNow": "Jugar Ahora",
+      "backToHome": "Volver al Inicio",
+      "viewLeaderboard": "Ver Clasificación",
+      "features": {
+        "aiHints": "Pistas con IA que enseñan técnicas de resolución",
+        "difficulties": "3 niveles de dificultad: Medio, Experto, Pro",
+        "offline": "Funciona sin conexión - juega en cualquier lugar",
+        "autoSave": "Guarda automáticamente tu progreso",
+        "notes": "Sistema inteligente de notas",
+        "tracking": "Registra tus mejores tiempos"
+      }
+    },
+    "stats": {
+      "time": "TIEMPO",
+      "mistakes": "ERRORES",
+      "hints": "PISTAS"
+    },
+    "difficulties": {
+      "medium": "Medio",
+      "expert": "Experto",
+      "pro": "Pro",
+      "locked": "MODO PRO BLOQUEADO!\n\nCompleta la dificultad Experto en menos de 15 minutos para desbloquear el modo Pro."
+    },
+    "controls": {
+      "notes": "Notas",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "hint": "Pista",
+      "new": "Nuevo",
+      "none": "Ninguno"
+    },
+    "modals": {
+      "pause": {
+        "title": "Juego Pausado",
+        "time": "Tiempo",
+        "mistakes": "Errores",
+        "difficulty": "Dificultad",
+        "resumeBtn": "Reanudar Juego",
+        "restartBtn": "Reiniciar Juego",
+        "quitBtn": "Salir al Inicio",
+        "confirmRestart": "Estas seguro de que quieres reiniciar? Se perdera tu progreso."
+      },
+      "win": {
+        "title": "Bien Hecho!",
+        "message": "Has completado el rompecabezas!",
+        "time": "Tiempo",
+        "mistakes": "Errores",
+        "tryHarderBtn": "Probar Nivel Mas Dificil",
+        "playAgainBtn": "Jugar de Nuevo",
+        "quitBtn": "Salir al Inicio"
+      },
+      "gameOver": {
+        "title": "Juego Terminado",
+        "message": "Has cometido {count} errores. No te rindas!",
+        "time": "Tiempo",
+        "difficulty": "Dificultad",
+        "tryAgainBtn": "Intentar de Nuevo",
+        "tryEasierBtn": "Probar Nivel Mas Facil",
+        "quitBtn": "Salir al Inicio"
+      },
+      "hint": {
+        "title": "Movimiento Encontrado!",
+        "foundMove": "Movimiento Encontrado!",
+        "whereToPlace": "Buscando donde colocar",
+        "targetCell": "Celda Objetivo",
+        "location": "Ubicacion",
+        "row": "Fila",
+        "column": "Columna",
+        "box": "Caja",
+        "placeHere": "Colocar Aqui",
+        "rowCol": "Fila {row}, Col {col}",
+        "technique": "Tecnica",
+        "logicTitle": "Explicacion Logica",
+        "visualTitle": "Guia Visual",
+        "targetLabel": "Objetivo: Colocar {value}",
+        "conflictsLabel": "Los conflictos bloquean otras opciones",
+        "afterApplyTitle": "Despues de hacer clic en \"Aplicar Pista\":",
+        "afterApply1": "Celda amarilla muestra donde se coloco {value}",
+        "afterApply2": "Celdas rojas muestran numeros bloqueantes",
+        "afterApply3": "Los resaltados permanecen 3 segundos!",
+        "applyBtn": "Aplicar Pista y Mostrar Guia Visual",
+        "closeBtn": "Cerrar",
+        "noHints": "No Hay Pistas Disponibles",
+        "techniques": {
+          "nakedSingle": "Single Desnudo",
+          "hiddenSingle": "Single Oculto",
+          "pointingPair": "Par Senalador",
+          "boxLineReduction": "Reduccion Caja/Linea"
+        },
+        "legend": {
+          "target": "Objetivo",
+          "conflicts": "Conflictos",
+          "related": "Relacionado"
+        },
+        "logic": {
+          "checkRow": "Verificar Fila",
+          "checkColumn": "Verificar Columna",
+          "checkBox": "Verificar Caja 3x3",
+          "canAccept": "puede aceptar",
+          "noExists": "No existe {number} en esta",
+          "noIn": "No hay {number} en esta",
+          "conclusion": "Conclusion",
+          "mustBe": "La celda ({row}, {col}) debe ser {number}!"
+        },
+        "afterApplying": {
+          "title": "Despues de Aplicar Esta Pista",
+          "instruction": "Estudia la guia visual!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "La IA esta resolviendo... Por favor espera",
+      "autoFinish": "Auto-Completar Rompecabezas"
+    },
+    "difficultyInfo": {
+      "medium": "3 errores permitidos, 3 pistas, resolver con IA disponible",
+      "expert": "1 error permitido, 1 pista, deshacer disponible",
+      "pro": "1 error permitido, 1 pista, sin auto-completar"
+    },
+    "features": {
+      "aiHints": "Pistas IA",
+      "languages": "12 Idiomas",
+      "autoSave": "Guardado Auto",
+      "offline": "Sin Conexión"
+    }
+  }
+}

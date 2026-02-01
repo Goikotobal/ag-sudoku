@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Startseite"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "KI-Gestutzt",
+    "landing": {
+      "hero": "Fordere Deinen Geist",
+      "description": "Fordere deinen Geist mit unserem KI-verbesserten Sudoku-Puzzlespiel heraus. Erhalte intelligente Hinweise, die dir Lösungstechniken beibringen!",
+      "playNow": "Jetzt Spielen",
+      "backToHome": "Zurück zur Startseite",
+      "viewLeaderboard": "Bestenliste Anzeigen",
+      "features": {
+        "aiHints": "KI-gestützte Hinweise, die Lösungstechniken lehren",
+        "difficulties": "3 Schwierigkeitsstufen: Mittel, Experte, Profi",
+        "offline": "Funktioniert offline - überall spielen",
+        "autoSave": "Automatische Speicherung deines Fortschritts",
+        "notes": "Intelligentes Notizensystem",
+        "tracking": "Verfolge deine besten Zeiten"
+      }
+    },
+    "stats": {
+      "time": "ZEIT",
+      "mistakes": "FEHLER",
+      "hints": "HINWEISE"
+    },
+    "difficulties": {
+      "medium": "Mittel",
+      "expert": "Experte",
+      "pro": "Profi",
+      "locked": "PROFI-MODUS GESPERRT!\n\nSchliesse den Experten-Schwierigkeitsgrad in unter 15 Minuten ab, um den Profi-Modus freizuschalten."
+    },
+    "controls": {
+      "notes": "Notizen",
+      "pause": "Pause",
+      "resume": "Fortsetzen",
+      "hint": "Hinweis",
+      "new": "Neu",
+      "none": "Keine"
+    },
+    "modals": {
+      "pause": {
+        "title": "Spiel Pausiert",
+        "time": "Zeit",
+        "mistakes": "Fehler",
+        "difficulty": "Schwierigkeit",
+        "resumeBtn": "Spiel Fortsetzen",
+        "restartBtn": "Spiel Neu Starten",
+        "quitBtn": "Zur Startseite",
+        "confirmRestart": "Mochtest du wirklich neu starten? Dein Fortschritt geht verloren."
+      },
+      "win": {
+        "title": "Gut Gemacht!",
+        "message": "Du hast das Ratsel gelost!",
+        "time": "Zeit",
+        "mistakes": "Fehler",
+        "tryHarderBtn": "Schwereren Level Probieren",
+        "playAgainBtn": "Nochmal Spielen",
+        "quitBtn": "Zur Startseite"
+      },
+      "gameOver": {
+        "title": "Spiel Vorbei",
+        "message": "Du hast {count} Fehler gemacht. Gib nicht auf!",
+        "time": "Zeit",
+        "difficulty": "Schwierigkeit",
+        "tryAgainBtn": "Nochmal Versuchen",
+        "tryEasierBtn": "Einfacheren Level Probieren",
+        "quitBtn": "Zur Startseite"
+      },
+      "hint": {
+        "title": "Zug Gefunden!",
+        "foundMove": "Zug Gefunden!",
+        "whereToPlace": "Suche wo platzieren",
+        "targetCell": "Zielzelle",
+        "location": "Standort",
+        "row": "Zeile",
+        "column": "Spalte",
+        "box": "Block",
+        "placeHere": "Hier Platzieren",
+        "rowCol": "Reihe {row}, Spalte {col}",
+        "technique": "Technik",
+        "logicTitle": "Logische Erklarung",
+        "visualTitle": "Visuelle Anleitung",
+        "targetLabel": "Ziel: {value} platzieren",
+        "conflictsLabel": "Konflikte blockieren andere Optionen",
+        "afterApplyTitle": "Nach Klick auf \"Hinweis Anwenden\":",
+        "afterApply1": "Gelbe Zelle zeigt wo {value} platziert wurde",
+        "afterApply2": "Rote Zellen zeigen blockierende Zahlen",
+        "afterApply3": "Hervorhebungen bleiben 3 Sekunden!",
+        "applyBtn": "Hinweis Anwenden und Visuelle Anleitung Zeigen",
+        "closeBtn": "Schliessen",
+        "noHints": "Keine Hinweise Verfugbar",
+        "techniques": {
+          "nakedSingle": "Nacktes Single",
+          "hiddenSingle": "Verstecktes Single",
+          "pointingPair": "Zeigendes Paar",
+          "boxLineReduction": "Block/Linien-Reduktion"
+        },
+        "legend": {
+          "target": "Ziel",
+          "conflicts": "Konflikte",
+          "related": "Verwandt"
+        },
+        "logic": {
+          "checkRow": "Zeile Prufen",
+          "checkColumn": "Spalte Prufen",
+          "checkBox": "3x3 Block Prufen",
+          "canAccept": "kann akzeptieren",
+          "noExists": "Keine {number} existiert in dieser",
+          "noIn": "Keine {number} in dieser",
+          "conclusion": "Schlussfolgerung",
+          "mustBe": "Zelle ({row}, {col}) muss {number} sein!"
+        },
+        "afterApplying": {
+          "title": "Nach Anwendung Dieses Hinweises",
+          "instruction": "Studiere die visuelle Anleitung!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "KI lost... Bitte warten",
+      "autoFinish": "Ratsel Automatisch Beenden"
+    },
+    "difficultyInfo": {
+      "medium": "3 Fehler erlaubt, 3 Hinweise, KI-Lösung verfügbar",
+      "expert": "1 Fehler erlaubt, 1 Hinweis, Rückgängig verfügbar",
+      "pro": "1 Fehler erlaubt, 1 Hinweis, kein Auto-Finish"
+    },
+    "features": {
+      "aiHints": "KI-Hinweise",
+      "languages": "12 Sprachen",
+      "autoSave": "Auto-Speichern",
+      "offline": "Offline"
+    }
+  }
+}

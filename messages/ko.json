@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "스도쿠",
+    "home": "홈"
+  },
+  "sudoku": {
+    "title": "AG 스도쿠",
+    "subtitle": "AI 기반",
+    "landing": {
+      "hero": "당신의 두뇌에 도전",
+      "description": "AI로 강화된 스도쿠 퍼즐 게임으로 당신의 두뇌에 도전하세요. 풀이 기술을 가르쳐주는 스마트 힌트를 받으세요!",
+      "playNow": "지금 플레이",
+      "backToHome": "홈으로 돌아가기",
+      "viewLeaderboard": "순위 보기",
+      "features": {
+        "aiHints": "풀이 기술을 가르쳐주는 AI 힌트",
+        "difficulties": "3가지 난이도: 중급, 고급, 프로",
+        "offline": "오프라인 작동 - 어디서나 플레이",
+        "autoSave": "진행 상황 자동 저장",
+        "notes": "스마트 메모 시스템",
+        "tracking": "최고 기록 추적"
+      }
+    },
+    "stats": {
+      "time": "시간",
+      "mistakes": "실수",
+      "hints": "힌트"
+    },
+    "difficulties": {
+      "medium": "중급",
+      "expert": "고급",
+      "pro": "프로",
+      "locked": "프로 모드 잠김!\n\n15분 이내에 고급 난이도를 완료하여 프로 모드를 잠금 해제하세요."
+    },
+    "controls": {
+      "notes": "메모",
+      "pause": "일시정지",
+      "resume": "재개",
+      "hint": "힌트",
+      "new": "새 게임",
+      "none": "없음"
+    },
+    "modals": {
+      "pause": {
+        "title": "게임 일시정지",
+        "time": "시간",
+        "mistakes": "실수",
+        "difficulty": "난이도",
+        "resumeBtn": "게임 재개",
+        "restartBtn": "게임 재시작",
+        "quitBtn": "홈으로 나가기",
+        "confirmRestart": "정말 재시작하시겠습니까? 진행 상황이 손실됩니다."
+      },
+      "win": {
+        "title": "잘했어요!",
+        "message": "퍼즐을 완성했습니다!",
+        "time": "시간",
+        "mistakes": "실수",
+        "tryHarderBtn": "더 어려운 레벨 시도",
+        "playAgainBtn": "다시 플레이",
+        "quitBtn": "홈으로 나가기"
+      },
+      "gameOver": {
+        "title": "게임 오버",
+        "message": "{count}번 실수했습니다. 포기하지 마세요!",
+        "time": "시간",
+        "difficulty": "난이도",
+        "tryAgainBtn": "다시 시도",
+        "tryEasierBtn": "더 쉬운 레벨 시도",
+        "quitBtn": "홈으로 나가기"
+      },
+      "hint": {
+        "title": "수를 찾았습니다!",
+        "foundMove": "수를 찾았습니다!",
+        "whereToPlace": "어디에 놓을지 찾는 중",
+        "targetCell": "대상 셀",
+        "location": "위치",
+        "row": "행",
+        "column": "열",
+        "box": "박스",
+        "placeHere": "여기에 배치",
+        "rowCol": "행 {row}, 열 {col}",
+        "technique": "기법",
+        "logicTitle": "논리 설명",
+        "visualTitle": "시각 가이드",
+        "targetLabel": "목표: {value} 배치",
+        "conflictsLabel": "충돌이 다른 옵션을 차단합니다",
+        "afterApplyTitle": "\"힌트 적용\" 클릭 후:",
+        "afterApply1": "노란색 셀은 {value}이(가) 배치된 위치를 표시합니다",
+        "afterApply2": "빨간색 셀은 차단 번호를 표시합니다",
+        "afterApply3": "하이라이트는 3초 동안 유지됩니다!",
+        "applyBtn": "힌트 적용 및 시각 가이드 표시",
+        "closeBtn": "닫기",
+        "noHints": "사용 가능한 힌트 없음",
+        "techniques": {
+          "nakedSingle": "네이키드 싱글",
+          "hiddenSingle": "히든 싱글",
+          "pointingPair": "포인팅 페어",
+          "boxLineReduction": "박스/라인 리덕션"
+        },
+        "legend": {
+          "target": "대상",
+          "conflicts": "충돌",
+          "related": "관련"
+        },
+        "logic": {
+          "checkRow": "행 확인",
+          "checkColumn": "열 확인",
+          "checkBox": "3x3 박스 확인",
+          "canAccept": "받아들일 수 있음",
+          "noExists": "이 {number}는 존재하지 않습니다",
+          "noIn": "이 안에 {number} 없음",
+          "conclusion": "결론",
+          "mustBe": "셀 ({row}, {col})은 {number}이어야 합니다!"
+        },
+        "afterApplying": {
+          "title": "이 힌트를 적용한 후",
+          "instruction": "비주얼 가이드를 학습하세요!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "AI가 해결 중입니다... 잠시 기다려주세요",
+      "autoFinish": "퍼즐 자동 완성"
+    },
+    "difficultyInfo": {
+      "medium": "실수 3회 허용, 힌트 3개, AI 솔루션 사용 가능",
+      "expert": "실수 1회 허용, 힌트 1개, 실행 취소 사용 가능",
+      "pro": "실수 1회 허용, 힌트 1개, 자동 완료 없음"
+    },
+    "features": {
+      "aiHints": "AI 힌트",
+      "languages": "12개 언어",
+      "autoSave": "자동 저장",
+      "offline": "오프라인"
+    }
+  }
+}

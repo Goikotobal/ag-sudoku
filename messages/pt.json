@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Início"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "Alimentado por IA",
+    "landing": {
+      "hero": "Desafie Sua Mente",
+      "description": "Desafie sua mente com nosso jogo de Sudoku aprimorado por IA. Obtenha dicas inteligentes que ensinam técnicas de resolução!",
+      "playNow": "Jogar Agora",
+      "backToHome": "Voltar ao Início",
+      "viewLeaderboard": "Ver Classificação",
+      "features": {
+        "aiHints": "Dicas com IA que ensinam técnicas de resolução",
+        "difficulties": "3 níveis de dificuldade: Médio, Especialista, Pro",
+        "offline": "Funciona offline - jogue em qualquer lugar",
+        "autoSave": "Salva automaticamente seu progresso",
+        "notes": "Sistema inteligente de notas",
+        "tracking": "Acompanhe seus melhores tempos"
+      }
+    },
+    "stats": {
+      "time": "TEMPO",
+      "mistakes": "ERROS",
+      "hints": "DICAS"
+    },
+    "difficulties": {
+      "medium": "Medio",
+      "expert": "Especialista",
+      "pro": "Pro",
+      "locked": "MODO PRO BLOQUEADO!\n\nComplete a dificuldade Especialista em menos de 15 minutos para desbloquear o modo Pro."
+    },
+    "controls": {
+      "notes": "Notas",
+      "pause": "Pausar",
+      "resume": "Retomar",
+      "hint": "Dica",
+      "new": "Novo",
+      "none": "Nenhum"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jogo Pausado",
+        "time": "Tempo",
+        "mistakes": "Erros",
+        "difficulty": "Dificuldade",
+        "resumeBtn": "Retomar Jogo",
+        "restartBtn": "Reiniciar Jogo",
+        "quitBtn": "Sair para Inicio",
+        "confirmRestart": "Tem certeza que deseja reiniciar? Seu progresso sera perdido."
+      },
+      "win": {
+        "title": "Muito Bem!",
+        "message": "Voce completou o quebra-cabeca!",
+        "time": "Tempo",
+        "mistakes": "Erros",
+        "tryHarderBtn": "Tentar Nivel Mais Dificil",
+        "playAgainBtn": "Jogar Novamente",
+        "quitBtn": "Sair para Inicio"
+      },
+      "gameOver": {
+        "title": "Fim de Jogo",
+        "message": "Voce cometeu {count} erros. Nao desista!",
+        "time": "Tempo",
+        "difficulty": "Dificuldade",
+        "tryAgainBtn": "Tentar Novamente",
+        "tryEasierBtn": "Tentar Nivel Mais Facil",
+        "quitBtn": "Sair para Inicio"
+      },
+      "hint": {
+        "title": "Movimento Encontrado!",
+        "foundMove": "Movimento Encontrado!",
+        "whereToPlace": "Procurando onde colocar",
+        "targetCell": "Celula Alvo",
+        "location": "Localizacao",
+        "row": "Linha",
+        "column": "Coluna",
+        "box": "Caixa",
+        "placeHere": "Colocar Aqui",
+        "rowCol": "Linha {row}, Col {col}",
+        "technique": "Tecnica",
+        "logicTitle": "Explicacao Logica",
+        "visualTitle": "Guia Visual",
+        "targetLabel": "Alvo: Colocar {value}",
+        "conflictsLabel": "Conflitos bloqueiam outras opcoes",
+        "afterApplyTitle": "Apos clicar em \"Aplicar Dica\":",
+        "afterApply1": "Celula amarela mostra onde {value} foi colocado",
+        "afterApply2": "Celulas vermelhas mostram numeros bloqueantes",
+        "afterApply3": "Destaques permanecem por 3 segundos!",
+        "applyBtn": "Aplicar Dica e Mostrar Guia Visual",
+        "closeBtn": "Fechar",
+        "noHints": "Nenhuma Dica Disponivel",
+        "techniques": {
+          "nakedSingle": "Single Nu",
+          "hiddenSingle": "Single Escondido",
+          "pointingPair": "Par Apontador",
+          "boxLineReduction": "Reducao Caixa/Linha"
+        },
+        "legend": {
+          "target": "Alvo",
+          "conflicts": "Conflitos",
+          "related": "Relacionado"
+        },
+        "logic": {
+          "checkRow": "Verificar Linha",
+          "checkColumn": "Verificar Coluna",
+          "checkBox": "Verificar Caixa 3x3",
+          "canAccept": "pode aceitar",
+          "noExists": "Nao existe {number} nesta",
+          "noIn": "Nao ha {number} nesta",
+          "conclusion": "Conclusao",
+          "mustBe": "A celula ({row}, {col}) deve ser {number}!"
+        },
+        "afterApplying": {
+          "title": "Apos Aplicar Esta Dica",
+          "instruction": "Estude o guia visual!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "IA esta resolvendo... Por favor aguarde",
+      "autoFinish": "Finalizar Automaticamente o Quebra-cabeca"
+    },
+    "difficultyInfo": {
+      "medium": "3 erros permitidos, 3 dicas, resolução IA disponível",
+      "expert": "1 erro permitido, 1 dica, desfazer disponível",
+      "pro": "1 erro permitido, 1 dica, sem conclusão automática"
+    },
+    "features": {
+      "aiHints": "Dicas IA",
+      "languages": "12 Idiomas",
+      "autoSave": "Auto-Salvar",
+      "offline": "Offline"
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Home"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "Alimentato dall'IA",
+    "landing": {
+      "hero": "Sfida la Tua Mente",
+      "description": "Sfida la tua mente con il nostro gioco di Sudoku potenziato dall'IA. Ottieni suggerimenti intelligenti che insegnano tecniche di risoluzione!",
+      "playNow": "Gioca Ora",
+      "backToHome": "Torna alla Home",
+      "viewLeaderboard": "Vedi Classifica",
+      "features": {
+        "aiHints": "Suggerimenti con IA che insegnano tecniche di risoluzione",
+        "difficulties": "3 livelli di difficoltà: Medio, Esperto, Pro",
+        "offline": "Funziona offline - gioca ovunque",
+        "autoSave": "Salvataggio automatico dei progressi",
+        "notes": "Sistema intelligente di note",
+        "tracking": "Tieni traccia dei tuoi migliori tempi"
+      }
+    },
+    "stats": {
+      "time": "TEMPO",
+      "mistakes": "ERRORI",
+      "hints": "SUGGERIMENTI"
+    },
+    "difficulties": {
+      "medium": "Medio",
+      "expert": "Esperto",
+      "pro": "Pro",
+      "locked": "MODALITA PRO BLOCCATA!\n\nCompleta la difficolta Esperto in meno di 15 minuti per sbloccare la modalita Pro."
+    },
+    "controls": {
+      "notes": "Note",
+      "pause": "Pausa",
+      "resume": "Riprendi",
+      "hint": "Suggerimento",
+      "new": "Nuovo",
+      "none": "Nessuno"
+    },
+    "modals": {
+      "pause": {
+        "title": "Gioco in Pausa",
+        "time": "Tempo",
+        "mistakes": "Errori",
+        "difficulty": "Difficolta",
+        "resumeBtn": "Riprendi Gioco",
+        "restartBtn": "Riavvia Gioco",
+        "quitBtn": "Esci alla Home",
+        "confirmRestart": "Sei sicuro di voler riavviare? I tuoi progressi andranno persi."
+      },
+      "win": {
+        "title": "Ben Fatto!",
+        "message": "Hai completato il puzzle!",
+        "time": "Tempo",
+        "mistakes": "Errori",
+        "tryHarderBtn": "Prova Livello Superiore",
+        "playAgainBtn": "Gioca Ancora",
+        "quitBtn": "Esci alla Home"
+      },
+      "gameOver": {
+        "title": "Game Over",
+        "message": "Hai fatto {count} errori. Non arrenderti!",
+        "time": "Tempo",
+        "difficulty": "Difficolta",
+        "tryAgainBtn": "Riprova",
+        "tryEasierBtn": "Prova Livello Inferiore",
+        "quitBtn": "Esci alla Home"
+      },
+      "hint": {
+        "title": "Mossa Trovata!",
+        "foundMove": "Mossa Trovata!",
+        "whereToPlace": "Cercando dove posizionare",
+        "targetCell": "Cella Obiettivo",
+        "location": "Posizione",
+        "row": "Riga",
+        "column": "Colonna",
+        "box": "Riquadro",
+        "placeHere": "Posiziona Qui",
+        "rowCol": "Riga {row}, Col {col}",
+        "technique": "Tecnica",
+        "logicTitle": "Spiegazione Logica",
+        "visualTitle": "Guida Visiva",
+        "targetLabel": "Obiettivo: Posiziona {value}",
+        "conflictsLabel": "I conflitti bloccano altre opzioni",
+        "afterApplyTitle": "Dopo aver cliccato \"Applica Suggerimento\":",
+        "afterApply1": "La cella gialla mostra dove e stato posizionato {value}",
+        "afterApply2": "Le celle rosse mostrano i numeri bloccanti",
+        "afterApply3": "Le evidenziazioni rimangono per 3 secondi!",
+        "applyBtn": "Applica Suggerimento e Mostra Guida Visiva",
+        "closeBtn": "Chiudi",
+        "noHints": "Nessun Suggerimento Disponibile",
+        "techniques": {
+          "nakedSingle": "Singolo Nudo",
+          "hiddenSingle": "Singolo Nascosto",
+          "pointingPair": "Coppia Indicante",
+          "boxLineReduction": "Riduzione Riquadro/Linea"
+        },
+        "legend": {
+          "target": "Obiettivo",
+          "conflicts": "Conflitti",
+          "related": "Correlato"
+        },
+        "logic": {
+          "checkRow": "Controlla Riga",
+          "checkColumn": "Controlla Colonna",
+          "checkBox": "Controlla Riquadro 3x3",
+          "canAccept": "puo accettare",
+          "noExists": "Nessun {number} esiste in questa",
+          "noIn": "Nessun {number} in questa",
+          "conclusion": "Conclusione",
+          "mustBe": "La cella ({row}, {col}) deve essere {number}!"
+        },
+        "afterApplying": {
+          "title": "Dopo Aver Applicato Questo Suggerimento",
+          "instruction": "Studia la guida visiva!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "L'IA sta risolvendo... Attendere prego",
+      "autoFinish": "Completa Automaticamente il Puzzle"
+    },
+    "difficultyInfo": {
+      "medium": "3 errori consentiti, 3 suggerimenti, risoluzione IA disponibile",
+      "expert": "1 errore consentito, 1 suggerimento, annulla disponibile",
+      "pro": "1 errore consentito, 1 suggerimento, nessun completamento automatico"
+    },
+    "features": {
+      "aiHints": "Suggerimenti IA",
+      "languages": "12 Lingue",
+      "autoSave": "Salvataggio Auto",
+      "offline": "Offline"
+    }
+  }
+}

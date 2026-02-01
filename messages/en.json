@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Home"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "AI-Powered",
+    "landing": {
+      "hero": "Challenge Your Mind",
+      "description": "Challenge your mind with our AI-enhanced Sudoku puzzle game. Get smart hints that teach you solving techniques!",
+      "playNow": "Play Now",
+      "backToHome": "Back to Home",
+      "viewLeaderboard": "View Leaderboard",
+      "features": {
+        "aiHints": "AI-powered hints that teach solving techniques",
+        "difficulties": "3 difficulty levels: Medium, Expert, Pro",
+        "offline": "Works offline - play anywhere",
+        "autoSave": "Auto-save your progress",
+        "notes": "Smart notes system",
+        "tracking": "Track your best times"
+      }
+    },
+    "stats": {
+      "time": "TIME",
+      "mistakes": "MISTAKES",
+      "hints": "HINTS"
+    },
+    "difficulties": {
+      "medium": "Medium",
+      "expert": "Expert",
+      "pro": "Pro",
+      "locked": "PRO MODE LOCKED!\n\nComplete Expert difficulty in under 15 minutes to unlock Pro mode."
+    },
+    "controls": {
+      "notes": "Notes",
+      "pause": "Pause",
+      "resume": "Resume",
+      "hint": "Hint",
+      "new": "New",
+      "none": "None"
+    },
+    "modals": {
+      "pause": {
+        "title": "Game Paused",
+        "time": "Time",
+        "mistakes": "Mistakes",
+        "difficulty": "Difficulty",
+        "resumeBtn": "Resume Game",
+        "restartBtn": "Restart Game",
+        "quitBtn": "Quit to Home",
+        "confirmRestart": "Are you sure you want to restart? Your progress will be lost."
+      },
+      "win": {
+        "title": "Well Done!",
+        "message": "You've completed the puzzle!",
+        "time": "Time",
+        "mistakes": "Mistakes",
+        "tryHarderBtn": "Try Harder Level",
+        "playAgainBtn": "Play Again",
+        "quitBtn": "Quit to Home"
+      },
+      "gameOver": {
+        "title": "Game Over",
+        "message": "You've made {count} mistakes. Don't give up!",
+        "time": "Time",
+        "difficulty": "Difficulty",
+        "tryAgainBtn": "Try Again",
+        "tryEasierBtn": "Try Easier Level",
+        "quitBtn": "Quit to Home"
+      },
+      "hint": {
+        "title": "Found a Move!",
+        "foundMove": "Found a Move!",
+        "whereToPlace": "Looking for where to place",
+        "targetCell": "Target Cell",
+        "location": "Location",
+        "row": "Row",
+        "column": "Column",
+        "box": "Box",
+        "placeHere": "Place Here",
+        "rowCol": "Row {row}, Col {col}",
+        "technique": "Technique",
+        "logicTitle": "Logic Explanation",
+        "visualTitle": "Visual Guide",
+        "targetLabel": "Target: Place {value}",
+        "conflictsLabel": "Conflicts block other options",
+        "afterApplyTitle": "After clicking \"Apply Hint\":",
+        "afterApply1": "Yellow cell shows where {value} was placed",
+        "afterApply2": "Red cells show blocking numbers",
+        "afterApply3": "Highlights stay for 3 seconds!",
+        "applyBtn": "Apply Hint & Show Visual Guide",
+        "closeBtn": "Close",
+        "noHints": "No Hints Available",
+        "techniques": {
+          "nakedSingle": "Naked Single",
+          "hiddenSingle": "Hidden Single",
+          "pointingPair": "Pointing Pair",
+          "boxLineReduction": "Box/Line Reduction"
+        },
+        "legend": {
+          "target": "Target",
+          "conflicts": "Conflicts",
+          "related": "Related"
+        },
+        "logic": {
+          "checkRow": "Check Row",
+          "checkColumn": "Check Column",
+          "checkBox": "Check 3×3 Box",
+          "canAccept": "can accept",
+          "noExists": "No {number} exists in this",
+          "noIn": "No {number} in this",
+          "conclusion": "Conclusion",
+          "mustBe": "Cell ({row}, {col}) must be {number}!"
+        },
+        "afterApplying": {
+          "title": "After Applying This Hint",
+          "instruction": "Study the visual guide!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "AI is solving... Please wait",
+      "autoFinish": "Auto-Finish Puzzle"
+    },
+    "difficultyInfo": {
+      "medium": "3 mistakes allowed, 3 hints, AI solve available",
+      "expert": "1 mistake allowed, 1 hint, undo available",
+      "pro": "1 mistake allowed, 1 hint, no auto-finish"
+    },
+    "features": {
+      "aiHints": "AI Hints",
+      "languages": "12 Languages",
+      "autoSave": "Auto-Save",
+      "offline": "Offline"
+    }
+  }
+}

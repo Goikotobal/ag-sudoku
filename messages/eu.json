@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "Sudoku",
+    "home": "Hasiera"
+  },
+  "sudoku": {
+    "title": "AG Sudoku",
+    "subtitle": "AI bidez suspertua",
+    "landing": {
+      "hero": "Desafiatu Zure Burua",
+      "description": "Desafiatu zure burua gure AI-z hobetutako Sudoku puzzle jokoarekin. Lortu ebazpen teknikak irakasten dizkizuten pista adimendunak!",
+      "playNow": "Jokatu Orain",
+      "backToHome": "Hasierara Itzuli",
+      "viewLeaderboard": "Ikusi Sailkapena",
+      "features": {
+        "aiHints": "AI bidezko pistak ebazpen teknikak irakasten dituztenak",
+        "difficulties": "3 zailtasun maila: Ertaina, Aditua, Pro",
+        "offline": "Lineaz kanpo funtzionatzen du - edonon jokatu",
+        "autoSave": "Automatikoki gordetzen du zure aurrerapena",
+        "notes": "Ohar sistema adimenduna",
+        "tracking": "Jarraitu zure denbora onenak"
+      }
+    },
+    "stats": {
+      "time": "DENBORA",
+      "mistakes": "AKATSAK",
+      "hints": "PISTAK"
+    },
+    "difficulties": {
+      "medium": "Ertaina",
+      "expert": "Aditua",
+      "pro": "Pro",
+      "locked": "PRO MODUA BLOKEATUTA!\n\nOsatu Aditu zailtasuna 15 minutu baino gutxiagoan Pro modua desblokeatzeko."
+    },
+    "controls": {
+      "notes": "Oharrak",
+      "pause": "Pausatu",
+      "resume": "Jarraitu",
+      "hint": "Pista",
+      "new": "Berria",
+      "none": "Bat ere ez"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jokoa Pausatuta",
+        "time": "Denbora",
+        "mistakes": "Akatsak",
+        "difficulty": "Zailtasuna",
+        "resumeBtn": "Jokoa Jarraitu",
+        "restartBtn": "Jokoa Berrabiarazi",
+        "quitBtn": "Hasierara Itzuli",
+        "confirmRestart": "Ziur zaude berrabiarazi nahi duzula? Zure aurrerapena galduko da."
+      },
+      "win": {
+        "title": "Ondo Egina!",
+        "message": "Puzzlea osatu duzu!",
+        "time": "Denbora",
+        "mistakes": "Akatsak",
+        "tryHarderBtn": "Zailtasun Handiagoa Probatu",
+        "playAgainBtn": "Berriro Jokatu",
+        "quitBtn": "Hasierara Itzuli"
+      },
+      "gameOver": {
+        "title": "Jokoa Amaituta",
+        "message": "{count} akats egin dituzu. Ez etsi!",
+        "time": "Denbora",
+        "difficulty": "Zailtasuna",
+        "tryAgainBtn": "Berriro Saiatu",
+        "tryEasierBtn": "Errazagoa Probatu",
+        "quitBtn": "Hasierara Itzuli"
+      },
+      "hint": {
+        "title": "Mugimendua Aurkituta!",
+        "foundMove": "Mugimendua Aurkituta!",
+        "whereToPlace": "Non jarri bilatzen",
+        "targetCell": "Helburu Gelaxka",
+        "location": "Kokapena",
+        "row": "Errenkada",
+        "column": "Zutabea",
+        "box": "Kutxa",
+        "placeHere": "Hemen Jarri",
+        "rowCol": "Errenkada {row}, Zut {col}",
+        "technique": "Teknika",
+        "logicTitle": "Azalpen Logikoa",
+        "visualTitle": "Gida Bisuala",
+        "targetLabel": "Helburua: {value} jarri",
+        "conflictsLabel": "Gatazkak beste aukerak blokeatzen dituzte",
+        "afterApplyTitle": "\"Pista Aplikatu\" klik egin ondoren:",
+        "afterApply1": "Gelaxka horiak {value} non jarri zen erakusten du",
+        "afterApply2": "Gelaxka gorriak blokeatze-zenbakiak erakusten dituzte",
+        "afterApply3": "Nabarmendutakoak 3 segundo irauten dute!",
+        "applyBtn": "Pista Aplikatu eta Gida Bisuala Erakutsi",
+        "closeBtn": "Itxi",
+        "noHints": "Ez Dago Pistarik Eskuragarri",
+        "techniques": {
+          "nakedSingle": "Single Biluztu",
+          "hiddenSingle": "Single Ezkutua",
+          "pointingPair": "Bikote Seinalatzailea",
+          "boxLineReduction": "Kutxa/Lerro Murrizketa"
+        },
+        "legend": {
+          "target": "Helburua",
+          "conflicts": "Gatazkak",
+          "related": "Erlazionatua"
+        },
+        "logic": {
+          "checkRow": "Egiaztatu Errenkada",
+          "checkColumn": "Egiaztatu Zutabea",
+          "checkBox": "Egiaztatu 3x3 Kutxa",
+          "canAccept": "onar dezake",
+          "noExists": "Ez dago {number} hemen",
+          "noIn": "{number} ez hemen",
+          "conclusion": "Ondorioa",
+          "mustBe": "Gelaxka ({row}, {col}) {number} izan behar da!"
+        },
+        "afterApplying": {
+          "title": "Pista Hau Aplikatu Ondoren",
+          "instruction": "Ikusi gida bisuala!"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "AIak konpontzen ari da... Itxaron mesedez",
+      "autoFinish": "Auto-Osatu Puzzlea"
+    },
+    "difficultyInfo": {
+      "medium": "3 akats baimenduta, 3 pista, AI ebazpena eskuragarri",
+      "expert": "1 akats baimenduta, 1 pista, desegin eskuragarri",
+      "pro": "1 akats baimenduta, 1 pista, auto-amaitu gabe"
+    },
+    "features": {
+      "aiHints": "AI Aholkuak",
+      "languages": "12 Hizkuntza",
+      "autoSave": "Auto-Gorde",
+      "offline": "Lineaz Kanpo"
+    }
+  }
+}

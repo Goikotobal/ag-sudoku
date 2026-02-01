@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "sudoku": "数独",
+    "home": "ホーム"
+  },
+  "sudoku": {
+    "title": "AG 数独",
+    "subtitle": "AI搭載",
+    "landing": {
+      "hero": "頭脳に挑戦",
+      "description": "AI強化された数独パズルゲームであなたの頭脳に挑戦しましょう。解法テクニックを教えるスマートヒントを入手！",
+      "playNow": "今すぐプレイ",
+      "backToHome": "ホームに戻る",
+      "viewLeaderboard": "ランキングを見る",
+      "features": {
+        "aiHints": "解法テクニックを教えるAIヒント",
+        "difficulties": "3つの難易度：中級、上級、プロ",
+        "offline": "オフラインで動作 - どこでもプレイ",
+        "autoSave": "進行状況を自動保存",
+        "notes": "スマートメモシステム",
+        "tracking": "ベストタイムを記録"
+      }
+    },
+    "stats": {
+      "time": "時間",
+      "mistakes": "ミス",
+      "hints": "ヒント"
+    },
+    "difficulties": {
+      "medium": "中級",
+      "expert": "上級",
+      "pro": "プロ",
+      "locked": "プロモードがロックされています！\n\n15分以内に上級難易度をクリアしてプロモードをアンロックしてください。"
+    },
+    "controls": {
+      "notes": "メモ",
+      "pause": "一時停止",
+      "resume": "再開",
+      "hint": "ヒント",
+      "new": "新規",
+      "none": "なし"
+    },
+    "modals": {
+      "pause": {
+        "title": "一時停止中",
+        "time": "時間",
+        "mistakes": "ミス",
+        "difficulty": "難易度",
+        "resumeBtn": "ゲームを再開",
+        "restartBtn": "ゲームを再起動",
+        "quitBtn": "ホームに戻る",
+        "confirmRestart": "本当に再起動しますか？進行状況が失われます。"
+      },
+      "win": {
+        "title": "よくできました！",
+        "message": "パズルを完成させました！",
+        "time": "時間",
+        "mistakes": "ミス",
+        "tryHarderBtn": "難しいレベルに挑戦",
+        "playAgainBtn": "もう一度プレイ",
+        "quitBtn": "ホームに戻る"
+      },
+      "gameOver": {
+        "title": "ゲームオーバー",
+        "message": "{count}回ミスしました。諦めないで！",
+        "time": "時間",
+        "difficulty": "難易度",
+        "tryAgainBtn": "もう一度挑戦",
+        "tryEasierBtn": "簡単なレベルに挑戦",
+        "quitBtn": "ホームに戻る"
+      },
+      "hint": {
+        "title": "手が見つかりました！",
+        "foundMove": "手が見つかりました！",
+        "whereToPlace": "どこに置くか探しています",
+        "targetCell": "対象セル",
+        "location": "場所",
+        "row": "行",
+        "column": "列",
+        "box": "ボックス",
+        "placeHere": "ここに配置",
+        "rowCol": "行 {row}、列 {col}",
+        "technique": "テクニック",
+        "logicTitle": "論理的説明",
+        "visualTitle": "ビジュアルガイド",
+        "targetLabel": "ターゲット：{value}を配置",
+        "conflictsLabel": "競合が他のオプションをブロックします",
+        "afterApplyTitle": "「ヒントを適用」をクリックした後：",
+        "afterApply1": "黄色のセルは{value}が配置された場所を示します",
+        "afterApply2": "赤いセルはブロッキング番号を示します",
+        "afterApply3": "ハイライトは3秒間表示されます！",
+        "applyBtn": "ヒントを適用してビジュアルガイドを表示",
+        "closeBtn": "閉じる",
+        "noHints": "ヒントはありません",
+        "techniques": {
+          "nakedSingle": "ネイキッドシングル",
+          "hiddenSingle": "ヒドゥンシングル",
+          "pointingPair": "ポインティングペア",
+          "boxLineReduction": "ボックス/ラインリダクション"
+        },
+        "legend": {
+          "target": "対象",
+          "conflicts": "競合",
+          "related": "関連"
+        },
+        "logic": {
+          "checkRow": "行を確認",
+          "checkColumn": "列を確認",
+          "checkBox": "3x3ボックスを確認",
+          "canAccept": "受け入れ可能",
+          "noExists": "この{number}は存在しません",
+          "noIn": "この中に{number}なし",
+          "conclusion": "結論",
+          "mustBe": "セル({row}, {col})は{number}でなければなりません！"
+        },
+        "afterApplying": {
+          "title": "このヒントを適用した後",
+          "instruction": "ビジュアルガイドを学習してください！"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "AIが解決中...お待ちください",
+      "autoFinish": "パズルを自動完成"
+    },
+    "difficultyInfo": {
+      "medium": "3回のミス許可、3つのヒント、AI解決可能",
+      "expert": "1回のミス許可、1つのヒント、元に戻す可能",
+      "pro": "1回のミス許可、1つのヒント、自動完了なし"
+    },
+    "features": {
+      "aiHints": "AIヒント",
+      "languages": "12言語対応",
+      "autoSave": "自動保存",
+      "offline": "オフライン対応"
+    }
+  }
+}
