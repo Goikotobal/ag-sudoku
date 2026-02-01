@@ -1,6 +1,8 @@
-# AG Sudoku
+# AG Sudoku v1.0.1
 
 AI-powered Sudoku puzzle game with 12 language support.
+
+**Live:** https://sudoku.alexgoiko.com
 
 ## Features
 - 3 difficulty levels (Medium, Expert, Pro)
