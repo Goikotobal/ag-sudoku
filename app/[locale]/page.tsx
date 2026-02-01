@@ -173,12 +173,13 @@ export default function Home() {
               key={i}
               style={{
                 padding: '6px 14px',
-                background: 'rgba(16, 185, 129, 0.15)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
+                background: 'rgba(16, 185, 129, 0.25)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
                 borderRadius: '20px',
                 fontSize: '12px',
-                color: '#10b981',
+                color: '#ffffff',
                 fontWeight: 600,
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
               }}
             >
               {feature}
