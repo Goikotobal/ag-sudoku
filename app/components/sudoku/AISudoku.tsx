@@ -1449,7 +1449,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
 
                 {/* Home Button */}
                 <button
-                    onClick={() => onQuit?.()}
+                    onClick={quitToHome}
                     style={{
                         background: 'rgba(239, 68, 68, 0.1)',
                         border: '2px solid rgba(239, 68, 68, 0.3)',

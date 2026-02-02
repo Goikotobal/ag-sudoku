@@ -2,12 +2,14 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import AISudoku from '../../../components/sudoku/AISudoku';
 
 type Difficulty = 'medium' | 'expert' | 'pro';
 
 export default function SudokuPlayPage() {
   const t = useTranslations('sudoku');
+  const router = useRouter();
   const [showGame, setShowGame] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('medium');
   const [mounted, setMounted] = useState(false);
@@ -213,6 +215,37 @@ export default function SudokuPlayPage() {
           }}></span>
           {t('landing.features.aiHints')}
         </div>
+
+        {/* Back to Home Button */}
+        <button
+          onClick={() => router.push('/')}
+          style={{
+            width: '100%',
+            marginTop: '20px',
+            padding: '14px 24px',
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            color: '#ffffff',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '12px',
+            fontSize: '15px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          ← {t('landing.backToHome')}
+        </button>
       </div>
 
       {/* CSS Animations */}
