@@ -189,31 +189,49 @@ export default function SudokuPlayPage() {
           ))}
         </div>
 
-        {/* Info Note */}
+        {/* Features Grid - 6 boxes */}
         <div style={{
-          padding: '14px 20px',
-          background: 'rgba(16, 185, 129, 0.12)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
-          borderRadius: '12px',
-          fontSize: '13px',
-          color: 'rgba(255, 255, 255, 0.9)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px',
-          textShadow: '0 1px 3px rgba(0, 0, 0, 0.4)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '12px',
+          marginBottom: '20px',
+          textAlign: 'left',
         }}>
-          <span style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            background: '#10b981',
-            boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
-            animation: 'pulse 2s infinite',
-          }}></span>
-          {t('landing.features.aiHints')}
+          {[
+            t('landing.features.aiHints'),
+            t('landing.features.difficulties'),
+            t('landing.features.offline'),
+            t('landing.features.autoSave'),
+            t('landing.features.notes'),
+            t('landing.features.tracking'),
+          ].map((feature, index) => (
+            <div key={index} style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
+              padding: '12px 14px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '12px',
+              fontSize: '13px',
+              color: '#ffffff',
+              lineHeight: 1.4,
+              textShadow: '0 1px 4px rgba(0, 0, 0, 0.5)',
+              fontWeight: 500,
+            }}>
+              <span style={{
+                color: '#10b981',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                flexShrink: 0,
+                marginTop: '-1px',
+                filter: 'drop-shadow(0 2px 6px rgba(16, 185, 129, 0.6))',
+              }}>✓</span>
+              <span>{feature}</span>
+            </div>
+          ))}
         </div>
 
         {/* Back to Home Button */}
