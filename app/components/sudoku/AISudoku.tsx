@@ -5,9 +5,10 @@ import { useSudokuTranslations } from '@/hooks/useSudokuTranslations'
 
 interface AISudokuProps {
     onQuit?: () => void;
+    initialDifficulty?: 'medium' | 'expert' | 'pro';
 }
 
-export default function AISudoku({ onQuit }: AISudokuProps) {
+export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     // Translations
     const t = useSudokuTranslations()
 
@@ -29,7 +30,7 @@ export default function AISudoku({ onQuit }: AISudokuProps) {
     const [maxMistakes, setMaxMistakes] = useState(3)
     const [hintsRemaining, setHintsRemaining] = useState(3)
     const [timer, setTimer] = useState(0)
-    const [currentDifficulty, setCurrentDifficulty] = useState("expert")
+    const [currentDifficulty, setCurrentDifficulty] = useState(initialDifficulty || "expert")
     const [showWinModal, setShowWinModal] = useState(false)
     const [showGameOverModal, setShowGameOverModal] = useState(false)
     const [moveHistory, setMoveHistory] = useState<any[]>([])
@@ -74,9 +75,9 @@ export default function AISudoku({ onQuit }: AISudokuProps) {
     const [isProUnlocked, setIsProUnlocked] = useState(false)
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
 
-    // WELCOME SCREEN - Show before game starts
-    const [showWelcomeScreen, setShowWelcomeScreen] = useState(true)
-    const [welcomeDifficulty, setWelcomeDifficulty] = useState<string>("medium")
+    // WELCOME SCREEN - Show before game starts (skip if initialDifficulty provided)
+    const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
+    const [welcomeDifficulty, setWelcomeDifficulty] = useState<string>(initialDifficulty || "medium")
 
     // UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {

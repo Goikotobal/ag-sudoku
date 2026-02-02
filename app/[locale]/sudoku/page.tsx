@@ -1,22 +1,28 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import AISudoku from '../../components/sudoku/AISudoku';
 
 export default function SudokuLandingPage() {
   const t = useTranslations('sudoku');
   const router = useRouter();
-  const params = useParams();
-  const locale = params.locale as string;
   const [mounted, setMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [showGame, setShowGame] = useState(false);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'medium' | 'expert' | 'pro'>('medium');
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const difficulties = [
+  // Show game directly when difficulty is selected
+  if (showGame) {
+    return <AISudoku initialDifficulty={selectedDifficulty} onQuit={() => setShowGame(false)} />;
+  }
+
+  const difficulties: { id: 'medium' | 'expert' | 'pro'; color: string; gradient: string; icon: string }[] = [
     {
       id: 'medium',
       color: '#10b981',
@@ -37,10 +43,9 @@ export default function SudokuLandingPage() {
     },
   ];
 
-  const handlePlayNow = (difficulty: string) => {
-    // Store selected difficulty in localStorage for the game to read
-    localStorage.setItem('ag-sudoku-selected-difficulty', difficulty);
-    router.push(`/${locale}/sudoku/play`);
+  const handlePlayNow = (difficulty: 'medium' | 'expert' | 'pro') => {
+    setSelectedDifficulty(difficulty);
+    setShowGame(true);
   };
 
   return (
