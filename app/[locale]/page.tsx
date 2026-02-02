@@ -87,7 +87,7 @@ export default function Home() {
 
         {/* Play Sudoku Button - Main CTA */}
         <button
-          onClick={() => router.push(`/${locale}/sudoku/play`)}
+          onClick={() => router.push(`/${locale}/sudoku`)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           style={{
@@ -213,7 +213,7 @@ export default function Home() {
         ].map((lang) => (
           <button
             key={lang.code}
-            onClick={() => router.push(`/${lang.code}/sudoku/play`)}
+            onClick={() => router.push(`/${lang.code}/sudoku`)}
             style={{
               padding: '8px 12px',
               background: locale === lang.code
