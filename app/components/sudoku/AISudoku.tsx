@@ -77,7 +77,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
 
     // WELCOME SCREEN - Show before game starts (skip if initialDifficulty provided)
     const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
-    const [welcomeDifficulty, setWelcomeDifficulty] = useState<string>(initialDifficulty || "medium")
+    const [welcomeDifficulty, setWelcomeDifficulty] = useState<'medium' | 'expert' | 'pro'>(initialDifficulty || "medium")
 
     // UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {
@@ -1587,7 +1587,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 marginBottom: isDesktop ? 4 : 2,
             }}
         >
-            {["medium", "expert", "pro"].map((diff) => {
+            {(["medium", "expert", "pro"] as const).map((diff) => {
                 const isProLocked = diff === "pro" && !isProUnlocked
 
                 return (
@@ -2449,8 +2449,8 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             gap: '10px',
                             marginBottom: '20px',
                         }}>
-                            {['Medium', 'Expert', 'Pro'].map((diff) => {
-                                const diffKey = diff.toLowerCase()
+                            {(['medium', 'expert', 'pro'] as const).map((diffKey) => {
+                                const diff = diffKey.charAt(0).toUpperCase() + diffKey.slice(1)
                                 const isSelected = welcomeDifficulty === diffKey
                                 return (
                                     <button
@@ -3407,7 +3407,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                             "medium",
                                             "expert",
                                             "pro",
-                                        ]
+                                        ] as const
                                         const currentIndex =
                                             diffOrder.indexOf(currentDifficulty)
                                         if (
@@ -3621,7 +3621,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                             "medium",
                                             "expert",
                                             "pro",
-                                        ]
+                                        ] as const
                                         const currentIndex =
                                             diffOrder.indexOf(currentDifficulty)
                                         if (currentIndex > 0) {
