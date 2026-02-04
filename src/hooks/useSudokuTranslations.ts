@@ -89,15 +89,20 @@ export function useSudokuTranslations() {
         row: t('modals.hint.row'),
         column: t('modals.hint.column'),
         box: t('modals.hint.box'),
+        legend: {
+          target: t('modals.hint.legend.target'),
+          conflicts: t('modals.hint.legend.conflicts'),
+          related: t('modals.hint.legend.related')
+        },
         logic: {
           checkRow: t('modals.hint.logic.checkRow'),
           checkColumn: t('modals.hint.logic.checkColumn'),
           checkBox: t('modals.hint.logic.checkBox'),
           canAccept: t('modals.hint.logic.canAccept'),
-          noExists: t('modals.hint.logic.noExists'),
-          noIn: t('modals.hint.logic.noIn'),
+          getNoExists: (number: number) => t('modals.hint.logic.noExists', { number }),
+          getNoIn: (number: number) => t('modals.hint.logic.noIn', { number }),
           conclusion: t('modals.hint.logic.conclusion'),
-          mustBe: t('modals.hint.logic.mustBe')
+          getMustBe: (row: number, col: number, number: number) => t('modals.hint.logic.mustBe', { row, col, number })
         },
         afterApplying: {
           title: t('modals.hint.afterApplying.title'),

@@ -2909,7 +2909,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     }}>
                                         {hintExplanation.value}
                                     </div>
-                                    <span style={{ color: "#4b5563", fontWeight: 500 }}>Target</span>
+                                    <span style={{ color: "#4b5563", fontWeight: 500 }}>{t.modals.hint.legend.target}</span>
                                 </div>
 
                                 {hintExplanation.conflictingCells && hintExplanation.conflictingCells.length > 0 && (
@@ -2921,7 +2921,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                             border: "2px solid #ef4444",
                                             borderRadius: 3,
                                         }}></div>
-                                        <span style={{ color: "#4b5563", fontWeight: 500 }}>Conflicts</span>
+                                        <span style={{ color: "#4b5563", fontWeight: 500 }}>{t.modals.hint.legend.conflicts}</span>
                                     </div>
                                 )}
 
@@ -2933,7 +2933,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                         border: "1px solid #3b82f6",
                                         borderRadius: 3,
                                     }}></div>
-                                    <span style={{ color: "#4b5563", fontWeight: 500 }}>Related</span>
+                                    <span style={{ color: "#4b5563", fontWeight: 500 }}>{t.modals.hint.legend.related}</span>
                                 </div>
                             </div>
                         </div>
@@ -2977,14 +2977,14 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     <div style={{ marginBottom: 10 }}>
                                         <strong style={{ color: "#1f2937" }}>3. {t.modals.hint.logic.checkColumn} {hintExplanation.cell.col + 1}:</strong>
                                         <div style={{ marginLeft: 16, marginTop: 4, color: "#10b981" }}>
-                                            ✓ {t.modals.hint.logic.noExists.replace('{number}', String(hintExplanation.value))} {t.modals.hint.column.toLowerCase()}
+                                            ✓ {t.modals.hint.logic.getNoExists(hintExplanation.value)} {t.modals.hint.column.toLowerCase()}
                                         </div>
                                     </div>
 
                                     <div style={{ marginBottom: 10 }}>
                                         <strong style={{ color: "#1f2937" }}>4. {t.modals.hint.logic.checkBox}:</strong>
                                         <div style={{ marginLeft: 16, marginTop: 4, color: "#10b981" }}>
-                                            ✓ {t.modals.hint.logic.noIn.replace('{number}', String(hintExplanation.value))} {t.modals.hint.box.toLowerCase()}
+                                            ✓ {t.modals.hint.logic.getNoIn(hintExplanation.value)} {t.modals.hint.box.toLowerCase()}
                                         </div>
                                     </div>
 
@@ -2997,7 +2997,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     }}>
                                         <strong style={{ color: "#047857" }}>✓ {t.modals.hint.logic.conclusion}:</strong>
                                         <span style={{ color: "#065f46", marginLeft: 6 }}>
-                                            {t.modals.hint.logic.mustBe.replace('{row}', String(hintExplanation.cell.row + 1)).replace('{col}', String(hintExplanation.cell.col + 1)).replace('{number}', String(hintExplanation.value))}
+                                            {t.modals.hint.logic.getMustBe(hintExplanation.cell.row + 1, hintExplanation.cell.col + 1, hintExplanation.value)}
                                         </span>
                                     </div>
                                 </div>
