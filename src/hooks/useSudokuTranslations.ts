@@ -84,6 +84,25 @@ export function useSudokuTranslations() {
         afterApply3: t('modals.hint.afterApply3'),
         applyBtn: t('modals.hint.applyBtn'),
         closeBtn: t('modals.hint.closeBtn'),
+        // Logic explanation strings
+        whereToPlace: t('modals.hint.whereToPlace'),
+        row: t('modals.hint.row'),
+        column: t('modals.hint.column'),
+        box: t('modals.hint.box'),
+        logic: {
+          checkRow: t('modals.hint.logic.checkRow'),
+          checkColumn: t('modals.hint.logic.checkColumn'),
+          checkBox: t('modals.hint.logic.checkBox'),
+          canAccept: t('modals.hint.logic.canAccept'),
+          noExists: t('modals.hint.logic.noExists'),
+          noIn: t('modals.hint.logic.noIn'),
+          conclusion: t('modals.hint.logic.conclusion'),
+          mustBe: t('modals.hint.logic.mustBe')
+        },
+        afterApplying: {
+          title: t('modals.hint.afterApplying.title'),
+          instruction: t('modals.hint.afterApplying.instruction')
+        },
         techniques: {
           nakedSingle: t('modals.hint.techniques.nakedSingle'),
           hiddenSingle: t('modals.hint.techniques.hiddenSingle')

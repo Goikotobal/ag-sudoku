@@ -2964,27 +2964,27 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     color: "#4b5563",
                                 }}>
                                     <div style={{ marginBottom: 10 }}>
-                                        <strong style={{ color: "#1f2937" }}>1. Looking for where to place {hintExplanation.value}</strong>
+                                        <strong style={{ color: "#1f2937" }}>1. {t.modals.hint.whereToPlace} {hintExplanation.value}</strong>
                                     </div>
 
                                     <div style={{ marginBottom: 10 }}>
-                                        <strong style={{ color: "#1f2937" }}>2. Check Row {hintExplanation.cell.row + 1}:</strong>
+                                        <strong style={{ color: "#1f2937" }}>2. {t.modals.hint.logic.checkRow} {hintExplanation.cell.row + 1}:</strong>
                                         <div style={{ marginLeft: 16, marginTop: 4, color: "#10b981" }}>
-                                            ✓ Cell R{hintExplanation.cell.row + 1}C{hintExplanation.cell.col + 1} can accept {hintExplanation.value}
+                                            ✓ R{hintExplanation.cell.row + 1}C{hintExplanation.cell.col + 1} {t.modals.hint.logic.canAccept} {hintExplanation.value}
                                         </div>
                                     </div>
 
                                     <div style={{ marginBottom: 10 }}>
-                                        <strong style={{ color: "#1f2937" }}>3. Check Column {hintExplanation.cell.col + 1}:</strong>
+                                        <strong style={{ color: "#1f2937" }}>3. {t.modals.hint.logic.checkColumn} {hintExplanation.cell.col + 1}:</strong>
                                         <div style={{ marginLeft: 16, marginTop: 4, color: "#10b981" }}>
-                                            ✓ No {hintExplanation.value} exists in this column
+                                            ✓ {t.modals.hint.logic.noExists.replace('{number}', String(hintExplanation.value))} {t.modals.hint.column.toLowerCase()}
                                         </div>
                                     </div>
 
                                     <div style={{ marginBottom: 10 }}>
-                                        <strong style={{ color: "#1f2937" }}>4. Check 3×3 Box:</strong>
+                                        <strong style={{ color: "#1f2937" }}>4. {t.modals.hint.logic.checkBox}:</strong>
                                         <div style={{ marginLeft: 16, marginTop: 4, color: "#10b981" }}>
-                                            ✓ No {hintExplanation.value} in this box
+                                            ✓ {t.modals.hint.logic.noIn.replace('{number}', String(hintExplanation.value))} {t.modals.hint.box.toLowerCase()}
                                         </div>
                                     </div>
 
@@ -2995,9 +2995,9 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                         borderRadius: 6,
                                         border: "1px solid #a7f3d0",
                                     }}>
-                                        <strong style={{ color: "#047857" }}>✓ Conclusion:</strong>
+                                        <strong style={{ color: "#047857" }}>✓ {t.modals.hint.logic.conclusion}:</strong>
                                         <span style={{ color: "#065f46", marginLeft: 6 }}>
-                                            Cell ({hintExplanation.cell.row + 1}, {hintExplanation.cell.col + 1}) must be {hintExplanation.value}!
+                                            {t.modals.hint.logic.mustBe.replace('{row}', String(hintExplanation.cell.row + 1)).replace('{col}', String(hintExplanation.cell.col + 1)).replace('{number}', String(hintExplanation.value))}
                                         </span>
                                     </div>
                                 </div>
@@ -3018,7 +3018,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                         }}>
                             <span style={{ fontSize: isDesktop ? 18 : 14 }}>✓</span>
                             <span>
-                                <strong>{t.modals.hint.afterApply3}</strong> — Study the visual guide!
+                                <strong>{t.modals.hint.afterApply3}</strong> — {t.modals.hint.afterApplying.instruction}
                             </span>
                         </div>
 
