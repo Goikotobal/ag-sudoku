@@ -53,6 +53,19 @@ export default function AISudoku() {
         conflictingCells: string[]
     } | null>(null)
 
+    // 🎯 CUSTOM CONFIRM MODAL - Replaces native confirm()
+    const [confirmModal, setConfirmModal] = useState<{
+        show: boolean
+        title: string
+        message: string
+        onConfirm: () => void
+    } | null>(null)
+
+    // Helper function to show custom confirm dialog
+    const showConfirm = (title: string, message: string, onConfirm: () => void) => {
+        setConfirmModal({ show: true, title, message, onConfirm })
+    }
+
     // 🏆 PRO UNLOCK SYSTEM - Unlock Pro by beating Expert in under 15 minutes
     const [isProUnlocked, setIsProUnlocked] = useState(false)
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
@@ -1324,7 +1337,7 @@ export default function AISudoku() {
                 marginBottom: isDesktop ? 4 : 0,
             }}
         >
-            {/* Left: Logo + Title */}
+            {/* Left: Home Button + Logo + Title */}
             <div
                 style={{
                     display: "flex",
@@ -1333,6 +1346,46 @@ export default function AISudoku() {
                     flex: 1,
                 }}
             >
+                {/* Home Button */}
+                <button
+                    onClick={() => {
+                        showConfirm(
+                            "Quit to Home",
+                            "Are you sure you want to quit? Your progress will be saved.",
+                            () => {
+                                // Reset to welcome screen by clearing the board
+                                setBoard([])
+                                setSolution([])
+                                setInitialBoard([])
+                                setTimer(0)
+                                setMistakes(0)
+                                setSelectedCell(null)
+                                setNotesMode(false)
+                                setHintExplanation(null)
+                                setShowHintHighlights(null)
+                            }
+                        )
+                    }}
+                    style={{
+                        background: "rgba(255, 255, 255, 0.1)",
+                        border: "1px solid rgba(0, 0, 0, 0.1)",
+                        borderRadius: 10,
+                        padding: isDesktop ? "8px 12px" : "6px 10px",
+                        color: "#64748b",
+                        fontSize: isDesktop ? 14 : 12,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        transition: "all 0.2s ease",
+                        flexShrink: 0,
+                    }}
+                    title="Back to Home"
+                >
+                    ← {isDesktop ? "Home" : ""}
+                </button>
+
                 <img
                     src="https://i.imgur.com/yQMrFMl.png"
                     crossOrigin="anonymous"
@@ -2873,14 +2926,14 @@ export default function AISudoku() {
                             </button>
                             <button
                                 onClick={() => {
-                                    if (
-                                        confirm(
-                                            "Are you sure you want to restart? Your progress will be lost."
-                                        )
-                                    ) {
-                                        setIsPaused(false)
-                                        newGame()
-                                    }
+                                    showConfirm(
+                                        "Restart Game",
+                                        "Are you sure you want to restart? Your progress will be lost.",
+                                        () => {
+                                            setIsPaused(false)
+                                            newGame()
+                                        }
+                                    )
                                 }}
                                 style={{
                                     padding: isDesktop
@@ -3245,6 +3298,121 @@ export default function AISudoku() {
                                     ⬇️ Try Easier Level
                                 </button>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Confirm Modal - Glassmorphism Style */}
+            {confirmModal?.show && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        background: "rgba(0, 0, 0, 0.6)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 9999,
+                    }}
+                    onClick={() => setConfirmModal(null)}
+                >
+                    <div
+                        style={{
+                            background:
+                                "linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98))",
+                            borderRadius: 24,
+                            padding: isDesktop ? "32px 28px" : "24px 20px",
+                            maxWidth: 380,
+                            width: "85%",
+                            boxShadow:
+                                "0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                            textAlign: "center",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Title */}
+                        <h3
+                            style={{
+                                color: "#ffffff",
+                                fontSize: isDesktop ? 20 : 18,
+                                fontWeight: 700,
+                                marginBottom: 12,
+                                marginTop: 0,
+                                background:
+                                    "linear-gradient(135deg, #a855f7, #ec4899)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}
+                        >
+                            {confirmModal.title}
+                        </h3>
+
+                        {/* Message */}
+                        <p
+                            style={{
+                                color: "rgba(255, 255, 255, 0.7)",
+                                fontSize: isDesktop ? 15 : 14,
+                                lineHeight: 1.5,
+                                marginBottom: 28,
+                                marginTop: 0,
+                            }}
+                        >
+                            {confirmModal.message}
+                        </p>
+
+                        {/* Buttons */}
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: 12,
+                                justifyContent: "center",
+                            }}
+                        >
+                            <button
+                                onClick={() => setConfirmModal(null)}
+                                style={{
+                                    padding: isDesktop ? "12px 28px" : "10px 20px",
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                                    borderRadius: 12,
+                                    color: "rgba(255, 255, 255, 0.8)",
+                                    fontSize: isDesktop ? 15 : 14,
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    transition: "all 0.2s ease",
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => {
+                                    confirmModal.onConfirm()
+                                    setConfirmModal(null)
+                                }}
+                                style={{
+                                    padding: isDesktop ? "12px 28px" : "10px 20px",
+                                    background:
+                                        "linear-gradient(135deg, #a855f7, #ec4899)",
+                                    border: "none",
+                                    borderRadius: 12,
+                                    color: "#ffffff",
+                                    fontSize: isDesktop ? 15 : 14,
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    boxShadow: "0 4px 15px rgba(168, 85, 247, 0.4)",
+                                    transition: "all 0.2s ease",
+                                }}
+                            >
+                                OK
+                            </button>
                         </div>
                     </div>
                 </div>
