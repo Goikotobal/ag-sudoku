@@ -3716,7 +3716,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 fontWeight: 700,
                             }}
                         >
-                            {t.modals.confirm?.title || "Confirm"}
+                            Confirm
                         </h2>
                         <p
                             style={{
@@ -3749,7 +3749,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     transition: "all 0.2s ease",
                                 }}
                             >
-                                {t.modals.confirm?.cancelBtn || "Cancel"}
+                                Cancel
                             </button>
                             <button
                                 onClick={() => {
@@ -3769,7 +3769,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     transition: "all 0.2s ease",
                                 }}
                             >
-                                {t.modals.confirm?.confirmBtn || "Confirm"}
+                                OK
                             </button>
                         </div>
                     </div>
