@@ -79,6 +79,17 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
     const [welcomeDifficulty, setWelcomeDifficulty] = useState<'medium' | 'expert' | 'pro'>(initialDifficulty || "medium")
 
+    // CUSTOM CONFIRM MODAL - Replaces native confirm()
+    const [confirmModal, setConfirmModal] = useState<{
+        show: boolean
+        message: string
+        onConfirm: () => void
+    }>({ show: false, message: '', onConfirm: () => {} })
+
+    const showConfirm = (message: string, onConfirm: () => void) => {
+        setConfirmModal({ show: true, message, onConfirm })
+    }
+
     // UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {
         medium: 38, // ~38 empty cells (41 given)
@@ -3237,12 +3248,13 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             </button>
                             <button
                                 onClick={() => {
-                                    if (
-                                        confirm(t.modals.pause.confirmRestart)
-                                    ) {
-                                        setIsPaused(false)
-                                        newGame()
-                                    }
+                                    showConfirm(
+                                        t.modals.pause.confirmRestart,
+                                        () => {
+                                            setIsPaused(false)
+                                            newGame()
+                                        }
+                                    )
                                 }}
                                 style={{
                                     padding: isDesktop
@@ -3661,6 +3673,103 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 }}
                             >
                                 {t.modals.gameOver.quitBtn}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* CUSTOM CONFIRM MODAL */}
+            {confirmModal.show && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.75)",
+                        backdropFilter: "blur(4px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1001,
+                        padding: 20,
+                    }}
+                    onClick={() => setConfirmModal({ ...confirmModal, show: false })}
+                >
+                    <div
+                        style={{
+                            background: "white",
+                            padding: 28,
+                            borderRadius: 20,
+                            textAlign: "center",
+                            maxWidth: 340,
+                            width: "100%",
+                            boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
+                        <h2
+                            style={{
+                                color: "#2d3748",
+                                marginBottom: 12,
+                                fontSize: 20,
+                                fontWeight: 700,
+                            }}
+                        >
+                            {t.modals.confirm?.title || "Confirm"}
+                        </h2>
+                        <p
+                            style={{
+                                color: "#64748b",
+                                marginBottom: 24,
+                                fontSize: 15,
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            {confirmModal.message}
+                        </p>
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: 12,
+                                justifyContent: "center",
+                            }}
+                        >
+                            <button
+                                onClick={() => setConfirmModal({ ...confirmModal, show: false })}
+                                style={{
+                                    padding: "12px 24px",
+                                    border: "2px solid #e2e8f0",
+                                    borderRadius: 10,
+                                    cursor: "pointer",
+                                    fontWeight: 600,
+                                    fontSize: 14,
+                                    background: "white",
+                                    color: "#64748b",
+                                    transition: "all 0.2s ease",
+                                }}
+                            >
+                                {t.modals.confirm?.cancelBtn || "Cancel"}
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setConfirmModal({ ...confirmModal, show: false })
+                                    confirmModal.onConfirm()
+                                }}
+                                style={{
+                                    padding: "12px 24px",
+                                    border: "none",
+                                    borderRadius: 10,
+                                    cursor: "pointer",
+                                    fontWeight: 600,
+                                    fontSize: 14,
+                                    background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                                    color: "white",
+                                    boxShadow: "0 4px 12px rgba(239, 68, 68, 0.3)",
+                                    transition: "all 0.2s ease",
+                                }}
+                            >
+                                {t.modals.confirm?.confirmBtn || "Confirm"}
                             </button>
                         </div>
                     </div>

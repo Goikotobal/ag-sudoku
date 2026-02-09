@@ -45,6 +45,29 @@ export default function Home() {
         textAlign: 'center',
         animation: mounted ? 'fadeInUp 0.6s ease' : 'none',
       }}>
+        {/* Back to Website Button */}
+        <a
+          href="https://alexgoiko.com"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '8px 16px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '10px',
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontSize: '13px',
+            fontWeight: 500,
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            marginBottom: '12px',
+          }}
+        >
+          ← alexgoiko.com
+        </a>
+
         {/* Logo */}
         <div style={{ marginBottom: '24px' }}>
           <img
