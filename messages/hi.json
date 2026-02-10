@@ -133,6 +133,30 @@
       "languages": "12 भाषाएँ",
       "autoSave": "ऑटो-सेव",
       "offline": "ऑफ़लाइन"
+    },
+    "playerStats": {
+      "title": "आंकड़े",
+      "overview": "अवलोकन",
+      "totalGames": "कुल खेल",
+      "totalWins": "कुल जीत",
+      "winRate": "जीत दर",
+      "bestTime": "सर्वश्रेष्ठ समय",
+      "avgTime": "औसत समय",
+      "perfectGames": "परफेक्ट खेल",
+      "currentStreak": "वर्तमान स्ट्रीक",
+      "longestStreak": "सबसे लंबी स्ट्रीक",
+      "totalPlaytime": "कुल खेलने का समय",
+      "gamesPlayed": "खेले गए खेल",
+      "gamesWon": "जीते गए खेल",
+      "hintsUsed": "उपयोग किए गए संकेत",
+      "noGamesYet": "अभी तक कोई खेल नहीं खेला",
+      "completeToSee": "अपने आंकड़े देखने के लिए एक खेल पूरा करें!",
+      "resetStats": "आंकड़े रीसेट करें",
+      "resetConfirm": "क्या आप निश्चित हैं? यह आपके सभी आंकड़े स्थायी रूप से हटा देगा।",
+      "noGamesInDifficulty": "अभी कोई खेल नहीं",
+      "wins": "जीत",
+      "statsButton": "आंकड़े",
+      "homeButton": "होम"
     }
   }
 }

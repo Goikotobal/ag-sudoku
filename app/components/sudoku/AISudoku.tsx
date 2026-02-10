@@ -2,6 +2,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSudokuTranslations } from '@/hooks/useSudokuTranslations'
+import {
+    recordGameResult,
+    getStats,
+    resetStats as resetStatsData,
+    formatTime as formatStatsTime,
+    formatPlaytime,
+    getWinRate,
+    getOverallWinRate,
+    getTotalGamesPlayed,
+    getTotalGamesWon,
+    type PlayerStats
+} from '@/utils/statsManager'
 
 interface AISudokuProps {
     onQuit?: () => void;
@@ -78,6 +90,17 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     // WELCOME SCREEN - Show before game starts (skip if initialDifficulty provided)
     const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
     const [welcomeDifficulty, setWelcomeDifficulty] = useState<'medium' | 'expert' | 'pro'>(initialDifficulty || "medium")
+
+    // STATS VIEW - Show statistics overlay
+    const [showStatsView, setShowStatsView] = useState(false)
+    const [playerStats, setPlayerStats] = useState<PlayerStats | null>(null)
+
+    // Load stats when stats view is opened
+    useEffect(() => {
+        if (showStatsView) {
+            setPlayerStats(getStats())
+        }
+    }, [showStatsView])
 
     // CUSTOM CONFIRM MODAL - Replaces native confirm()
     const [confirmModal, setConfirmModal] = useState<{
@@ -925,6 +948,18 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
         if (isComplete) {
             setShowWinModal(true)
 
+            // Record game result for stats
+            const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
+            const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
+            recordGameResult({
+                difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
+                timeSeconds: timer,
+                mistakes: mistakes,
+                hintsUsed: hintsUsedCount,
+                isWin: true,
+                isPerfect: mistakes === 0
+            })
+
             // PRO UNLOCK: Unlock Pro if Expert completed in under 15 minutes
             if (currentDifficulty === "expert" && timer < 900) {
                 // 900 seconds = 15 minutes
@@ -948,7 +983,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 }
             }
         }
-    }, [board, findObviousMove, solution, clearNotesAfterPlacement])
+    }, [board, findObviousMove, solution, clearNotesAfterPlacement, currentDifficulty, timer, mistakes, hintsRemaining])
 
     // Start new game
     const newGame = useCallback(() => {
@@ -1167,6 +1202,17 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 if (newMistakes >= maxMistakes && maxMistakes > 0) {
                     setTimeout(() => {
                         setShowGameOverModal(true)
+                        // Record game result for stats (loss)
+                        const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
+                        const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
+                        recordGameResult({
+                            difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
+                            timeSeconds: timer,
+                            mistakes: newMistakes,
+                            hintsUsed: hintsUsedCount,
+                            isWin: false,
+                            isPerfect: false
+                        })
                     }, 100)
                 }
             } else if (num !== 0) {
@@ -1223,6 +1269,17 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 }
                 if (isComplete) {
                     setShowWinModal(true)
+                    // Record game result for stats
+                    const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
+                    const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
+                    recordGameResult({
+                        difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
+                        timeSeconds: timer,
+                        mistakes: mistakes,
+                        hintsUsed: hintsUsedCount,
+                        isWin: true,
+                        isPerfect: mistakes === 0
+                    })
                 }
             }, 100)
         },
@@ -1241,6 +1298,8 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             checkCompletions,
             currentDifficulty,
             countObviousMoves,
+            timer,
+            hintsRemaining,
         ]
     )
 
@@ -2540,35 +2599,76 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             Play Now
                         </button>
 
-                        {/* Back to Home Button */}
-                        <button
-                            onClick={() => router.push('/')}
-                            style={{
-                                width: '100%',
-                                padding: '14px 24px',
-                                background: 'rgba(255, 255, 255, 0.08)',
-                                backdropFilter: 'blur(10px)',
-                                WebkitBackdropFilter: 'blur(10px)',
-                                color: '#ffffff',
-                                border: '1px solid rgba(255, 255, 255, 0.2)',
-                                borderRadius: '12px',
-                                fontSize: '15px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
-                                e.currentTarget.style.transform = 'translateY(-1px)'
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
-                                e.currentTarget.style.transform = 'translateY(0)'
-                            }}
-                        >
-                            ← Back to Home
-                        </button>
+                        {/* Stats and Back to Home Buttons Row */}
+                        <div style={{
+                            display: 'flex',
+                            gap: '12px',
+                            width: '100%',
+                        }}>
+                            {/* Stats Button */}
+                            <button
+                                onClick={() => setShowStatsView(true)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px 24px',
+                                    background: 'rgba(168, 85, 247, 0.15)',
+                                    backdropFilter: 'blur(10px)',
+                                    WebkitBackdropFilter: 'blur(10px)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(168, 85, 247, 0.3)',
+                                    borderRadius: '12px',
+                                    fontSize: '15px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(168, 85, 247, 0.25)'
+                                    e.currentTarget.style.transform = 'translateY(-1px)'
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(168, 85, 247, 0.15)'
+                                    e.currentTarget.style.transform = 'translateY(0)'
+                                }}
+                            >
+                                Stats
+                            </button>
+
+                            {/* Back to Home Button */}
+                            <button
+                                onClick={() => router.push('/')}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px 24px',
+                                    background: 'rgba(255, 255, 255, 0.08)',
+                                    backdropFilter: 'blur(10px)',
+                                    WebkitBackdropFilter: 'blur(10px)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    borderRadius: '12px',
+                                    fontSize: '15px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
+                                    e.currentTarget.style.transform = 'translateY(-1px)'
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                                    e.currentTarget.style.transform = 'translateY(0)'
+                                }}
+                            >
+                                Home
+                            </button>
+                        </div>
 
                         {/* Difficulty Info */}
                         <div style={{
@@ -3771,6 +3871,298 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             >
                                 OK
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* STATS VIEW MODAL */}
+            {showStatsView && playerStats && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.85)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1002,
+                        padding: isDesktop ? 20 : 10,
+                    }}
+                    onClick={() => setShowStatsView(false)}
+                >
+                    <div
+                        style={{
+                            background: "rgba(15, 23, 42, 0.95)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
+                            borderRadius: isDesktop ? 24 : 20,
+                            width: isDesktop ? "min(600px, 95vw)" : "95vw",
+                            maxHeight: "90vh",
+                            overflowY: "auto",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(168, 85, 247, 0.1)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div style={{
+                            padding: isDesktop ? "24px 28px 20px" : "20px 20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}>
+                            <h2 style={{
+                                margin: 0,
+                                fontSize: isDesktop ? 24 : 20,
+                                fontWeight: 700,
+                                background: "linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}>
+                                Statistics
+                            </h2>
+                            <button
+                                onClick={() => setShowStatsView(false)}
+                                style={{
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                    border: "none",
+                                    borderRadius: 8,
+                                    width: 36,
+                                    height: 36,
+                                    cursor: "pointer",
+                                    color: "#fff",
+                                    fontSize: 18,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Content */}
+                        <div style={{ padding: isDesktop ? 28 : 20 }}>
+                            {/* Check if any games played */}
+                            {getTotalGamesPlayed() === 0 ? (
+                                <div style={{
+                                    textAlign: "center",
+                                    padding: "40px 20px",
+                                    color: "rgba(255, 255, 255, 0.6)",
+                                }}>
+                                    <div style={{ fontSize: 48, marginBottom: 16 }}>🎮</div>
+                                    <p style={{ fontSize: 16, margin: 0 }}>No games played yet</p>
+                                    <p style={{ fontSize: 14, marginTop: 8, opacity: 0.7 }}>Complete a game to see your stats!</p>
+                                </div>
+                            ) : (
+                                <>
+                                    {/* Overview Row */}
+                                    <div style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(3, 1fr)",
+                                        gap: 12,
+                                        marginBottom: 24,
+                                    }}>
+                                        <div style={{
+                                            background: "rgba(16, 185, 129, 0.15)",
+                                            border: "1px solid rgba(16, 185, 129, 0.3)",
+                                            borderRadius: 12,
+                                            padding: isDesktop ? 16 : 12,
+                                            textAlign: "center",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 11, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                                                Total Games
+                                            </div>
+                                            <div style={{ color: "#10b981", fontSize: isDesktop ? 28 : 24, fontWeight: 700 }}>
+                                                {getTotalGamesPlayed()}
+                                            </div>
+                                        </div>
+                                        <div style={{
+                                            background: "rgba(168, 85, 247, 0.15)",
+                                            border: "1px solid rgba(168, 85, 247, 0.3)",
+                                            borderRadius: 12,
+                                            padding: isDesktop ? 16 : 12,
+                                            textAlign: "center",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 11, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                                                Total Wins
+                                            </div>
+                                            <div style={{ color: "#a855f7", fontSize: isDesktop ? 28 : 24, fontWeight: 700 }}>
+                                                {getTotalGamesWon()}
+                                            </div>
+                                        </div>
+                                        <div style={{
+                                            background: "rgba(59, 130, 246, 0.15)",
+                                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                                            borderRadius: 12,
+                                            padding: isDesktop ? 16 : 12,
+                                            textAlign: "center",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 11, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                                                Win Rate
+                                            </div>
+                                            <div style={{ color: "#3b82f6", fontSize: isDesktop ? 28 : 24, fontWeight: 700 }}>
+                                                {getOverallWinRate()}%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Per-Difficulty Cards */}
+                                    <div style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: 16,
+                                        marginBottom: 24,
+                                    }}>
+                                        {(['medium', 'expert', 'pro'] as const).map((diff) => {
+                                            const stats = playerStats.perDifficulty[diff];
+                                            const colors = {
+                                                medium: { bg: "rgba(16, 185, 129, 0.1)", border: "rgba(16, 185, 129, 0.25)", accent: "#10b981" },
+                                                expert: { bg: "rgba(245, 158, 11, 0.1)", border: "rgba(245, 158, 11, 0.25)", accent: "#f59e0b" },
+                                                pro: { bg: "rgba(239, 68, 68, 0.1)", border: "rgba(239, 68, 68, 0.25)", accent: "#ef4444" },
+                                            };
+                                            const diffLabels = { medium: "Medium", expert: "Expert", pro: "Pro" };
+                                            const c = colors[diff];
+
+                                            return (
+                                                <div key={diff} style={{
+                                                    background: c.bg,
+                                                    border: `1px solid ${c.border}`,
+                                                    borderRadius: 14,
+                                                    padding: isDesktop ? 20 : 16,
+                                                }}>
+                                                    <div style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "space-between",
+                                                        marginBottom: 14,
+                                                    }}>
+                                                        <h3 style={{
+                                                            margin: 0,
+                                                            color: c.accent,
+                                                            fontSize: 16,
+                                                            fontWeight: 700,
+                                                        }}>
+                                                            {diffLabels[diff]}
+                                                        </h3>
+                                                        <span style={{
+                                                            color: "rgba(255, 255, 255, 0.5)",
+                                                            fontSize: 13,
+                                                        }}>
+                                                            {stats.gamesWon}/{stats.gamesPlayed} wins ({getWinRate(diff)}%)
+                                                        </span>
+                                                    </div>
+                                                    {stats.gamesPlayed === 0 ? (
+                                                        <div style={{
+                                                            color: "rgba(255, 255, 255, 0.4)",
+                                                            fontSize: 13,
+                                                            textAlign: "center",
+                                                            padding: "8px 0",
+                                                        }}>
+                                                            No games yet
+                                                        </div>
+                                                    ) : (
+                                                        <div style={{
+                                                            display: "grid",
+                                                            gridTemplateColumns: isDesktop ? "repeat(4, 1fr)" : "repeat(2, 1fr)",
+                                                            gap: 12,
+                                                        }}>
+                                                            <div>
+                                                                <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 2 }}>Best Time</div>
+                                                                <div style={{ color: "#fff", fontSize: 15, fontWeight: 600 }}>{formatStatsTime(stats.bestTimeSeconds)}</div>
+                                                            </div>
+                                                            <div>
+                                                                <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 2 }}>Avg Time</div>
+                                                                <div style={{ color: "#fff", fontSize: 15, fontWeight: 600 }}>{formatStatsTime(stats.avgTimeSeconds)}</div>
+                                                            </div>
+                                                            <div>
+                                                                <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 2 }}>Perfect Games</div>
+                                                                <div style={{ color: "#fff", fontSize: 15, fontWeight: 600 }}>{stats.perfectGames}</div>
+                                                            </div>
+                                                            <div>
+                                                                <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 2 }}>Hints Used</div>
+                                                                <div style={{ color: "#fff", fontSize: 15, fontWeight: 600 }}>{stats.hintsUsed}</div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* Streaks & Playtime */}
+                                    <div style={{
+                                        display: "grid",
+                                        gridTemplateColumns: isDesktop ? "repeat(3, 1fr)" : "1fr 1fr",
+                                        gap: 12,
+                                        marginBottom: 24,
+                                    }}>
+                                        <div style={{
+                                            background: "rgba(255, 255, 255, 0.05)",
+                                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                                            borderRadius: 12,
+                                            padding: 14,
+                                            textAlign: "center",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 4 }}>Current Streak</div>
+                                            <div style={{ color: "#fff", fontSize: 22, fontWeight: 700 }}>{playerStats.currentStreak}</div>
+                                        </div>
+                                        <div style={{
+                                            background: "rgba(255, 255, 255, 0.05)",
+                                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                                            borderRadius: 12,
+                                            padding: 14,
+                                            textAlign: "center",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 4 }}>Longest Streak</div>
+                                            <div style={{ color: "#fff", fontSize: 22, fontWeight: 700 }}>{playerStats.longestStreak}</div>
+                                        </div>
+                                        <div style={{
+                                            background: "rgba(255, 255, 255, 0.05)",
+                                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                                            borderRadius: 12,
+                                            padding: 14,
+                                            textAlign: "center",
+                                            gridColumn: isDesktop ? "auto" : "1 / -1",
+                                        }}>
+                                            <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, marginBottom: 4 }}>Total Playtime</div>
+                                            <div style={{ color: "#fff", fontSize: 22, fontWeight: 700 }}>{formatPlaytime(playerStats.totalPlaytime)}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Reset Stats Button */}
+                                    <button
+                                        onClick={() => {
+                                            showConfirm(
+                                                "Are you sure? This will delete all your statistics permanently.",
+                                                () => {
+                                                    resetStatsData();
+                                                    setPlayerStats(getStats());
+                                                }
+                                            );
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            padding: "14px 20px",
+                                            background: "rgba(239, 68, 68, 0.1)",
+                                            border: "1px solid rgba(239, 68, 68, 0.3)",
+                                            borderRadius: 12,
+                                            color: "#ef4444",
+                                            fontSize: 14,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
+                                        }}
+                                    >
+                                        Reset Statistics
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

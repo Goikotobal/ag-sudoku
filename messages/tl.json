@@ -133,6 +133,30 @@
       "languages": "12 Wika",
       "autoSave": "Auto-Save",
       "offline": "Offline"
+    },
+    "playerStats": {
+      "title": "Mga Estadistika",
+      "overview": "Buod",
+      "totalGames": "Kabuuang Laro",
+      "totalWins": "Kabuuang Panalo",
+      "winRate": "Rate ng Panalo",
+      "bestTime": "Pinakamahusay na Oras",
+      "avgTime": "Average na Oras",
+      "perfectGames": "Perpektong Laro",
+      "currentStreak": "Kasalukuyang Sunod-sunod",
+      "longestStreak": "Pinakamahabang Sunod-sunod",
+      "totalPlaytime": "Kabuuang Oras ng Laro",
+      "gamesPlayed": "Mga Larong Nilaro",
+      "gamesWon": "Mga Larong Nanalo",
+      "hintsUsed": "Mga Pahiwatig na Ginamit",
+      "noGamesYet": "Wala pang larong nilaro",
+      "completeToSee": "Kumpletuhin ang isang laro para makita ang iyong mga estadistika!",
+      "resetStats": "I-reset ang Estadistika",
+      "resetConfirm": "Sigurado ka ba? Ito ay permanenteng magbubura ng lahat ng iyong estadistika.",
+      "noGamesInDifficulty": "Wala pang laro",
+      "wins": "panalo",
+      "statsButton": "Estadistika",
+      "homeButton": "Home"
     }
   }
 }

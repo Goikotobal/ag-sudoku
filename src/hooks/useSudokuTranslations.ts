@@ -135,6 +135,32 @@ export function useSudokuTranslations() {
       pro: t('difficultyInfo.pro')
     },
 
+    // Player Stats (for stats view)
+    playerStats: {
+      title: t('playerStats.title'),
+      overview: t('playerStats.overview'),
+      totalGames: t('playerStats.totalGames'),
+      totalWins: t('playerStats.totalWins'),
+      winRate: t('playerStats.winRate'),
+      bestTime: t('playerStats.bestTime'),
+      avgTime: t('playerStats.avgTime'),
+      perfectGames: t('playerStats.perfectGames'),
+      currentStreak: t('playerStats.currentStreak'),
+      longestStreak: t('playerStats.longestStreak'),
+      totalPlaytime: t('playerStats.totalPlaytime'),
+      gamesPlayed: t('playerStats.gamesPlayed'),
+      gamesWon: t('playerStats.gamesWon'),
+      hintsUsed: t('playerStats.hintsUsed'),
+      noGamesYet: t('playerStats.noGamesYet'),
+      completeToSee: t('playerStats.completeToSee'),
+      resetStats: t('playerStats.resetStats'),
+      resetConfirm: t('playerStats.resetConfirm'),
+      noGamesInDifficulty: t('playerStats.noGamesInDifficulty'),
+      wins: t('playerStats.wins'),
+      statsButton: t('playerStats.statsButton'),
+      homeButton: t('playerStats.homeButton')
+    },
+
     // Raw t function for custom usage
     t
   };

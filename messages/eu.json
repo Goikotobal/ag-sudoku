@@ -133,6 +133,30 @@
       "languages": "12 Hizkuntza",
       "autoSave": "Auto-Gorde",
       "offline": "Lineaz Kanpo"
+    },
+    "playerStats": {
+      "title": "Estatistikak",
+      "overview": "Ikuspegi Orokorra",
+      "totalGames": "Joko Guztiak",
+      "totalWins": "Garaipen Guztiak",
+      "winRate": "Irabazpen Tasa",
+      "bestTime": "Denbora Onena",
+      "avgTime": "Batez Besteko Denbora",
+      "perfectGames": "Joko Perfektuak",
+      "currentStreak": "Uneko Raxa",
+      "longestStreak": "Raxa Luzeena",
+      "totalPlaytime": "Jokatutako Denbora Guztira",
+      "gamesPlayed": "Jokatutako Jokoak",
+      "gamesWon": "Irabazitako Jokoak",
+      "hintsUsed": "Erabilitako Pistak",
+      "noGamesYet": "Oraindik ez duzu jolastu",
+      "completeToSee": "Osatu joko bat zure estatistikak ikusteko!",
+      "resetStats": "Estatistikak Berrezarri",
+      "resetConfirm": "Ziur zaude? Honek zure estatistika guztiak betiko ezabatuko ditu.",
+      "noGamesInDifficulty": "Oraindik jokorik ez",
+      "wins": "garaipen",
+      "statsButton": "Estatistikak",
+      "homeButton": "Hasiera"
     }
   }
 }

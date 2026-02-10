@@ -133,6 +133,30 @@
       "languages": "12言語対応",
       "autoSave": "自動保存",
       "offline": "オフライン対応"
+    },
+    "playerStats": {
+      "title": "統計",
+      "overview": "概要",
+      "totalGames": "総ゲーム数",
+      "totalWins": "総勝利数",
+      "winRate": "勝率",
+      "bestTime": "ベストタイム",
+      "avgTime": "平均時間",
+      "perfectGames": "パーフェクトゲーム",
+      "currentStreak": "現在の連勝",
+      "longestStreak": "最長連勝",
+      "totalPlaytime": "総プレイ時間",
+      "gamesPlayed": "プレイしたゲーム",
+      "gamesWon": "勝利したゲーム",
+      "hintsUsed": "使用したヒント",
+      "noGamesYet": "まだゲームをプレイしていません",
+      "completeToSee": "統計を見るにはゲームを完了してください！",
+      "resetStats": "統計をリセット",
+      "resetConfirm": "本当によろしいですか？すべての統計が永久に削除されます。",
+      "noGamesInDifficulty": "まだゲームがありません",
+      "wins": "勝利",
+      "statsButton": "統計",
+      "homeButton": "ホーム"
     }
   }
 }

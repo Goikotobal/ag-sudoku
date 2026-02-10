@@ -133,6 +133,30 @@
       "languages": "12种语言",
       "autoSave": "自动保存",
       "offline": "离线模式"
+    },
+    "playerStats": {
+      "title": "统计",
+      "overview": "概览",
+      "totalGames": "总游戏数",
+      "totalWins": "总胜利数",
+      "winRate": "胜率",
+      "bestTime": "最佳时间",
+      "avgTime": "平均时间",
+      "perfectGames": "完美游戏",
+      "currentStreak": "当前连胜",
+      "longestStreak": "最长连胜",
+      "totalPlaytime": "总游戏时间",
+      "gamesPlayed": "已玩游戏",
+      "gamesWon": "获胜游戏",
+      "hintsUsed": "使用的提示",
+      "noGamesYet": "还没有玩过游戏",
+      "completeToSee": "完成一局游戏来查看你的统计!",
+      "resetStats": "重置统计",
+      "resetConfirm": "确定吗?这将永久删除你的所有统计数据。",
+      "noGamesInDifficulty": "暂无游戏",
+      "wins": "胜利",
+      "statsButton": "统计",
+      "homeButton": "主页"
     }
   }
 }

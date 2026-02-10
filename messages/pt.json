@@ -133,6 +133,30 @@
       "languages": "12 Idiomas",
       "autoSave": "Auto-Salvar",
       "offline": "Offline"
+    },
+    "playerStats": {
+      "title": "Estatísticas",
+      "overview": "Resumo",
+      "totalGames": "Total de Jogos",
+      "totalWins": "Total de Vitórias",
+      "winRate": "Taxa de Vitória",
+      "bestTime": "Melhor Tempo",
+      "avgTime": "Tempo Médio",
+      "perfectGames": "Jogos Perfeitos",
+      "currentStreak": "Sequência Atual",
+      "longestStreak": "Maior Sequência",
+      "totalPlaytime": "Tempo Total de Jogo",
+      "gamesPlayed": "Jogos Jogados",
+      "gamesWon": "Jogos Vencidos",
+      "hintsUsed": "Dicas Usadas",
+      "noGamesYet": "Nenhum jogo jogado ainda",
+      "completeToSee": "Complete um jogo para ver suas estatísticas!",
+      "resetStats": "Redefinir Estatísticas",
+      "resetConfirm": "Tem certeza? Isso excluirá todas as suas estatísticas permanentemente.",
+      "noGamesInDifficulty": "Nenhum jogo ainda",
+      "wins": "vitórias",
+      "statsButton": "Estatísticas",
+      "homeButton": "Início"
     }
   }
 }

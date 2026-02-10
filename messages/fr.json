@@ -133,6 +133,30 @@
       "languages": "12 Langues",
       "autoSave": "Sauvegarde Auto",
       "offline": "Hors Ligne"
+    },
+    "playerStats": {
+      "title": "Statistiques",
+      "overview": "Aperçu",
+      "totalGames": "Total Parties",
+      "totalWins": "Total Victoires",
+      "winRate": "Taux de Victoire",
+      "bestTime": "Meilleur Temps",
+      "avgTime": "Temps Moyen",
+      "perfectGames": "Parties Parfaites",
+      "currentStreak": "Série Actuelle",
+      "longestStreak": "Plus Longue Série",
+      "totalPlaytime": "Temps de Jeu Total",
+      "gamesPlayed": "Parties Jouées",
+      "gamesWon": "Parties Gagnées",
+      "hintsUsed": "Indices Utilisés",
+      "noGamesYet": "Aucune partie jouée",
+      "completeToSee": "Terminez une partie pour voir vos statistiques!",
+      "resetStats": "Réinitialiser Statistiques",
+      "resetConfirm": "Êtes-vous sûr? Cela supprimera définitivement toutes vos statistiques.",
+      "noGamesInDifficulty": "Pas encore de parties",
+      "wins": "victoires",
+      "statsButton": "Stats",
+      "homeButton": "Accueil"
     }
   }
 }
