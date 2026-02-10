@@ -157,6 +157,37 @@
       "wins": "vittorie",
       "statsButton": "Statistiche",
       "homeButton": "Home"
+    },
+    "settings": {
+      "title": "Impostazioni",
+      "display": "Schermo",
+      "gameplay": "Giocabilità",
+      "help": "Aiuto",
+      "data": "Dati",
+      "about": "Informazioni",
+      "theme": "Tema",
+      "dark": "Scuro",
+      "light": "Chiaro",
+      "showTimer": "Mostra Cronometro",
+      "showMistakes": "Mostra Contatore Errori",
+      "highlightNumbers": "Evidenzia Stessi Numeri",
+      "autoRemoveNotes": "Rimuovi Note Automaticamente",
+      "howToPlay": "Come Giocare",
+      "howToPlayTitle": "Come Giocare",
+      "howToPlayRules": "Riempi la griglia 9x9 in modo che ogni riga, colonna e riquadro 3x3 contenga i numeri 1-9.",
+      "howToPlayMedium": "Medio: 3 suggerimenti disponibili, 3 errori consentiti",
+      "howToPlayExpert": "Esperto: 1 suggerimento disponibile, 1 errore consentito",
+      "howToPlayPro": "Pro: 1 suggerimento, 1 errore = fine partita",
+      "howToPlayNotes": "Usa la modalità Note per tenere traccia dei numeri possibili per ogni cella.",
+      "howToPlayHints": "I suggerimenti IA spiegano PERCHÉ un numero appartiene a una cella - impara mentre giochi!",
+      "resetStats": "Reimposta Statistiche",
+      "resetStatsConfirm": "Sei sicuro? Tutte le tue statistiche verranno eliminate definitivamente.",
+      "resetSettings": "Reimposta Impostazioni",
+      "resetSettingsConfirm": "Ripristinare tutte le impostazioni ai valori predefiniti?",
+      "version": "Versione",
+      "by": "Di Antigravity Games",
+      "close": "Chiudi",
+      "gotIt": "Capito!"
     }
   }
 }

@@ -157,6 +157,37 @@
       "wins": "victoires",
       "statsButton": "Stats",
       "homeButton": "Accueil"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "display": "Affichage",
+      "gameplay": "Jouabilité",
+      "help": "Aide",
+      "data": "Données",
+      "about": "À propos",
+      "theme": "Thème",
+      "dark": "Sombre",
+      "light": "Clair",
+      "showTimer": "Afficher le Chronomètre",
+      "showMistakes": "Afficher le Compteur d'Erreurs",
+      "highlightNumbers": "Surligner les Mêmes Nombres",
+      "autoRemoveNotes": "Supprimer les Notes Automatiquement",
+      "howToPlay": "Comment Jouer",
+      "howToPlayTitle": "Comment Jouer",
+      "howToPlayRules": "Remplissez la grille 9x9 pour que chaque ligne, colonne et bloc 3x3 contienne les chiffres 1-9.",
+      "howToPlayMedium": "Moyen: 3 indices disponibles, 3 erreurs autorisées",
+      "howToPlayExpert": "Expert: 1 indice disponible, 1 erreur autorisée",
+      "howToPlayPro": "Pro: 1 indice, 1 erreur = fin de partie",
+      "howToPlayNotes": "Utilisez le mode Notes pour suivre les nombres possibles pour chaque cellule.",
+      "howToPlayHints": "Les indices IA expliquent POURQUOI un nombre appartient à une cellule - apprenez en jouant!",
+      "resetStats": "Réinitialiser les Statistiques",
+      "resetStatsConfirm": "Êtes-vous sûr? Toutes vos statistiques seront définitivement supprimées.",
+      "resetSettings": "Réinitialiser les Paramètres",
+      "resetSettingsConfirm": "Réinitialiser tous les paramètres aux valeurs par défaut?",
+      "version": "Version",
+      "by": "Par Antigravity Games",
+      "close": "Fermer",
+      "gotIt": "Compris!"
     }
   }
 }

@@ -157,6 +157,37 @@
       "wins": "Siege",
       "statsButton": "Statistiken",
       "homeButton": "Startseite"
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "display": "Anzeige",
+      "gameplay": "Spielweise",
+      "help": "Hilfe",
+      "data": "Daten",
+      "about": "Über",
+      "theme": "Thema",
+      "dark": "Dunkel",
+      "light": "Hell",
+      "showTimer": "Timer Anzeigen",
+      "showMistakes": "Fehlerzähler Anzeigen",
+      "highlightNumbers": "Gleiche Zahlen Hervorheben",
+      "autoRemoveNotes": "Notizen Automatisch Entfernen",
+      "howToPlay": "Spielanleitung",
+      "howToPlayTitle": "Spielanleitung",
+      "howToPlayRules": "Fülle das 9x9-Gitter so aus, dass jede Zeile, Spalte und jeder 3x3-Block die Zahlen 1-9 enthält.",
+      "howToPlayMedium": "Mittel: 3 Hinweise verfügbar, 3 Fehler erlaubt",
+      "howToPlayExpert": "Experte: 1 Hinweis verfügbar, 1 Fehler erlaubt",
+      "howToPlayPro": "Profi: 1 Hinweis, 1 Fehler = Spiel vorbei",
+      "howToPlayNotes": "Verwende den Notizemodus, um mögliche Zahlen für jede Zelle zu verfolgen.",
+      "howToPlayHints": "KI-Hinweise erklären WARUM eine Zahl in eine Zelle gehört - lerne beim Spielen!",
+      "resetStats": "Statistiken Zurücksetzen",
+      "resetStatsConfirm": "Bist du sicher? Alle deine Statistiken werden dauerhaft gelöscht.",
+      "resetSettings": "Einstellungen Zurücksetzen",
+      "resetSettingsConfirm": "Alle Einstellungen auf Standardwerte zurücksetzen?",
+      "version": "Version",
+      "by": "Von Antigravity Games",
+      "close": "Schließen",
+      "gotIt": "Verstanden!"
     }
   }
 }

@@ -157,6 +157,37 @@
       "wins": "victorias",
       "statsButton": "Estadísticas",
       "homeButton": "Inicio"
+    },
+    "settings": {
+      "title": "Ajustes",
+      "display": "Pantalla",
+      "gameplay": "Jugabilidad",
+      "help": "Ayuda",
+      "data": "Datos",
+      "about": "Acerca de",
+      "theme": "Tema",
+      "dark": "Oscuro",
+      "light": "Claro",
+      "showTimer": "Mostrar Temporizador",
+      "showMistakes": "Mostrar Contador de Errores",
+      "highlightNumbers": "Resaltar Números Iguales",
+      "autoRemoveNotes": "Eliminar Notas Automáticamente",
+      "howToPlay": "Cómo Jugar",
+      "howToPlayTitle": "Cómo Jugar",
+      "howToPlayRules": "Rellena la cuadrícula 9x9 para que cada fila, columna y caja 3x3 contenga los números 1-9.",
+      "howToPlayMedium": "Medio: 3 pistas disponibles, 3 errores permitidos",
+      "howToPlayExpert": "Experto: 1 pista disponible, 1 error permitido",
+      "howToPlayPro": "Pro: 1 pista, 1 error = fin del juego",
+      "howToPlayNotes": "Usa el modo Notas para registrar posibles números en cada celda.",
+      "howToPlayHints": "¡Las pistas IA explican POR QUÉ un número pertenece a una celda - aprende mientras juegas!",
+      "resetStats": "Restablecer Estadísticas",
+      "resetStatsConfirm": "¿Estás seguro? Todas tus estadísticas se eliminarán permanentemente.",
+      "resetSettings": "Restablecer Ajustes",
+      "resetSettingsConfirm": "¿Restablecer todos los ajustes a los valores predeterminados?",
+      "version": "Versión",
+      "by": "Por Antigravity Games",
+      "close": "Cerrar",
+      "gotIt": "¡Entendido!"
     }
   }
 }

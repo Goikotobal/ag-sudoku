@@ -157,6 +157,37 @@
       "wins": "勝利",
       "statsButton": "統計",
       "homeButton": "ホーム"
+    },
+    "settings": {
+      "title": "設定",
+      "display": "表示",
+      "gameplay": "ゲームプレイ",
+      "help": "ヘルプ",
+      "data": "データ",
+      "about": "について",
+      "theme": "テーマ",
+      "dark": "ダーク",
+      "light": "ライト",
+      "showTimer": "タイマーを表示",
+      "showMistakes": "ミスカウンターを表示",
+      "highlightNumbers": "同じ数字をハイライト",
+      "autoRemoveNotes": "メモを自動削除",
+      "howToPlay": "遊び方",
+      "howToPlayTitle": "遊び方",
+      "howToPlayRules": "9x9のグリッドを埋めて、各行、列、3x3ボックスに1-9の数字が含まれるようにします。",
+      "howToPlayMedium": "中級: 3つのヒント利用可能、3回のミス許可",
+      "howToPlayExpert": "上級: 1つのヒント利用可能、1回のミス許可",
+      "howToPlayPro": "プロ: 1つのヒント、1回のミス = ゲームオーバー",
+      "howToPlayNotes": "メモモードを使用して、各セルの可能な数字を追跡します。",
+      "howToPlayHints": "AIヒントは数字がセルに属する理由を説明します - プレイしながら学びましょう！",
+      "resetStats": "統計をリセット",
+      "resetStatsConfirm": "本当によろしいですか？すべての統計が永久に削除されます。",
+      "resetSettings": "設定をリセット",
+      "resetSettingsConfirm": "すべての設定をデフォルトにリセットしますか？",
+      "version": "バージョン",
+      "by": "Antigravity Games 製",
+      "close": "閉じる",
+      "gotIt": "了解！"
     }
   }
 }

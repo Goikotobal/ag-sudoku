@@ -14,6 +14,12 @@ import {
     getTotalGamesWon,
     type PlayerStats
 } from '@/utils/statsManager'
+import {
+    getSettings,
+    updateSetting,
+    resetSettings as resetSettingsData,
+    type GameSettings
+} from '@/utils/settingsManager'
 
 interface AISudokuProps {
     onQuit?: () => void;
@@ -101,6 +107,16 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             setPlayerStats(getStats())
         }
     }, [showStatsView])
+
+    // SETTINGS - Game settings
+    const [showSettingsView, setShowSettingsView] = useState(false)
+    const [showHowToPlay, setShowHowToPlay] = useState(false)
+    const [gameSettings, setGameSettings] = useState<GameSettings>(() => getSettings())
+
+    // Load settings on mount
+    useEffect(() => {
+        setGameSettings(getSettings())
+    }, [])
 
     // CUSTOM CONFIRM MODAL - Replaces native confirm()
     const [confirmModal, setConfirmModal] = useState<{
@@ -1190,8 +1206,8 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             newBoard[row][col] = num
             setBoard(newBoard)
 
-            // Clear notes after placing number
-            if (num !== 0) {
+            // Clear notes after placing number (if setting enabled)
+            if (num !== 0 && gameSettings.autoRemoveNotes) {
                 clearNotesAfterPlacement(row, col, num)
             }
 
@@ -1300,6 +1316,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             countObviousMoves,
             timer,
             hintsRemaining,
+            gameSettings.autoRemoveNotes,
         ]
     )
 
@@ -1335,8 +1352,10 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             conflictingCells: conflictingCells || [],
         })
 
-        // Clear notes after hint
-        clearNotesAfterPlacement(cell.row, cell.col, value)
+        // Clear notes after hint (if setting enabled)
+        if (gameSettings.autoRemoveNotes) {
+            clearNotesAfterPlacement(cell.row, cell.col, value)
+        }
 
         // Highlight the cell briefly
         const cellKey = `${cell.row}-${cell.col}`
@@ -1351,7 +1370,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 return newSet
             })
         }, 3000) // 3 seconds to study the board
-    }, [hintExplanation, board, clearNotesAfterPlacement])
+    }, [hintExplanation, board, clearNotesAfterPlacement, gameSettings.autoRemoveNotes])
 
     // AI Solve with Animation
     const solvePuzzle = useCallback(async () => {
@@ -1583,7 +1602,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                         marginTop: 1,
                     }}
                 >
-                    {formatTime(timer)}
+                    {gameSettings.showTimer ? formatTime(timer) : "--:--"}
                 </div>
             </div>
             <div
@@ -1611,7 +1630,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                         marginTop: 1,
                     }}
                 >
-                    {mistakes}/{maxMistakes || "∞"}
+                    {gameSettings.showMistakeCounter ? `${mistakes}/${maxMistakes || "∞"}` : "--"}
                 </div>
             </div>
             <div
@@ -1741,12 +1760,13 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                         cell !== 0 &&
                         cell !== solution[rowIndex][colIndex] &&
                         !isGiven
-                    const isSameNumber =
+                    const isSameNumber = gameSettings.highlightSameNumbers && (
                         (selectedCell &&
                             cell !== 0 &&
                             cell ===
                             board[selectedCell.row][selectedCell.col]) ||
                         (selectedNumber !== null && cell === selectedNumber)
+                    )
                     const isInSameRow = selectedCell?.row === rowIndex
                     const isInSameCol = selectedCell?.col === colIndex
                     const isInSameBox =
@@ -2599,10 +2619,10 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             Play Now
                         </button>
 
-                        {/* Stats and Back to Home Buttons Row */}
+                        {/* Stats, Settings and Back to Home Buttons Row */}
                         <div style={{
                             display: 'flex',
-                            gap: '12px',
+                            gap: '10px',
                             width: '100%',
                         }}>
                             {/* Stats Button */}
@@ -2610,14 +2630,14 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 onClick={() => setShowStatsView(true)}
                                 style={{
                                     flex: 1,
-                                    padding: '14px 24px',
+                                    padding: '14px 16px',
                                     background: 'rgba(168, 85, 247, 0.15)',
                                     backdropFilter: 'blur(10px)',
                                     WebkitBackdropFilter: 'blur(10px)',
                                     color: '#ffffff',
                                     border: '1px solid rgba(168, 85, 247, 0.3)',
                                     borderRadius: '12px',
-                                    fontSize: '15px',
+                                    fontSize: '14px',
                                     fontWeight: '600',
                                     cursor: 'pointer',
                                     transition: 'all 0.3s ease',
@@ -2625,7 +2645,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    gap: '8px',
+                                    gap: '6px',
                                 }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.background = 'rgba(168, 85, 247, 0.25)'
@@ -2639,19 +2659,53 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 Stats
                             </button>
 
+                            {/* Settings Button */}
+                            <button
+                                onClick={() => setShowSettingsView(true)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px 16px',
+                                    background: 'rgba(59, 130, 246, 0.15)',
+                                    backdropFilter: 'blur(10px)',
+                                    WebkitBackdropFilter: 'blur(10px)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(59, 130, 246, 0.3)',
+                                    borderRadius: '12px',
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px',
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(59, 130, 246, 0.25)'
+                                    e.currentTarget.style.transform = 'translateY(-1px)'
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)'
+                                    e.currentTarget.style.transform = 'translateY(0)'
+                                }}
+                            >
+                                Settings
+                            </button>
+
                             {/* Back to Home Button */}
                             <button
                                 onClick={() => router.push('/')}
                                 style={{
                                     flex: 1,
-                                    padding: '14px 24px',
+                                    padding: '14px 16px',
                                     background: 'rgba(255, 255, 255, 0.08)',
                                     backdropFilter: 'blur(10px)',
                                     WebkitBackdropFilter: 'blur(10px)',
                                     color: '#ffffff',
                                     border: '1px solid rgba(255, 255, 255, 0.2)',
                                     borderRadius: '12px',
-                                    fontSize: '15px',
+                                    fontSize: '14px',
                                     fontWeight: '600',
                                     cursor: 'pointer',
                                     transition: 'all 0.3s ease',
@@ -4163,6 +4217,635 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                     </button>
                                 </>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* SETTINGS VIEW MODAL */}
+            {showSettingsView && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.85)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1002,
+                        padding: isDesktop ? 20 : 10,
+                    }}
+                    onClick={() => setShowSettingsView(false)}
+                >
+                    <div
+                        style={{
+                            background: "rgba(15, 23, 42, 0.95)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
+                            borderRadius: isDesktop ? 24 : 20,
+                            width: isDesktop ? "min(500px, 95vw)" : "95vw",
+                            maxHeight: "90vh",
+                            overflowY: "auto",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(59, 130, 246, 0.1)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div style={{
+                            padding: isDesktop ? "24px 28px 20px" : "20px 20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}>
+                            <h2 style={{
+                                margin: 0,
+                                fontSize: isDesktop ? 24 : 20,
+                                fontWeight: 700,
+                                background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}>
+                                Settings
+                            </h2>
+                            <button
+                                onClick={() => setShowSettingsView(false)}
+                                style={{
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                    border: "none",
+                                    borderRadius: 8,
+                                    width: 36,
+                                    height: 36,
+                                    cursor: "pointer",
+                                    color: "#fff",
+                                    fontSize: 18,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Content */}
+                        <div style={{ padding: isDesktop ? 28 : 20 }}>
+                            {/* Display Section */}
+                            <div style={{ marginBottom: 24 }}>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                }}>
+                                    Display
+                                </h3>
+
+                                {/* Theme Toggle */}
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "14px 0",
+                                    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                                }}>
+                                    <span style={{ color: "#fff", fontSize: 15 }}>Theme</span>
+                                    <div style={{
+                                        display: "flex",
+                                        background: "rgba(255, 255, 255, 0.1)",
+                                        borderRadius: 8,
+                                        padding: 3,
+                                    }}>
+                                        <button
+                                            onClick={() => {
+                                                const newSettings = updateSetting('theme', 'dark');
+                                                setGameSettings(newSettings);
+                                            }}
+                                            style={{
+                                                padding: "6px 14px",
+                                                border: "none",
+                                                borderRadius: 6,
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                background: gameSettings.theme === 'dark' ? "linear-gradient(135deg, #10b981 0%, #059669 100%)" : "transparent",
+                                                color: gameSettings.theme === 'dark' ? "#fff" : "rgba(255,255,255,0.6)",
+                                                transition: "all 0.2s ease",
+                                            }}
+                                        >
+                                            Dark
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                const newSettings = updateSetting('theme', 'light');
+                                                setGameSettings(newSettings);
+                                            }}
+                                            style={{
+                                                padding: "6px 14px",
+                                                border: "none",
+                                                borderRadius: 6,
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                background: gameSettings.theme === 'light' ? "linear-gradient(135deg, #10b981 0%, #059669 100%)" : "transparent",
+                                                color: gameSettings.theme === 'light' ? "#fff" : "rgba(255,255,255,0.6)",
+                                                transition: "all 0.2s ease",
+                                            }}
+                                        >
+                                            Light
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Show Timer Toggle */}
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "14px 0",
+                                    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                                }}>
+                                    <span style={{ color: "#fff", fontSize: 15 }}>Show Timer</span>
+                                    <button
+                                        onClick={() => {
+                                            const newSettings = updateSetting('showTimer', !gameSettings.showTimer);
+                                            setGameSettings(newSettings);
+                                        }}
+                                        style={{
+                                            width: 52,
+                                            height: 28,
+                                            borderRadius: 14,
+                                            border: "none",
+                                            cursor: "pointer",
+                                            background: gameSettings.showTimer
+                                                ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                                                : "rgba(255, 255, 255, 0.2)",
+                                            position: "relative",
+                                            transition: "all 0.3s ease",
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: "50%",
+                                            background: "#fff",
+                                            position: "absolute",
+                                            top: 3,
+                                            left: gameSettings.showTimer ? 27 : 3,
+                                            transition: "all 0.3s ease",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                                        }} />
+                                    </button>
+                                </div>
+
+                                {/* Show Mistake Counter Toggle */}
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "14px 0",
+                                }}>
+                                    <span style={{ color: "#fff", fontSize: 15 }}>Show Mistake Counter</span>
+                                    <button
+                                        onClick={() => {
+                                            const newSettings = updateSetting('showMistakeCounter', !gameSettings.showMistakeCounter);
+                                            setGameSettings(newSettings);
+                                        }}
+                                        style={{
+                                            width: 52,
+                                            height: 28,
+                                            borderRadius: 14,
+                                            border: "none",
+                                            cursor: "pointer",
+                                            background: gameSettings.showMistakeCounter
+                                                ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                                                : "rgba(255, 255, 255, 0.2)",
+                                            position: "relative",
+                                            transition: "all 0.3s ease",
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: "50%",
+                                            background: "#fff",
+                                            position: "absolute",
+                                            top: 3,
+                                            left: gameSettings.showMistakeCounter ? 27 : 3,
+                                            transition: "all 0.3s ease",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                                        }} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Gameplay Section */}
+                            <div style={{ marginBottom: 24 }}>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                }}>
+                                    Gameplay
+                                </h3>
+
+                                {/* Highlight Same Numbers Toggle */}
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "14px 0",
+                                    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                                }}>
+                                    <span style={{ color: "#fff", fontSize: 15 }}>Highlight Same Numbers</span>
+                                    <button
+                                        onClick={() => {
+                                            const newSettings = updateSetting('highlightSameNumbers', !gameSettings.highlightSameNumbers);
+                                            setGameSettings(newSettings);
+                                        }}
+                                        style={{
+                                            width: 52,
+                                            height: 28,
+                                            borderRadius: 14,
+                                            border: "none",
+                                            cursor: "pointer",
+                                            background: gameSettings.highlightSameNumbers
+                                                ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                                                : "rgba(255, 255, 255, 0.2)",
+                                            position: "relative",
+                                            transition: "all 0.3s ease",
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: "50%",
+                                            background: "#fff",
+                                            position: "absolute",
+                                            top: 3,
+                                            left: gameSettings.highlightSameNumbers ? 27 : 3,
+                                            transition: "all 0.3s ease",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                                        }} />
+                                    </button>
+                                </div>
+
+                                {/* Auto-Remove Notes Toggle */}
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    padding: "14px 0",
+                                }}>
+                                    <span style={{ color: "#fff", fontSize: 15 }}>Auto-Remove Notes</span>
+                                    <button
+                                        onClick={() => {
+                                            const newSettings = updateSetting('autoRemoveNotes', !gameSettings.autoRemoveNotes);
+                                            setGameSettings(newSettings);
+                                        }}
+                                        style={{
+                                            width: 52,
+                                            height: 28,
+                                            borderRadius: 14,
+                                            border: "none",
+                                            cursor: "pointer",
+                                            background: gameSettings.autoRemoveNotes
+                                                ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                                                : "rgba(255, 255, 255, 0.2)",
+                                            position: "relative",
+                                            transition: "all 0.3s ease",
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: 22,
+                                            height: 22,
+                                            borderRadius: "50%",
+                                            background: "#fff",
+                                            position: "absolute",
+                                            top: 3,
+                                            left: gameSettings.autoRemoveNotes ? 27 : 3,
+                                            transition: "all 0.3s ease",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                                        }} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Help Section */}
+                            <div style={{ marginBottom: 24 }}>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                }}>
+                                    Help
+                                </h3>
+                                <button
+                                    onClick={() => setShowHowToPlay(true)}
+                                    style={{
+                                        width: "100%",
+                                        padding: "14px 20px",
+                                        background: "rgba(59, 130, 246, 0.15)",
+                                        border: "1px solid rgba(59, 130, 246, 0.3)",
+                                        borderRadius: 12,
+                                        color: "#3b82f6",
+                                        fontSize: 15,
+                                        fontWeight: 600,
+                                        cursor: "pointer",
+                                        transition: "all 0.2s ease",
+                                        textAlign: "left",
+                                    }}
+                                >
+                                    How to Play
+                                </button>
+                            </div>
+
+                            {/* Data Section */}
+                            <div style={{ marginBottom: 24 }}>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                }}>
+                                    Data
+                                </h3>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                    <button
+                                        onClick={() => {
+                                            showConfirm(
+                                                "Are you sure? All your statistics will be permanently deleted.",
+                                                () => {
+                                                    resetStatsData();
+                                                    setPlayerStats(getStats());
+                                                }
+                                            );
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            padding: "14px 20px",
+                                            background: "rgba(239, 68, 68, 0.1)",
+                                            border: "1px solid rgba(239, 68, 68, 0.3)",
+                                            borderRadius: 12,
+                                            color: "#ef4444",
+                                            fontSize: 15,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        Reset Statistics
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            showConfirm(
+                                                "Reset all settings to defaults?",
+                                                () => {
+                                                    const defaultSettings = resetSettingsData();
+                                                    setGameSettings(defaultSettings);
+                                                }
+                                            );
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            padding: "14px 20px",
+                                            background: "rgba(245, 158, 11, 0.1)",
+                                            border: "1px solid rgba(245, 158, 11, 0.3)",
+                                            borderRadius: 12,
+                                            color: "#f59e0b",
+                                            fontSize: 15,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        Reset Settings
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* About Section */}
+                            <div style={{
+                                padding: "16px",
+                                background: "rgba(255, 255, 255, 0.05)",
+                                borderRadius: 12,
+                                textAlign: "center",
+                            }}>
+                                <div style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: 14, marginBottom: 4 }}>
+                                    AG Sudoku v1.0
+                                </div>
+                                <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 13, marginBottom: 4 }}>
+                                    By Antigravity Games
+                                </div>
+                                <div style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: 12 }}>
+                                    © 2026 alexgoiko.com
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* HOW TO PLAY MODAL */}
+            {showHowToPlay && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.85)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1003,
+                        padding: isDesktop ? 20 : 10,
+                    }}
+                    onClick={() => setShowHowToPlay(false)}
+                >
+                    <div
+                        style={{
+                            background: "rgba(15, 23, 42, 0.95)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
+                            borderRadius: isDesktop ? 24 : 20,
+                            width: isDesktop ? "min(500px, 95vw)" : "95vw",
+                            maxHeight: "90vh",
+                            overflowY: "auto",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div style={{
+                            padding: isDesktop ? "24px 28px 20px" : "20px 20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}>
+                            <h2 style={{
+                                margin: 0,
+                                fontSize: isDesktop ? 24 : 20,
+                                fontWeight: 700,
+                                background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}>
+                                How to Play
+                            </h2>
+                            <button
+                                onClick={() => setShowHowToPlay(false)}
+                                style={{
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                    border: "none",
+                                    borderRadius: 8,
+                                    width: 36,
+                                    height: 36,
+                                    cursor: "pointer",
+                                    color: "#fff",
+                                    fontSize: 18,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Content */}
+                        <div style={{ padding: isDesktop ? 28 : 20 }}>
+                            {/* Main Rule */}
+                            <div style={{
+                                background: "rgba(16, 185, 129, 0.1)",
+                                border: "1px solid rgba(16, 185, 129, 0.25)",
+                                borderRadius: 12,
+                                padding: 16,
+                                marginBottom: 20,
+                            }}>
+                                <p style={{
+                                    margin: 0,
+                                    color: "#fff",
+                                    fontSize: 15,
+                                    lineHeight: 1.6,
+                                }}>
+                                    Fill the 9×9 grid so every row, column, and 3×3 box contains the numbers 1-9.
+                                </p>
+                            </div>
+
+                            {/* Difficulty Levels */}
+                            <h3 style={{
+                                margin: "0 0 12px 0",
+                                fontSize: 14,
+                                fontWeight: 600,
+                                color: "rgba(255, 255, 255, 0.5)",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px",
+                            }}>
+                                Difficulty Levels
+                            </h3>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+                                <div style={{
+                                    background: "rgba(16, 185, 129, 0.1)",
+                                    border: "1px solid rgba(16, 185, 129, 0.25)",
+                                    borderRadius: 10,
+                                    padding: 12,
+                                }}>
+                                    <span style={{ color: "#10b981", fontWeight: 600 }}>Medium:</span>
+                                    <span style={{ color: "rgba(255,255,255,0.8)", marginLeft: 8 }}>3 hints, 3 mistakes allowed</span>
+                                </div>
+                                <div style={{
+                                    background: "rgba(245, 158, 11, 0.1)",
+                                    border: "1px solid rgba(245, 158, 11, 0.25)",
+                                    borderRadius: 10,
+                                    padding: 12,
+                                }}>
+                                    <span style={{ color: "#f59e0b", fontWeight: 600 }}>Expert:</span>
+                                    <span style={{ color: "rgba(255,255,255,0.8)", marginLeft: 8 }}>1 hint, 1 mistake allowed</span>
+                                </div>
+                                <div style={{
+                                    background: "rgba(239, 68, 68, 0.1)",
+                                    border: "1px solid rgba(239, 68, 68, 0.25)",
+                                    borderRadius: 10,
+                                    padding: 12,
+                                }}>
+                                    <span style={{ color: "#ef4444", fontWeight: 600 }}>Pro:</span>
+                                    <span style={{ color: "rgba(255,255,255,0.8)", marginLeft: 8 }}>1 hint, 1 mistake = game over</span>
+                                </div>
+                            </div>
+
+                            {/* Tips */}
+                            <h3 style={{
+                                margin: "0 0 12px 0",
+                                fontSize: 14,
+                                fontWeight: 600,
+                                color: "rgba(255, 255, 255, 0.5)",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px",
+                            }}>
+                                Tips
+                            </h3>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                <div style={{
+                                    background: "rgba(255, 255, 255, 0.05)",
+                                    borderRadius: 10,
+                                    padding: 12,
+                                    color: "rgba(255,255,255,0.8)",
+                                    fontSize: 14,
+                                    lineHeight: 1.5,
+                                }}>
+                                    Use <strong style={{ color: "#a855f7" }}>Notes mode</strong> to track possible numbers for each cell.
+                                </div>
+                                <div style={{
+                                    background: "rgba(255, 255, 255, 0.05)",
+                                    borderRadius: 10,
+                                    padding: 12,
+                                    color: "rgba(255,255,255,0.8)",
+                                    fontSize: 14,
+                                    lineHeight: 1.5,
+                                }}>
+                                    <strong style={{ color: "#10b981" }}>AI Hints</strong> explain WHY a number belongs in a cell — learn while you play!
+                                </div>
+                            </div>
+
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setShowHowToPlay(false)}
+                                style={{
+                                    width: "100%",
+                                    padding: "14px 20px",
+                                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                    border: "none",
+                                    borderRadius: 12,
+                                    color: "#fff",
+                                    fontSize: 16,
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    marginTop: 24,
+                                    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)",
+                                }}
+                            >
+                                Got it!
+                            </button>
                         </div>
                     </div>
                 </div>

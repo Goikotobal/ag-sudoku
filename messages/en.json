@@ -157,6 +157,37 @@
       "wins": "wins",
       "statsButton": "Stats",
       "homeButton": "Home"
+    },
+    "settings": {
+      "title": "Settings",
+      "display": "Display",
+      "gameplay": "Gameplay",
+      "help": "Help",
+      "data": "Data",
+      "about": "About",
+      "theme": "Theme",
+      "dark": "Dark",
+      "light": "Light",
+      "showTimer": "Show Timer",
+      "showMistakes": "Show Mistake Counter",
+      "highlightNumbers": "Highlight Same Numbers",
+      "autoRemoveNotes": "Auto-Remove Notes",
+      "howToPlay": "How to Play",
+      "howToPlayTitle": "How to Play",
+      "howToPlayRules": "Fill the 9x9 grid so every row, column, and 3x3 box contains the numbers 1-9.",
+      "howToPlayMedium": "Medium: 3 hints available, 3 mistakes allowed",
+      "howToPlayExpert": "Expert: 1 hint available, 1 mistake allowed",
+      "howToPlayPro": "Pro: 1 hint, 1 mistake = game over",
+      "howToPlayNotes": "Use Notes mode to track possible numbers for each cell.",
+      "howToPlayHints": "AI Hints explain WHY a number belongs in a cell - learn while you play!",
+      "resetStats": "Reset Statistics",
+      "resetStatsConfirm": "Are you sure? All your statistics will be permanently deleted.",
+      "resetSettings": "Reset Settings",
+      "resetSettingsConfirm": "Reset all settings to defaults?",
+      "version": "Version",
+      "by": "By Antigravity Games",
+      "close": "Close",
+      "gotIt": "Got it!"
     }
   }
 }

@@ -157,6 +157,37 @@
       "wins": "胜利",
       "statsButton": "统计",
       "homeButton": "主页"
+    },
+    "settings": {
+      "title": "设置",
+      "display": "显示",
+      "gameplay": "游戏设置",
+      "help": "帮助",
+      "data": "数据",
+      "about": "关于",
+      "theme": "主题",
+      "dark": "深色",
+      "light": "浅色",
+      "showTimer": "显示计时器",
+      "showMistakes": "显示错误计数器",
+      "highlightNumbers": "高亮相同数字",
+      "autoRemoveNotes": "自动删除笔记",
+      "howToPlay": "游戏方法",
+      "howToPlayTitle": "游戏方法",
+      "howToPlayRules": "填充9x9网格，使每行、每列和每个3x3宫都包含数字1-9。",
+      "howToPlayMedium": "中级：3个提示，允许3次错误",
+      "howToPlayExpert": "专家：1个提示，允许1次错误",
+      "howToPlayPro": "职业：1个提示，1次错误 = 游戏结束",
+      "howToPlayNotes": "使用笔记模式跟踪每个单元格的可能数字。",
+      "howToPlayHints": "AI提示解释为什么一个数字属于某个单元格 - 边玩边学！",
+      "resetStats": "重置统计",
+      "resetStatsConfirm": "确定吗？所有统计数据将被永久删除。",
+      "resetSettings": "重置设置",
+      "resetSettingsConfirm": "将所有设置重置为默认值？",
+      "version": "版本",
+      "by": "由 Antigravity Games 制作",
+      "close": "关闭",
+      "gotIt": "明白了！"
     }
   }
 }

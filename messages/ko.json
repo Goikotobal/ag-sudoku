@@ -157,6 +157,37 @@
       "wins": "승리",
       "statsButton": "통계",
       "homeButton": "홈"
+    },
+    "settings": {
+      "title": "설정",
+      "display": "화면",
+      "gameplay": "게임플레이",
+      "help": "도움말",
+      "data": "데이터",
+      "about": "정보",
+      "theme": "테마",
+      "dark": "다크",
+      "light": "라이트",
+      "showTimer": "타이머 표시",
+      "showMistakes": "실수 카운터 표시",
+      "highlightNumbers": "같은 숫자 강조",
+      "autoRemoveNotes": "메모 자동 삭제",
+      "howToPlay": "게임 방법",
+      "howToPlayTitle": "게임 방법",
+      "howToPlayRules": "9x9 그리드를 채워 각 행, 열, 3x3 박스에 1-9 숫자가 포함되도록 합니다.",
+      "howToPlayMedium": "중급: 힌트 3개, 실수 3회 허용",
+      "howToPlayExpert": "고급: 힌트 1개, 실수 1회 허용",
+      "howToPlayPro": "프로: 힌트 1개, 실수 1회 = 게임 오버",
+      "howToPlayNotes": "메모 모드를 사용하여 각 셀의 가능한 숫자를 추적하세요.",
+      "howToPlayHints": "AI 힌트는 숫자가 셀에 속하는 이유를 설명합니다 - 플레이하면서 배우세요!",
+      "resetStats": "통계 초기화",
+      "resetStatsConfirm": "정말로 초기화하시겠습니까? 모든 통계가 영구적으로 삭제됩니다.",
+      "resetSettings": "설정 초기화",
+      "resetSettingsConfirm": "모든 설정을 기본값으로 초기화하시겠습니까?",
+      "version": "버전",
+      "by": "Antigravity Games 제작",
+      "close": "닫기",
+      "gotIt": "알겠습니다!"
     }
   }
 }

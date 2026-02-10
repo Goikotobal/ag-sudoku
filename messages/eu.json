@@ -157,6 +157,37 @@
       "wins": "garaipen",
       "statsButton": "Estatistikak",
       "homeButton": "Hasiera"
+    },
+    "settings": {
+      "title": "Ezarpenak",
+      "display": "Pantaila",
+      "gameplay": "Jokabidea",
+      "help": "Laguntza",
+      "data": "Datuak",
+      "about": "Honi buruz",
+      "theme": "Gaia",
+      "dark": "Iluna",
+      "light": "Argia",
+      "showTimer": "Erakutsi Tenporizadorea",
+      "showMistakes": "Erakutsi Akats Kontagailua",
+      "highlightNumbers": "Nabarmendu Zenbaki Berdinak",
+      "autoRemoveNotes": "Kendu Oharrak Automatikoki",
+      "howToPlay": "Nola Jolastu",
+      "howToPlayTitle": "Nola Jolastu",
+      "howToPlayRules": "Bete 9x9 sareta errenkada, zutabe eta 3x3 kutxa bakoitzak 1-9 zenbakiak izan ditzan.",
+      "howToPlayMedium": "Ertaina: 3 pista, 3 akats baimenduta",
+      "howToPlayExpert": "Aditua: 1 pista, 1 akats baimenduta",
+      "howToPlayPro": "Pro: 1 pista, 1 akats = jokoa amaitu",
+      "howToPlayNotes": "Erabili Ohar modua gelaxka bakoitzean zenbaki posibleak erregistratzeko.",
+      "howToPlayHints": "AI Pistek azaltzen dute ZERGATIK zenbaki bat gelaxka batean joan behar den - ikasi jolasten duzun bitartean!",
+      "resetStats": "Estatistikak Berrezarri",
+      "resetStatsConfirm": "Ziur zaude? Zure estatistika guztiak betiko ezabatuko dira.",
+      "resetSettings": "Ezarpenak Berrezarri",
+      "resetSettingsConfirm": "Ezarpen guztiak lehenetsitakoetara berrezarri?",
+      "version": "Bertsioa",
+      "by": "Antigravity Games-ek egina",
+      "close": "Itxi",
+      "gotIt": "Ulertuta!"
     }
   }
 }

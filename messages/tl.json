@@ -157,6 +157,37 @@
       "wins": "panalo",
       "statsButton": "Estadistika",
       "homeButton": "Home"
+    },
+    "settings": {
+      "title": "Mga Setting",
+      "display": "Display",
+      "gameplay": "Gameplay",
+      "help": "Tulong",
+      "data": "Data",
+      "about": "Tungkol Sa",
+      "theme": "Tema",
+      "dark": "Madilim",
+      "light": "Maliwanag",
+      "showTimer": "Ipakita ang Timer",
+      "showMistakes": "Ipakita ang Bilang ng Mali",
+      "highlightNumbers": "I-highlight ang Parehong Numero",
+      "autoRemoveNotes": "Awtomatikong Alisin ang mga Tala",
+      "howToPlay": "Paano Maglaro",
+      "howToPlayTitle": "Paano Maglaro",
+      "howToPlayRules": "Punan ang 9x9 na grid upang ang bawat hilera, haligi, at 3x3 na kahon ay naglalaman ng mga numero 1-9.",
+      "howToPlayMedium": "Katamtaman: 3 pahiwatig, 3 pagkakamali na pinahihintulutan",
+      "howToPlayExpert": "Dalubhasa: 1 pahiwatig, 1 pagkakamali na pinahihintulutan",
+      "howToPlayPro": "Pro: 1 pahiwatig, 1 pagkakamali = tapos ang laro",
+      "howToPlayNotes": "Gamitin ang Notes mode para subaybayan ang posibleng mga numero para sa bawat cell.",
+      "howToPlayHints": "Ang AI Hints ay nagpapaliwanag KUNG BAKIT ang isang numero ay nasa isang cell - matuto habang naglalaro!",
+      "resetStats": "I-reset ang Estadistika",
+      "resetStatsConfirm": "Sigurado ka ba? Lahat ng iyong estadistika ay permanenteng mabubura.",
+      "resetSettings": "I-reset ang mga Setting",
+      "resetSettingsConfirm": "I-reset ang lahat ng setting sa default?",
+      "version": "Bersyon",
+      "by": "Gawa ng Antigravity Games",
+      "close": "Isara",
+      "gotIt": "Naiintindihan!"
     }
   }
 }

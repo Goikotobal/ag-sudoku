@@ -157,6 +157,37 @@
       "wins": "vitórias",
       "statsButton": "Estatísticas",
       "homeButton": "Início"
+    },
+    "settings": {
+      "title": "Configurações",
+      "display": "Tela",
+      "gameplay": "Jogabilidade",
+      "help": "Ajuda",
+      "data": "Dados",
+      "about": "Sobre",
+      "theme": "Tema",
+      "dark": "Escuro",
+      "light": "Claro",
+      "showTimer": "Mostrar Cronômetro",
+      "showMistakes": "Mostrar Contador de Erros",
+      "highlightNumbers": "Destacar Números Iguais",
+      "autoRemoveNotes": "Remover Notas Automaticamente",
+      "howToPlay": "Como Jogar",
+      "howToPlayTitle": "Como Jogar",
+      "howToPlayRules": "Preencha a grade 9x9 para que cada linha, coluna e caixa 3x3 contenha os números 1-9.",
+      "howToPlayMedium": "Médio: 3 dicas disponíveis, 3 erros permitidos",
+      "howToPlayExpert": "Especialista: 1 dica disponível, 1 erro permitido",
+      "howToPlayPro": "Pro: 1 dica, 1 erro = fim de jogo",
+      "howToPlayNotes": "Use o modo Notas para rastrear números possíveis para cada célula.",
+      "howToPlayHints": "Dicas IA explicam POR QUE um número pertence a uma célula - aprenda enquanto joga!",
+      "resetStats": "Redefinir Estatísticas",
+      "resetStatsConfirm": "Tem certeza? Todas as suas estatísticas serão excluídas permanentemente.",
+      "resetSettings": "Redefinir Configurações",
+      "resetSettingsConfirm": "Redefinir todas as configurações para os padrões?",
+      "version": "Versão",
+      "by": "Por Antigravity Games",
+      "close": "Fechar",
+      "gotIt": "Entendido!"
     }
   }
 }

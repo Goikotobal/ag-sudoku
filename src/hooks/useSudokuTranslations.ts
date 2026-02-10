@@ -161,6 +161,39 @@ export function useSudokuTranslations() {
       homeButton: t('playerStats.homeButton')
     },
 
+    // Settings
+    settings: {
+      title: t('settings.title'),
+      display: t('settings.display'),
+      gameplay: t('settings.gameplay'),
+      help: t('settings.help'),
+      data: t('settings.data'),
+      about: t('settings.about'),
+      theme: t('settings.theme'),
+      dark: t('settings.dark'),
+      light: t('settings.light'),
+      showTimer: t('settings.showTimer'),
+      showMistakes: t('settings.showMistakes'),
+      highlightNumbers: t('settings.highlightNumbers'),
+      autoRemoveNotes: t('settings.autoRemoveNotes'),
+      howToPlay: t('settings.howToPlay'),
+      howToPlayTitle: t('settings.howToPlayTitle'),
+      howToPlayRules: t('settings.howToPlayRules'),
+      howToPlayMedium: t('settings.howToPlayMedium'),
+      howToPlayExpert: t('settings.howToPlayExpert'),
+      howToPlayPro: t('settings.howToPlayPro'),
+      howToPlayNotes: t('settings.howToPlayNotes'),
+      howToPlayHints: t('settings.howToPlayHints'),
+      resetStats: t('settings.resetStats'),
+      resetStatsConfirm: t('settings.resetStatsConfirm'),
+      resetSettings: t('settings.resetSettings'),
+      resetSettingsConfirm: t('settings.resetSettingsConfirm'),
+      version: t('settings.version'),
+      by: t('settings.by'),
+      close: t('settings.close'),
+      gotIt: t('settings.gotIt')
+    },
+
     // Raw t function for custom usage
     t
   };
