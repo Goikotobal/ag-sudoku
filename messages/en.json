@@ -188,6 +188,20 @@
       "by": "By Antigravity Games",
       "close": "Close",
       "gotIt": "Got it!"
+    },
+    "avatars": {
+      "title": "Choose Your Monster",
+      "subtitle": "Pick your puzzle companion",
+      "free": "Free",
+      "premium": "Premium",
+      "selected": "Selected"
+    },
+    "auth": {
+      "signInGoogle": "Sign In with Google",
+      "signOut": "Sign Out",
+      "welcome": "Welcome, {name}!",
+      "saveProgress": "Sign in to save progress",
+      "guest": "Playing as Guest"
     }
   }
 }

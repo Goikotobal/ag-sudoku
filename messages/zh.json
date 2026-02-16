@@ -188,6 +188,20 @@
       "by": "由 Antigravity Games 制作",
       "close": "关闭",
       "gotIt": "明白了！"
+    },
+    "avatars": {
+      "title": "选择你的怪物",
+      "subtitle": "选择你的拼图伙伴",
+      "free": "免费",
+      "premium": "高级",
+      "selected": "已选择"
+    },
+    "auth": {
+      "signInGoogle": "使用Google登录",
+      "signOut": "退出登录",
+      "welcome": "欢迎, {name}!",
+      "saveProgress": "登录以保存进度",
+      "guest": "以访客身份游玩"
     }
   }
 }

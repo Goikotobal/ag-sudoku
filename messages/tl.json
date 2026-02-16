@@ -188,6 +188,20 @@
       "by": "Gawa ng Antigravity Games",
       "close": "Isara",
       "gotIt": "Naiintindihan!"
+    },
+    "avatars": {
+      "title": "Piliin ang iyong Monster",
+      "subtitle": "Piliin ang iyong kasama",
+      "free": "Libre",
+      "premium": "Premium",
+      "selected": "Napili"
+    },
+    "auth": {
+      "signInGoogle": "Mag-sign in gamit ang Google",
+      "signOut": "Mag-sign out",
+      "welcome": "Maligayang pagdating, {name}!",
+      "saveProgress": "Mag-sign in para i-save",
+      "guest": "Naglalaro bilang bisita"
     }
   }
 }

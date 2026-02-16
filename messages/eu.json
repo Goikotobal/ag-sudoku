@@ -188,6 +188,20 @@
       "by": "Antigravity Games-ek egina",
       "close": "Itxi",
       "gotIt": "Ulertuta!"
+    },
+    "avatars": {
+      "title": "Aukeratu zure Munstroa",
+      "subtitle": "Aukeratu zure puzzle laguna",
+      "free": "Doakoa",
+      "premium": "Premium",
+      "selected": "Hautatua"
+    },
+    "auth": {
+      "signInGoogle": "Hasi saioa Google-rekin",
+      "signOut": "Amaitu saioa",
+      "welcome": "Ongi etorri, {name}!",
+      "saveProgress": "Hasi saioa gordetzeko",
+      "guest": "Gonbidatu gisa"
     }
   }
 }

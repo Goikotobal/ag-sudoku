@@ -188,6 +188,20 @@
       "by": "Antigravity Games द्वारा",
       "close": "बंद करें",
       "gotIt": "समझ गया!"
+    },
+    "avatars": {
+      "title": "अपना राक्षस चुनें",
+      "subtitle": "अपना साथी चुनें",
+      "free": "मुफ़्त",
+      "premium": "प्रीमियम",
+      "selected": "चयनित"
+    },
+    "auth": {
+      "signInGoogle": "Google से साइन इन",
+      "signOut": "साइन आउट",
+      "welcome": "स्वागत है, {name}!",
+      "saveProgress": "सहेजने के लिए साइन इन",
+      "guest": "अतिथि के रूप में"
     }
   }
 }

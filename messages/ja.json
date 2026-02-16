@@ -188,6 +188,20 @@
       "by": "Antigravity Games 製",
       "close": "閉じる",
       "gotIt": "了解！"
+    },
+    "avatars": {
+      "title": "モンスターを選ぼう",
+      "subtitle": "パズルの相棒を選んでね",
+      "free": "無料",
+      "premium": "プレミアム",
+      "selected": "選択中"
+    },
+    "auth": {
+      "signInGoogle": "Googleでログイン",
+      "signOut": "ログアウト",
+      "welcome": "ようこそ、{name}さん！",
+      "saveProgress": "ログインして保存",
+      "guest": "ゲストとしてプレイ"
     }
   }
 }

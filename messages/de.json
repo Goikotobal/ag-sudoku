@@ -188,6 +188,20 @@
       "by": "Von Antigravity Games",
       "close": "Schließen",
       "gotIt": "Verstanden!"
+    },
+    "avatars": {
+      "title": "Wähle dein Monster",
+      "subtitle": "Wähle deinen Begleiter",
+      "free": "Kostenlos",
+      "premium": "Premium",
+      "selected": "Ausgewählt"
+    },
+    "auth": {
+      "signInGoogle": "Mit Google anmelden",
+      "signOut": "Abmelden",
+      "welcome": "Willkommen, {name}!",
+      "saveProgress": "Anmelden zum Speichern",
+      "guest": "Als Gast spielen"
     }
   }
 }

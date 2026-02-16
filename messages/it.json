@@ -188,6 +188,20 @@
       "by": "Di Antigravity Games",
       "close": "Chiudi",
       "gotIt": "Capito!"
+    },
+    "avatars": {
+      "title": "Scegli il tuo Mostro",
+      "subtitle": "Scegli il tuo compagno",
+      "free": "Gratuito",
+      "premium": "Premium",
+      "selected": "Selezionato"
+    },
+    "auth": {
+      "signInGoogle": "Accedi con Google",
+      "signOut": "Esci",
+      "welcome": "Benvenuto, {name}!",
+      "saveProgress": "Accedi per salvare",
+      "guest": "Ospite"
     }
   }
 }
