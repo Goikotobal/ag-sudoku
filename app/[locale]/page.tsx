@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { LoginButton } from '../components/auth/LoginButton';
 
 export default function Home() {
   const t = useTranslations();
@@ -45,28 +46,40 @@ export default function Home() {
         textAlign: 'center',
         animation: mounted ? 'fadeInUp 0.6s ease' : 'none',
       }}>
-        {/* Back to Website Button */}
-        <a
-          href="https://alexgoiko.com"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '8px 16px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '10px',
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: '13px',
-            fontWeight: 500,
-            textDecoration: 'none',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            marginBottom: '12px',
-          }}
-        >
-          ← alexgoiko.com
-        </a>
+        {/* Header with Back Button and Login */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '12px',
+          flexWrap: 'wrap',
+          gap: '8px',
+        }}>
+          {/* Back to Website Button */}
+          <a
+            href="https://alexgoiko.com"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '10px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '13px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            ← alexgoiko.com
+          </a>
+
+          {/* Login Button */}
+          <LoginButton variant="compact" />
+        </div>
 
         {/* Logo */}
         <div style={{ marginBottom: '24px' }}>
