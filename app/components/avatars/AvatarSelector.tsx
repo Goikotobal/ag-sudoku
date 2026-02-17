@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/context/AuthContext';  // ← ADD THIS
 import { UpgradeModal } from '../premium/UpgradeModal';
 import { isPremium } from '@/utils/premium';
 
@@ -39,7 +40,7 @@ interface AvatarSelectorProps {
   selectedAvatar: string;
   onSelect: (avatarId: string) => void;
   onCloudSync?: (avatarId: string) => Promise<void>;
-  subscriptionTier?: string | null; // 'free' | 'premium' | null
+  // subscriptionTier prop REMOVED - we get it from AuthContext now
 }
 
 export function AvatarSelector({
@@ -48,11 +49,11 @@ export function AvatarSelector({
   selectedAvatar,
   onSelect,
   onCloudSync,
-  subscriptionTier,
 }: AvatarSelectorProps) {
   const t = useTranslations('sudoku');
+  const { profile } = useAuth();  // ← GET PROFILE FROM CONTEXT
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const userIsPremium = isPremium(subscriptionTier);
+  const userIsPremium = isPremium(profile?.subscription_tier);  // ← USE PROFILE
 
   if (!isOpen) return null;
 
@@ -273,8 +274,8 @@ function AvatarItem({ avatar, isSelected, isLocked, onSelect, t }: AvatarItemPro
         background: isSelected
           ? 'rgba(168, 85, 247, 0.2)'
           : isHovered
-          ? 'rgba(255, 255, 255, 0.15)'
-          : 'rgba(255, 255, 255, 0.08)',
+            ? 'rgba(255, 255, 255, 0.15)'
+            : 'rgba(255, 255, 255, 0.08)',
         border: isSelected
           ? '2px solid rgba(168, 85, 247, 0.8)'
           : '1px solid rgba(255, 255, 255, 0.15)',

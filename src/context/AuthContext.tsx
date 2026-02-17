@@ -4,9 +4,19 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 
+interface Profile {
+  id: string;
+  email: string;
+  subscription_tier: 'free' | 'pro';
+  stripe_customer_id?: string;
+  full_name?: string;
+  avatar_url?: string;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  profile: Profile | null;  // ← ADD THIS
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -15,15 +25,35 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
+  profile: null,  // ← ADD THIS
   loading: true,
-  signInWithGoogle: async () => {},
-  signOut: async () => {},
+  signInWithGoogle: async () => { },
+  signOut: async () => { },
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);  // ← ADD THIS
   const [loading, setLoading] = useState(true);
+
+  // ← ADD THIS: Fetch profile when user changes
+  useEffect(() => {
+    if (!user?.id) {
+      setProfile(null);
+      return;
+    }
+
+    const supabase = createClient();
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        setProfile(data);
+      });
+  }, [user?.id]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -62,10 +92,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
+    setProfile(null);  // ← ADD THIS
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, signInWithGoogle, signOut }}>  {/* ← ADD profile */}
       {children}
     </AuthContext.Provider>
   );
