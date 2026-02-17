@@ -202,6 +202,18 @@
       "welcome": "Maligayang pagdating, {name}!",
       "saveProgress": "Mag-sign in para i-save",
       "guest": "Naglalaro bilang bisita"
+    },
+    "profile": {
+      "level": "Antas {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "Nakuhang XP",
+      "potentialXP": "Posibleng XP",
+      "signInToSave": "Mag-sign in para i-save ang XP",
+      "participationXP": "Pakikilahok na XP",
+      "statsSynced": "Mga stats ay naka-sync sa cloud",
+      "editNickname": "I-edit ang palayaw",
+      "guestMode": "Bisita Mode",
+      "signInPrompt": "Mag-sign in para i-save ang progreso"
     }
   }
 }

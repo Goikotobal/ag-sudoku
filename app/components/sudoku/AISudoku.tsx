@@ -1,9 +1,11 @@
 'use client'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSudokuTranslations } from '@/hooks/useSudokuTranslations'
+import { useAuth } from '@/context/AuthContext'
+import { useProfile, getLevelFromXP } from '@/hooks/useProfile'
 import {
-    recordGameResult,
+    recordGameResult as recordLocalGameResult,
     getStats,
     resetStats as resetStatsData,
     formatTime as formatStatsTime,
@@ -14,6 +16,14 @@ import {
     getTotalGamesWon,
     type PlayerStats
 } from '@/utils/statsManager'
+import {
+    recordGame as recordCloudGame,
+    calculateXP,
+    migrateLocalStatsToCloud,
+    flushPendingSync,
+    isMigrated,
+    fetchCloudStats,
+} from '@/utils/statsSyncManager'
 import {
     getSettings,
     updateSetting,
@@ -92,6 +102,36 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     // PRO UNLOCK SYSTEM - Unlock Pro by beating Expert in under 15 minutes
     const [isProUnlocked, setIsProUnlocked] = useState(false)
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
+
+    // CLOUD PROFILE SYSTEM - XP & Level tracking
+    const { user, loading: authLoading } = useAuth()
+    const { profile, levelInfo, loading: profileLoading, updateProfile } = useProfile(user)
+    const isLoggedIn = !!user
+    const [lastGameXP, setLastGameXP] = useState<number>(0)
+    const [showLevelUp, setShowLevelUp] = useState(false)
+    const gameResultRecorded = useRef(false)
+    const hasMigrated = useRef(false)
+
+    // Migrate stats on first login
+    useEffect(() => {
+        if (!user || profileLoading || hasMigrated.current) return
+
+        const doMigration = async () => {
+            if (!isMigrated()) {
+                console.log('🔄 Starting stats migration...')
+                const success = await migrateLocalStatsToCloud(user.id)
+                if (success) {
+                    hasMigrated.current = true
+                }
+            } else {
+                hasMigrated.current = true
+            }
+            // Flush any pending sync items
+            await flushPendingSync(user.id)
+        }
+
+        doMigration()
+    }, [user, profileLoading])
 
     // WELCOME SCREEN - Show before game starts (skip if initialDifficulty provided)
     const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
@@ -964,16 +1004,27 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
         if (isComplete) {
             setShowWinModal(true)
 
-            // Record game result for stats
+            // Record game result for stats (local + cloud)
             const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
             const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
-            recordGameResult({
+            const gameResult = {
                 difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
                 timeSeconds: timer,
                 mistakes: mistakes,
                 hintsUsed: hintsUsedCount,
                 isWin: true,
                 isPerfect: mistakes === 0
+            }
+
+            // Calculate and store XP for display
+            const xp = calculateXP(gameResult)
+            setLastGameXP(xp)
+
+            // Record to local and cloud (if logged in)
+            recordCloudGame(gameResult, user?.id).then((result) => {
+                if (result.cloudSaved) {
+                    console.log('📊 Game saved to cloud, XP earned:', xp)
+                }
             })
 
             // PRO UNLOCK: Unlock Pro if Expert completed in under 15 minutes
@@ -1218,17 +1269,24 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 if (newMistakes >= maxMistakes && maxMistakes > 0) {
                     setTimeout(() => {
                         setShowGameOverModal(true)
-                        // Record game result for stats (loss)
+                        // Record game result for stats (loss) - local + cloud
                         const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
                         const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
-                        recordGameResult({
+                        const gameResult = {
                             difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
                             timeSeconds: timer,
                             mistakes: newMistakes,
                             hintsUsed: hintsUsedCount,
                             isWin: false,
                             isPerfect: false
-                        })
+                        }
+
+                        // Calculate and store XP for display (participation XP)
+                        const xp = calculateXP(gameResult)
+                        setLastGameXP(xp)
+
+                        // Record to local and cloud (if logged in)
+                        recordCloudGame(gameResult, user?.id)
                     }, 100)
                 }
             } else if (num !== 0) {
@@ -1285,17 +1343,24 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                 }
                 if (isComplete) {
                     setShowWinModal(true)
-                    // Record game result for stats
+                    // Record game result for stats (local + cloud)
                     const difficultyRulesRef = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
                     const hintsUsedCount = difficultyRulesRef.hints - hintsRemaining
-                    recordGameResult({
+                    const gameResult = {
                         difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
                         timeSeconds: timer,
                         mistakes: mistakes,
                         hintsUsed: hintsUsedCount,
                         isWin: true,
                         isPerfect: mistakes === 0
-                    })
+                    }
+
+                    // Calculate and store XP for display
+                    const xp = calculateXP(gameResult)
+                    setLastGameXP(xp)
+
+                    // Record to local and cloud (if logged in)
+                    recordCloudGame(gameResult, user?.id)
                 }
             }, 100)
         },
@@ -1317,6 +1382,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             timer,
             hintsRemaining,
             gameSettings.autoRemoveNotes,
+            user,
         ]
     )
 
@@ -2474,6 +2540,75 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             </div>
                         </div>
 
+                        {/* Level & XP Display (logged in users only) */}
+                        {isLoggedIn && profile && levelInfo && (
+                            <div style={{
+                                marginBottom: '24px',
+                                padding: '16px 20px',
+                                background: 'rgba(168, 85, 247, 0.15)',
+                                backdropFilter: 'blur(10px)',
+                                WebkitBackdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(168, 85, 247, 0.3)',
+                                borderRadius: '16px',
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginBottom: '8px',
+                                }}>
+                                    <div style={{
+                                        color: '#ffffff',
+                                        fontSize: '14px',
+                                        fontWeight: '700',
+                                        textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+                                    }}>
+                                        Level {levelInfo.level} - {levelInfo.title}
+                                    </div>
+                                    <div style={{
+                                        color: '#e9d5ff',
+                                        fontSize: '12px',
+                                        fontWeight: '600',
+                                    }}>
+                                        {levelInfo.currentXP.toLocaleString()}/{levelInfo.nextLevelXP.toLocaleString()} XP
+                                    </div>
+                                </div>
+                                <div style={{
+                                    height: '8px',
+                                    background: 'rgba(255, 255, 255, 0.2)',
+                                    borderRadius: '4px',
+                                    overflow: 'hidden',
+                                }}>
+                                    <div style={{
+                                        height: '100%',
+                                        width: `${levelInfo.progress}%`,
+                                        background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                                        borderRadius: '4px',
+                                        transition: 'width 0.5s ease',
+                                    }} />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Guest Sign-in Prompt */}
+                        {!isLoggedIn && !authLoading && (
+                            <div style={{
+                                marginBottom: '20px',
+                                padding: '10px 16px',
+                                background: 'rgba(255, 255, 255, 0.08)',
+                                border: '1px solid rgba(255, 255, 255, 0.15)',
+                                borderRadius: '10px',
+                                textAlign: 'center',
+                            }}>
+                                <div style={{
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    fontSize: '13px',
+                                }}>
+                                    Playing as Guest • <span style={{ color: '#a855f7' }}>Sign in</span> to save progress
+                                </div>
+                            </div>
+                        )}
+
                         {/* Description */}
                         <p style={{
                             color: '#ffffff',
@@ -3558,6 +3693,32 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             </div>
                         </div>
 
+                        {/* XP Earned Section */}
+                        {lastGameXP > 0 && (
+                            <div
+                                style={{
+                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                    padding: 16,
+                                    borderRadius: 12,
+                                    marginBottom: 24,
+                                    color: "white",
+                                    textAlign: "center",
+                                }}
+                            >
+                                <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 4 }}>
+                                    {isLoggedIn ? "XP Earned" : "Potential XP"}
+                                </div>
+                                <div style={{ fontSize: 28, fontWeight: 700 }}>
+                                    +{lastGameXP} XP
+                                </div>
+                                {!isLoggedIn && (
+                                    <div style={{ fontSize: 12, opacity: 0.8, marginTop: 8 }}>
+                                        Sign in to save XP
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <div
                             style={{
                                 display: "flex",
@@ -3750,6 +3911,24 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Participation XP Section */}
+                        {lastGameXP > 0 && isLoggedIn && (
+                            <div
+                                style={{
+                                    background: "#f8fafc",
+                                    border: "1px solid #e2e8f0",
+                                    padding: 12,
+                                    borderRadius: 10,
+                                    marginBottom: 24,
+                                    textAlign: "center",
+                                }}
+                            >
+                                <div style={{ fontSize: 13, color: "#64748b" }}>
+                                    Participation XP: <span style={{ fontWeight: 600, color: "#a855f7" }}>+{lastGameXP}</span>
+                                </div>
+                            </div>
+                        )}
 
                         <div
                             style={{

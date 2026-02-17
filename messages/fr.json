@@ -202,6 +202,18 @@
       "welcome": "Bienvenue, {name}!",
       "saveProgress": "Connectez-vous pour sauvegarder",
       "guest": "Joueur invité"
+    },
+    "profile": {
+      "level": "Niveau {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "XP Gagné",
+      "potentialXP": "XP Potentiel",
+      "signInToSave": "Connectez-vous pour sauvegarder XP",
+      "participationXP": "XP de Participation",
+      "statsSynced": "Stats synchronisées",
+      "editNickname": "Modifier le pseudo",
+      "guestMode": "Mode Invité",
+      "signInPrompt": "Connectez-vous pour sauvegarder"
     }
   }
 }

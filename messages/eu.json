@@ -202,6 +202,18 @@
       "welcome": "Ongi etorri, {name}!",
       "saveProgress": "Hasi saioa gordetzeko",
       "guest": "Gonbidatu gisa"
+    },
+    "profile": {
+      "level": "Maila {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "Lortutako XP",
+      "potentialXP": "XP Potentziala",
+      "signInToSave": "Hasi saioa XP gordetzeko",
+      "participationXP": "Parte-hartze XP",
+      "statsSynced": "Estatistikak hodeira sinkronizatuta",
+      "editNickname": "Goitizena editatu",
+      "guestMode": "Gonbidatu Modua",
+      "signInPrompt": "Hasi saioa aurrerapenak gordetzeko"
     }
   }
 }

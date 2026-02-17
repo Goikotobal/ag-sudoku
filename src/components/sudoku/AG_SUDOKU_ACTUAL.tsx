@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
+import { useGameStats, GameEndResult } from "@/hooks/useGameStats"
 
 export default function AISudoku() {
     const [board, setBoard] = useState<number[][]>([])
@@ -69,6 +70,12 @@ export default function AISudoku() {
     // 🏆 PRO UNLOCK SYSTEM - Unlock Pro by beating Expert in under 15 minutes
     const [isProUnlocked, setIsProUnlocked] = useState(false)
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
+
+    // 📊 CLOUD STATS - XP & Level tracking
+    const { user, profile, levelInfo, isLoggedIn, recordGameResult } = useGameStats()
+    const [lastGameXP, setLastGameXP] = useState<number>(0)
+    const [showLevelUp, setShowLevelUp] = useState(false)
+    const gameResultRecorded = useRef(false)
 
     // 🎯 UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {
@@ -246,6 +253,37 @@ export default function AISudoku() {
             console.log("🗑️ Auto-save cleared (game complete)")
         }
     }, [showWinModal, showGameOverModal])
+
+    // 📊 RECORD GAME STATS: Save to local and cloud when game ends
+    useEffect(() => {
+        if (!showWinModal && !showGameOverModal) {
+            // Reset flag when modals are closed
+            gameResultRecorded.current = false
+            return
+        }
+
+        if (gameResultRecorded.current) return
+        gameResultRecorded.current = true
+
+        const isWin = showWinModal
+        const difficulty = currentDifficulty as 'medium' | 'expert' | 'pro'
+
+        // Calculate hints used (initial - remaining)
+        const rules = difficultyRules[difficulty]
+        const hintsUsed = rules.hints - hintsRemaining
+
+        // Record the game result
+        recordGameResult(difficulty, timer, mistakes, hintsUsed, isWin).then((result) => {
+            setLastGameXP(result.xpEarned)
+            if (result.leveledUp) {
+                setShowLevelUp(true)
+                setTimeout(() => setShowLevelUp(false), 3000)
+            }
+            console.log(`📊 Game recorded: ${isWin ? 'WIN' : 'LOSS'} +${result.xpEarned} XP`)
+        }).catch((err) => {
+            console.error('Failed to record game:', err)
+        })
+    }, [showWinModal, showGameOverModal, currentDifficulty, timer, mistakes, hintsRemaining, recordGameResult])
 
     // ⌨️ KEYBOARD SUPPORT - Simple approach
     useEffect(() => {
@@ -3063,6 +3101,42 @@ export default function AISudoku() {
                             </div>
                         </div>
 
+                        {/* XP Earned Section */}
+                        {lastGameXP > 0 && (
+                            <div
+                                style={{
+                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                    padding: 16,
+                                    borderRadius: 12,
+                                    marginBottom: 24,
+                                    color: "white",
+                                    textAlign: "center",
+                                }}
+                            >
+                                <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 4 }}>
+                                    {isLoggedIn ? "XP Earned" : "Potential XP"}
+                                </div>
+                                <div style={{ fontSize: 28, fontWeight: 700 }}>
+                                    +{lastGameXP} XP
+                                </div>
+                                {showLevelUp && (
+                                    <div style={{
+                                        fontSize: 14,
+                                        marginTop: 8,
+                                        fontWeight: 600,
+                                        animation: "pulse 0.5s ease-in-out infinite alternate"
+                                    }}>
+                                        🎉 Level Up!
+                                    </div>
+                                )}
+                                {!isLoggedIn && (
+                                    <div style={{ fontSize: 12, opacity: 0.8, marginTop: 8 }}>
+                                        Sign in to save XP
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <div
                             style={{
                                 display: "flex",
@@ -3238,6 +3312,24 @@ export default function AISudoku() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Participation XP Section */}
+                        {lastGameXP > 0 && isLoggedIn && (
+                            <div
+                                style={{
+                                    background: "#f8fafc",
+                                    border: "1px solid #e2e8f0",
+                                    padding: 12,
+                                    borderRadius: 10,
+                                    marginBottom: 24,
+                                    textAlign: "center",
+                                }}
+                            >
+                                <div style={{ fontSize: 13, color: "#64748b" }}>
+                                    Participation XP: <span style={{ fontWeight: 600, color: "#a855f7" }}>+{lastGameXP}</span>
+                                </div>
+                            </div>
+                        )}
 
                         <div
                             style={{

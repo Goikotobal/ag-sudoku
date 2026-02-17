@@ -202,6 +202,18 @@
       "welcome": "Welcome, {name}!",
       "saveProgress": "Sign in to save progress",
       "guest": "Playing as Guest"
+    },
+    "profile": {
+      "level": "Level {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "XP Earned",
+      "potentialXP": "Potential XP",
+      "signInToSave": "Sign in to save XP",
+      "participationXP": "Participation XP",
+      "statsSynced": "Stats synced to cloud",
+      "editNickname": "Edit nickname",
+      "guestMode": "Playing as Guest",
+      "signInPrompt": "Sign in to save progress"
     }
   }
 }

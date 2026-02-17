@@ -202,6 +202,18 @@
       "welcome": "欢迎, {name}!",
       "saveProgress": "登录以保存进度",
       "guest": "以访客身份游玩"
+    },
+    "profile": {
+      "level": "等级 {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "获得经验",
+      "potentialXP": "可获得经验",
+      "signInToSave": "登录以保存经验",
+      "participationXP": "参与经验",
+      "statsSynced": "统计已同步到云端",
+      "editNickname": "编辑昵称",
+      "guestMode": "访客模式",
+      "signInPrompt": "登录以保存进度"
     }
   }
 }

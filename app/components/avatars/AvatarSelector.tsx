@@ -36,18 +36,28 @@ interface AvatarSelectorProps {
   onClose: () => void;
   selectedAvatar: string;
   onSelect: (avatarId: string) => void;
+  onCloudSync?: (avatarId: string) => Promise<void>; // Optional cloud sync callback
 }
 
-export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect }: AvatarSelectorProps) {
+export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCloudSync }: AvatarSelectorProps) {
   const t = useTranslations('sudoku');
 
   if (!isOpen) return null;
 
-  const handleSelect = (avatarId: string) => {
+  const handleSelect = async (avatarId: string) => {
     onSelect(avatarId);
     // Save to localStorage
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEY, avatarId);
+    }
+    // Sync to cloud if callback provided (user is logged in)
+    if (onCloudSync) {
+      try {
+        await onCloudSync(avatarId);
+        console.log('✅ Avatar synced to cloud:', avatarId);
+      } catch (error) {
+        console.error('Failed to sync avatar to cloud:', error);
+      }
     }
     onClose();
   };
@@ -284,7 +294,7 @@ function AvatarItem({ avatar, isSelected, onSelect, t }: AvatarItemProps) {
 }
 
 // Helper hook for avatar management
-export function useAvatar() {
+export function useAvatar(cloudSyncFn?: (avatarId: string) => Promise<boolean>) {
   const [selectedAvatar, setSelectedAvatar] = useState<string>('blinky');
 
   useEffect(() => {
@@ -296,10 +306,18 @@ export function useAvatar() {
     }
   }, []);
 
-  const selectAvatar = (avatarId: string) => {
+  const selectAvatar = async (avatarId: string) => {
     setSelectedAvatar(avatarId);
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEY, avatarId);
+    }
+    // Sync to cloud if function provided
+    if (cloudSyncFn) {
+      try {
+        await cloudSyncFn(avatarId);
+      } catch (error) {
+        console.error('Failed to sync avatar:', error);
+      }
     }
   };
 

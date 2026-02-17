@@ -202,6 +202,18 @@
       "welcome": "स्वागत है, {name}!",
       "saveProgress": "सहेजने के लिए साइन इन",
       "guest": "अतिथि के रूप में"
+    },
+    "profile": {
+      "level": "स्तर {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "अर्जित XP",
+      "potentialXP": "संभावित XP",
+      "signInToSave": "XP सहेजने के लिए साइन इन करें",
+      "participationXP": "भागीदारी XP",
+      "statsSynced": "आँकड़े क्लाउड में समन्वयित",
+      "editNickname": "उपनाम संपादित करें",
+      "guestMode": "अतिथि मोड",
+      "signInPrompt": "प्रगति सहेजने के लिए साइन इन करें"
     }
   }
 }

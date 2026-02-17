@@ -202,6 +202,18 @@
       "welcome": "ようこそ、{name}さん！",
       "saveProgress": "ログインして保存",
       "guest": "ゲストとしてプレイ"
+    },
+    "profile": {
+      "level": "レベル {level}",
+      "xp": "{current}/{next} XP",
+      "xpEarned": "獲得XP",
+      "potentialXP": "獲得可能XP",
+      "signInToSave": "ログインしてXPを保存",
+      "participationXP": "参加XP",
+      "statsSynced": "統計がクラウドに同期されました",
+      "editNickname": "ニックネームを編集",
+      "guestMode": "ゲストモード",
+      "signInPrompt": "ログインして進捗を保存"
     }
   }
 }
