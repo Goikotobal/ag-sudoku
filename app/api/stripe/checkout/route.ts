@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://sudoku.alexgoiko.com'}/en?upgraded=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://sudoku.alexgoiko.com'}/en?upgraded=false`,
+      allow_promotion_codes: true, // ← ADD THIS LINE!
       metadata: {
         userId: userId,
       },
