@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
           await supabaseAdmin
             .from('profiles')
             .update({
-              subscription_tier: 'premium',
+              subscription_tier: 'pro',
               stripe_customer_id: session.customer as string,
             })
             .eq('id', userId);
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
           await supabaseAdmin
             .from('profiles')
             .update({
-              subscription_tier: isActive ? 'premium' : 'free',
+              subscription_tier: isActive ? 'pro' : 'free',
             })
             .eq('id', userId);
 
