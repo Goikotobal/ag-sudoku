@@ -214,6 +214,37 @@
       "editNickname": "닉네임 수정",
       "guestMode": "게스트 모드",
       "signInPrompt": "로그인하여 진행 상황 저장"
+    },
+    "premium": {
+      "title": "AG Games 프리미엄",
+      "subtitle": "전체 경험 잠금 해제",
+      "monthly": "월간",
+      "yearly": "연간",
+      "monthlyPrice": "€2.49/월",
+      "yearlyPrice": "€19.99/년",
+      "perMonth": "월",
+      "perYear": "년",
+      "save": "33% 절약",
+      "mostPopular": "인기",
+      "subscribe": "구독하기",
+      "maybeLater": "나중에",
+      "signInFirst": "로그인하여 업그레이드",
+      "needAccount": "계정이 필요합니다",
+      "benefits": {
+        "avatars": "몬스터 아바타 20종 전체",
+        "colors": "프리미엄 색상 및 프레임",
+        "stats": "고급 통계",
+        "leaderboard": "리더보드 순위",
+        "adFree": "광고 없음"
+      },
+      "comingSoon": "곧 출시",
+      "upgraded": "프리미엄에 오신 것을 환영합니다!",
+      "manage": "구독 관리",
+      "locked": "프리미엄 아바타",
+      "tapToUnlock": "탭하여 잠금 해제",
+      "cancelAnytime": "언제든 취소 가능",
+      "securePayment": "Stripe를 통한 안전한 결제",
+      "upgradeBtn": "프리미엄으로 업그레이드"
     }
   }
 }

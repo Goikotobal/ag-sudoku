@@ -214,6 +214,37 @@
       "editNickname": "编辑昵称",
       "guestMode": "访客模式",
       "signInPrompt": "登录以保存进度"
+    },
+    "premium": {
+      "title": "AG Games 高级版",
+      "subtitle": "解锁完整体验",
+      "monthly": "月付",
+      "yearly": "年付",
+      "monthlyPrice": "€2.49/月",
+      "yearlyPrice": "€19.99/年",
+      "perMonth": "每月",
+      "perYear": "每年",
+      "save": "节省33%",
+      "mostPopular": "最受欢迎",
+      "subscribe": "订阅",
+      "maybeLater": "稍后再说",
+      "signInFirst": "登录以升级",
+      "needAccount": "您需要一个账户",
+      "benefits": {
+        "avatars": "全部20个怪物头像",
+        "colors": "高级颜色和边框",
+        "stats": "高级统计",
+        "leaderboard": "排行榜",
+        "adFree": "无广告体验"
+      },
+      "comingSoon": "即将推出",
+      "upgraded": "欢迎使用高级版！",
+      "manage": "管理订阅",
+      "locked": "高级头像",
+      "tapToUnlock": "点击解锁",
+      "cancelAnytime": "随时取消",
+      "securePayment": "通过Stripe安全支付",
+      "upgradeBtn": "升级到高级版"
     }
   }
 }

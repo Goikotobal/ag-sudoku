@@ -214,6 +214,37 @@
       "editNickname": "उपनाम संपादित करें",
       "guestMode": "अतिथि मोड",
       "signInPrompt": "प्रगति सहेजने के लिए साइन इन करें"
+    },
+    "premium": {
+      "title": "AG Games प्रीमियम",
+      "subtitle": "पूर्ण अनुभव अनलॉक करें",
+      "monthly": "मासिक",
+      "yearly": "वार्षिक",
+      "monthlyPrice": "€2.49/माह",
+      "yearlyPrice": "€19.99/वर्ष",
+      "perMonth": "प्रति माह",
+      "perYear": "प्रति वर्ष",
+      "save": "33% बचाएं",
+      "mostPopular": "सबसे लोकप्रिय",
+      "subscribe": "सदस्यता लें",
+      "maybeLater": "शायद बाद में",
+      "signInFirst": "अपग्रेड के लिए साइन इन करें",
+      "needAccount": "आपको एक खाते की आवश्यकता है",
+      "benefits": {
+        "avatars": "सभी 20 राक्षस अवतार",
+        "colors": "प्रीमियम रंग और फ्रेम",
+        "stats": "उन्नत आँकड़े",
+        "leaderboard": "लीडरबोर्ड रैंकिंग",
+        "adFree": "विज्ञापन-मुक्त अनुभव"
+      },
+      "comingSoon": "जल्द आ रहा है",
+      "upgraded": "प्रीमियम में स्वागत है!",
+      "manage": "सदस्यता प्रबंधित करें",
+      "locked": "प्रीमियम अवतार",
+      "tapToUnlock": "अनलॉक करने के लिए टैप करें",
+      "cancelAnytime": "कभी भी रद्द करें",
+      "securePayment": "Stripe द्वारा सुरक्षित भुगतान",
+      "upgradeBtn": "प्रीमियम में अपग्रेड करें"
     }
   }
 }

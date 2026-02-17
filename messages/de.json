@@ -214,6 +214,37 @@
       "editNickname": "Spitznamen bearbeiten",
       "guestMode": "Gastmodus",
       "signInPrompt": "Anmelden zum Speichern"
+    },
+    "premium": {
+      "title": "AG Games Premium",
+      "subtitle": "Das volle Erlebnis freischalten",
+      "monthly": "Monatlich",
+      "yearly": "Jährlich",
+      "monthlyPrice": "€2.49/Monat",
+      "yearlyPrice": "€19.99/Jahr",
+      "perMonth": "pro Monat",
+      "perYear": "pro Jahr",
+      "save": "33% sparen",
+      "mostPopular": "Beliebteste",
+      "subscribe": "Abonnieren",
+      "maybeLater": "Vielleicht später",
+      "signInFirst": "Anmelden zum Upgraden",
+      "needAccount": "Du brauchst ein Konto",
+      "benefits": {
+        "avatars": "Alle 20 Monster-Avatare",
+        "colors": "Premium Farben & Rahmen",
+        "stats": "Erweiterte Statistiken",
+        "leaderboard": "Ranglisten",
+        "adFree": "Werbefrei"
+      },
+      "comingSoon": "Bald",
+      "upgraded": "Willkommen bei Premium!",
+      "manage": "Abo verwalten",
+      "locked": "Premium Avatar",
+      "tapToUnlock": "Tippen zum Freischalten",
+      "cancelAnytime": "Jederzeit kündbar",
+      "securePayment": "Sichere Zahlung via Stripe",
+      "upgradeBtn": "Auf Premium upgraden"
     }
   }
 }

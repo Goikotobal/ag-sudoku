@@ -214,6 +214,37 @@
       "editNickname": "ニックネームを編集",
       "guestMode": "ゲストモード",
       "signInPrompt": "ログインして進捗を保存"
+    },
+    "premium": {
+      "title": "AG Games プレミアム",
+      "subtitle": "フル体験をアンロック",
+      "monthly": "月額",
+      "yearly": "年額",
+      "monthlyPrice": "€2.49/月",
+      "yearlyPrice": "€19.99/年",
+      "perMonth": "月額",
+      "perYear": "年額",
+      "save": "33%お得",
+      "mostPopular": "人気",
+      "subscribe": "購読する",
+      "maybeLater": "また後で",
+      "signInFirst": "ログインしてアップグレード",
+      "needAccount": "アカウントが必要です",
+      "benefits": {
+        "avatars": "全20種のモンスターアバター",
+        "colors": "プレミアムカラー＆フレーム",
+        "stats": "高度な統計",
+        "leaderboard": "ランキング",
+        "adFree": "広告なし"
+      },
+      "comingSoon": "近日公開",
+      "upgraded": "プレミアムへようこそ！",
+      "manage": "サブスクリプション管理",
+      "locked": "プレミアムアバター",
+      "tapToUnlock": "タップしてアンロック",
+      "cancelAnytime": "いつでもキャンセル可能",
+      "securePayment": "Stripeによる安全な決済",
+      "upgradeBtn": "プレミアムにアップグレード"
     }
   }
 }

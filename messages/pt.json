@@ -214,6 +214,37 @@
       "editNickname": "Editar apelido",
       "guestMode": "Modo Convidado",
       "signInPrompt": "Entre para salvar progresso"
+    },
+    "premium": {
+      "title": "AG Games Premium",
+      "subtitle": "Desbloqueie a experiência completa",
+      "monthly": "Mensal",
+      "yearly": "Anual",
+      "monthlyPrice": "€2.49/mês",
+      "yearlyPrice": "€19.99/ano",
+      "perMonth": "por mês",
+      "perYear": "por ano",
+      "save": "Economize 33%",
+      "mostPopular": "Mais Popular",
+      "subscribe": "Assinar",
+      "maybeLater": "Talvez depois",
+      "signInFirst": "Entre para fazer upgrade",
+      "needAccount": "Você precisa de uma conta",
+      "benefits": {
+        "avatars": "Todos os 20 avatares monstros",
+        "colors": "Cores e molduras premium",
+        "stats": "Estatísticas avançadas",
+        "leaderboard": "Rankings",
+        "adFree": "Sem anúncios"
+      },
+      "comingSoon": "Em breve",
+      "upgraded": "Bem-vindo ao Premium!",
+      "manage": "Gerenciar assinatura",
+      "locked": "Avatar premium",
+      "tapToUnlock": "Toque para desbloquear",
+      "cancelAnytime": "Cancele a qualquer momento",
+      "securePayment": "Pagamento seguro via Stripe",
+      "upgradeBtn": "Upgrade para Premium"
     }
   }
 }

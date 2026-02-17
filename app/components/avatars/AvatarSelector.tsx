@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { UpgradeModal } from '../premium/UpgradeModal';
+import { isPremium } from '@/utils/premium';
 
 // Avatar definitions
 export const AVATARS = [
@@ -36,15 +38,31 @@ interface AvatarSelectorProps {
   onClose: () => void;
   selectedAvatar: string;
   onSelect: (avatarId: string) => void;
-  onCloudSync?: (avatarId: string) => Promise<void>; // Optional cloud sync callback
+  onCloudSync?: (avatarId: string) => Promise<void>;
+  subscriptionTier?: string | null; // 'free' | 'premium' | null
 }
 
-export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCloudSync }: AvatarSelectorProps) {
+export function AvatarSelector({
+  isOpen,
+  onClose,
+  selectedAvatar,
+  onSelect,
+  onCloudSync,
+  subscriptionTier,
+}: AvatarSelectorProps) {
   const t = useTranslations('sudoku');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const userIsPremium = isPremium(subscriptionTier);
 
   if (!isOpen) return null;
 
-  const handleSelect = async (avatarId: string) => {
+  const handleSelect = async (avatarId: string, isAvatarPremium: boolean) => {
+    // If avatar is premium and user is not premium, show upgrade modal
+    if (isAvatarPremium && !userIsPremium) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     onSelect(avatarId);
     // Save to localStorage
     if (typeof window !== 'undefined') {
@@ -54,7 +72,7 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
     if (onCloudSync) {
       try {
         await onCloudSync(avatarId);
-        console.log('✅ Avatar synced to cloud:', avatarId);
+        console.log('Avatar synced to cloud:', avatarId);
       } catch (error) {
         console.error('Failed to sync avatar to cloud:', error);
       }
@@ -169,6 +187,7 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
                   avatar={avatar}
                   isSelected={selectedAvatar === avatar.id}
                   onSelect={handleSelect}
+                  isLocked={false}
                   t={t}
                 />
               ))}
@@ -190,6 +209,17 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
             }}>
               <span>⭐</span>
               {t('avatars.premium')}
+              {!userIsPremium && (
+                <span style={{
+                  marginLeft: 'auto',
+                  fontSize: '10px',
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  fontWeight: 400,
+                  textTransform: 'none',
+                }}>
+                  Tap to unlock
+                </span>
+              )}
             </div>
             <div style={{
               display: 'grid',
@@ -202,6 +232,7 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
                   avatar={avatar}
                   isSelected={selectedAvatar === avatar.id}
                   onSelect={handleSelect}
+                  isLocked={!userIsPremium}
                   t={t}
                 />
               ))}
@@ -209,6 +240,12 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
           </div>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+      />
     </>
   );
 }
@@ -216,16 +253,17 @@ export function AvatarSelector({ isOpen, onClose, selectedAvatar, onSelect, onCl
 interface AvatarItemProps {
   avatar: { id: string; premium: boolean };
   isSelected: boolean;
-  onSelect: (id: string) => void;
+  isLocked: boolean;
+  onSelect: (id: string, isPremium: boolean) => void;
   t: ReturnType<typeof useTranslations>;
 }
 
-function AvatarItem({ avatar, isSelected, onSelect, t }: AvatarItemProps) {
+function AvatarItem({ avatar, isSelected, isLocked, onSelect, t }: AvatarItemProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <button
-      onClick={() => onSelect(avatar.id)}
+      onClick={() => onSelect(avatar.id, avatar.premium)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -247,6 +285,7 @@ function AvatarItem({ avatar, isSelected, onSelect, t }: AvatarItemProps) {
         boxShadow: isSelected
           ? '0 0 20px rgba(168, 85, 247, 0.4)'
           : 'none',
+        opacity: isLocked ? 0.7 : 1,
       }}
     >
       <img
@@ -256,11 +295,32 @@ function AvatarItem({ avatar, isSelected, onSelect, t }: AvatarItemProps) {
           width: '100%',
           height: '100%',
           objectFit: 'contain',
+          filter: isLocked ? 'grayscale(30%)' : 'none',
         }}
       />
 
-      {/* Premium badge */}
-      {avatar.premium && (
+      {/* Lock overlay for premium avatars (free users) */}
+      {isLocked && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(0, 0, 0, 0.3)',
+          borderRadius: '12px',
+        }}>
+          <span style={{
+            fontSize: '20px',
+            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))',
+          }}>
+            🔒
+          </span>
+        </div>
+      )}
+
+      {/* Premium badge (for premium users) */}
+      {avatar.premium && !isLocked && (
         <span style={{
           position: 'absolute',
           top: '4px',

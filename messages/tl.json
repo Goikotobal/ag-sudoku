@@ -214,6 +214,37 @@
       "editNickname": "I-edit ang palayaw",
       "guestMode": "Bisita Mode",
       "signInPrompt": "Mag-sign in para i-save ang progreso"
+    },
+    "premium": {
+      "title": "AG Games Premium",
+      "subtitle": "I-unlock ang buong karanasan",
+      "monthly": "Buwanan",
+      "yearly": "Taunan",
+      "monthlyPrice": "€2.49/buwan",
+      "yearlyPrice": "€19.99/taon",
+      "perMonth": "bawat buwan",
+      "perYear": "bawat taon",
+      "save": "Makatipid ng 33%",
+      "mostPopular": "Pinakasikat",
+      "subscribe": "Mag-subscribe",
+      "maybeLater": "Mamaya na",
+      "signInFirst": "Mag-sign in para mag-upgrade",
+      "needAccount": "Kailangan mo ng account",
+      "benefits": {
+        "avatars": "Lahat ng 20 monster avatar",
+        "colors": "Premium na kulay at frame",
+        "stats": "Advanced na estadistika",
+        "leaderboard": "Mga ranggo sa leaderboard",
+        "adFree": "Walang ad na karanasan"
+      },
+      "comingSoon": "Malapit na",
+      "upgraded": "Maligayang pagdating sa Premium!",
+      "manage": "Pamahalaan ang subscription",
+      "locked": "Premium avatar",
+      "tapToUnlock": "I-tap para i-unlock",
+      "cancelAnytime": "I-cancel kahit kailan",
+      "securePayment": "Ligtas na pagbabayad sa pamamagitan ng Stripe",
+      "upgradeBtn": "Mag-upgrade sa Premium"
     }
   }
 }

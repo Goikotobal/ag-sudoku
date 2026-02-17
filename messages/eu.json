@@ -214,6 +214,37 @@
       "editNickname": "Goitizena editatu",
       "guestMode": "Gonbidatu Modua",
       "signInPrompt": "Hasi saioa aurrerapenak gordetzeko"
+    },
+    "premium": {
+      "title": "AG Games Premium",
+      "subtitle": "Esperientzia osoa desblokeatu",
+      "monthly": "Hilabetekoa",
+      "yearly": "Urtekoa",
+      "monthlyPrice": "€2.49/hilabete",
+      "yearlyPrice": "€19.99/urte",
+      "perMonth": "hilabetero",
+      "perYear": "urtero",
+      "save": "%33 aurreztu",
+      "mostPopular": "Ezagunena",
+      "subscribe": "Harpidetu",
+      "maybeLater": "Agian geroago",
+      "signInFirst": "Hasi saioa bertsio berritzeko",
+      "needAccount": "Kontu bat behar duzu",
+      "benefits": {
+        "avatars": "20 munstro avatar guztiak",
+        "colors": "Premium koloreak eta markoak",
+        "stats": "Estatistika aurreratuak",
+        "leaderboard": "Sailkapen taulak",
+        "adFree": "Iragarkirik gabeko esperientzia"
+      },
+      "comingSoon": "Laster",
+      "upgraded": "Ongi etorri Premium-era!",
+      "manage": "Harpidetza kudeatu",
+      "locked": "Premium avatarra",
+      "tapToUnlock": "Sakatu desblokeatzeko",
+      "cancelAnytime": "Edonoiz bertan behera utzi",
+      "securePayment": "Ordainketa segurua Stripe bidez",
+      "upgradeBtn": "Premium-era eguneratu"
     }
   }
 }
