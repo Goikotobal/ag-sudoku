@@ -3,14 +3,14 @@
  * Helpers to check subscription status and feature access
  */
 
-export type SubscriptionTier = 'free' | 'premium';
+export type SubscriptionTier = 'free' | 'pro';  // Changed from 'premium' to 'pro'
 export type AvatarTier = 'free' | 'premium';
 
 /**
  * Check if user has premium subscription
  */
 export function isPremium(subscriptionTier: string | null | undefined): boolean {
-  return subscriptionTier === 'premium';
+  return subscriptionTier === 'pro';  // Changed from 'premium' to 'pro'
 }
 
 /**
@@ -44,7 +44,7 @@ export function getTierFeatures(tier: SubscriptionTier) {
     'Ad-free experience (coming soon)',
   ];
 
-  return tier === 'premium'
+  return tier === 'pro'  // Changed from 'premium' to 'pro'
     ? [...freeFeatures, ...premiumFeatures]
     : freeFeatures;
 }
