@@ -14,7 +14,7 @@ export interface GameEndResult {
 }
 
 export function useGameStats() {
-  const { user } = useAuth();
+  const { user, profile: authProfile } = useAuth();
   const { profile, levelInfo, loading: profileLoading } = useProfile(user);
   const hasMigrated = useRef(false);
 
@@ -121,6 +121,7 @@ export function useGameStats() {
   return {
     user,
     profile,
+    authProfile,
     levelInfo,
     isLoggedIn: !!user,
     recordGameResult,

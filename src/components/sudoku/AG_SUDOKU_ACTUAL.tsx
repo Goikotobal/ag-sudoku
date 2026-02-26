@@ -72,10 +72,13 @@ export default function AISudoku() {
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
 
     // 📊 CLOUD STATS - XP & Level tracking
-    const { user, profile, levelInfo, isLoggedIn, recordGameResult } = useGameStats()
+    const { user, profile, authProfile, levelInfo, isLoggedIn, recordGameResult } = useGameStats()
     const [lastGameXP, setLastGameXP] = useState<number>(0)
     const [showLevelUp, setShowLevelUp] = useState(false)
     const gameResultRecorded = useRef(false)
+
+    // 🔓 PRO ACCESS: Either subscription tier is 'pro' OR local unlock achieved
+    const hasProAccess = authProfile?.subscription_tier === 'pro' || isProUnlocked
 
     // 🎯 UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {
@@ -1494,24 +1497,102 @@ export default function AISudoku() {
                 </div>
             </div>
 
-            {/* Right: Profile Badge Placeholder */}
-            <div
-                style={{
-                    width: isDesktop ? 64 : 48, // 🔥 MOBILE: Smaller
-                    height: isDesktop ? 64 : 48,
-                    borderRadius: 16,
-                    background:
-                        "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
-                    border: "2px dashed #d1d5db",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: isDesktop ? 28 : 20, // 🔥 MOBILE: Smaller icon
-                    flexShrink: 0,
-                }}
-            >
-                👤
-            </div>
+            {/* Right: Profile Badge */}
+            {isLoggedIn && authProfile ? (
+                <a
+                    href="https://goiko-avatar.vercel.app/en/profile"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 4,
+                        textDecoration: "none",
+                        flexShrink: 0,
+                    }}
+                >
+                    <div style={{ position: "relative" }}>
+                        <img
+                            src={`/avatars/${authProfile.avatar_id || 'shadow'}.png`}
+                            alt="Avatar"
+                            style={{
+                                width: isDesktop ? 56 : 44,
+                                height: isDesktop ? 56 : 44,
+                                borderRadius: 14,
+                                border: authProfile.subscription_tier === 'pro'
+                                    ? "3px solid #a855f7"
+                                    : "2px solid #e5e7eb",
+                                objectFit: "cover",
+                                background: "#f3f4f6",
+                            }}
+                        />
+                        {authProfile.subscription_tier === 'pro' && (
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    bottom: -4,
+                                    right: -4,
+                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                    color: "white",
+                                    fontSize: 8,
+                                    fontWeight: 700,
+                                    padding: "2px 5px",
+                                    borderRadius: 6,
+                                    textTransform: "uppercase",
+                                }}
+                            >
+                                PRO
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        style={{
+                            fontSize: isDesktop ? 11 : 9,
+                            fontWeight: 600,
+                            color: "#4a5568",
+                            maxWidth: isDesktop ? 70 : 50,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            textAlign: "center",
+                        }}
+                    >
+                        {authProfile.full_name || 'Player'}
+                    </div>
+                </a>
+            ) : (
+                <a
+                    href="https://goiko-avatar.vercel.app/en/login"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 4,
+                        textDecoration: "none",
+                        flexShrink: 0,
+                        padding: "8px 12px",
+                        borderRadius: 12,
+                        background: "rgba(168, 85, 247, 0.1)",
+                        border: "1px dashed rgba(168, 85, 247, 0.3)",
+                    }}
+                >
+                    <div style={{ fontSize: isDesktop ? 20 : 16 }}>👤</div>
+                    <div
+                        style={{
+                            fontSize: isDesktop ? 10 : 8,
+                            fontWeight: 600,
+                            color: "#a855f7",
+                            textAlign: "center",
+                            lineHeight: 1.2,
+                        }}
+                    >
+                        Sign in at<br />alexgoiko.com
+                    </div>
+                </a>
+            )}
         </div>
     )
 
@@ -1632,15 +1713,15 @@ export default function AISudoku() {
         >
             {/* 🎯 UPDATED: Only 3 difficulty buttons */}
             {["medium", "expert", "pro"].map((diff) => {
-                const isProLocked = diff === "pro" && !isProUnlocked
+                const isProLocked = diff === "pro" && !hasProAccess
 
                 return (
                     <button
                         key={diff}
                         onClick={() => {
-                            if (diff === "pro" && !isProUnlocked) {
+                            if (diff === "pro" && !hasProAccess) {
                                 alert(
-                                    "🔒 PRO MODE LOCKED!\n\nComplete Expert difficulty in under 15 minutes to unlock Pro mode."
+                                    "🔒 PRO MODE LOCKED!\n\nUnlock Pro mode by:\n• Getting a Pro subscription at alexgoiko.com\n• Or beat Expert difficulty in under 15 minutes"
                                 )
                                 return
                             }
@@ -1676,7 +1757,7 @@ export default function AISudoku() {
                             touchAction: "manipulation",
                         }}
                     >
-                        {diff === "pro" && !isProUnlocked && "🔒 "}
+                        {diff === "pro" && !hasProAccess && "🔒 "}
                         {diff}
                     </button>
                 )

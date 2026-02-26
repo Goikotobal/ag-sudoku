@@ -11,6 +11,9 @@ interface Profile {
   stripe_customer_id?: string;
   full_name?: string;
   avatar_url?: string;
+  avatar_id?: string;
+  color_id?: string;
+  loadout_json?: Record<string, unknown>;
 }
 
 interface AuthContextType {
