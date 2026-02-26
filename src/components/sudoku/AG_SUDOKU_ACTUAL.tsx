@@ -1558,7 +1558,7 @@ export default function AISudoku() {
                             textAlign: "center",
                         }}
                     >
-                        {(authProfile.full_name || '').split(' ')[0] || 'Player'}
+                        {authProfile.display_name || (authProfile.full_name || '').split(' ')[0] || 'Player'}
                     </div>
                 </a>
             ) : (
