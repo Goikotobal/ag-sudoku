@@ -10,7 +10,6 @@ interface Profile {
   subscription_tier: 'free' | 'pro';
   stripe_customer_id?: string;
   full_name?: string;
-  display_name?: string;
   avatar_url?: string;
   avatar_id?: string;
   color_id?: string;
