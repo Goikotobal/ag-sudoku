@@ -116,7 +116,7 @@ export default function Home() {
               background: isPro
                 ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25))'
                 : 'rgba(168, 85, 247, 0.15)',
-              overflow: 'hidden',
+              overflow: 'visible',
               boxShadow: isPro
                 ? '0 4px 20px rgba(168, 85, 247, 0.5), 0 0 30px rgba(236, 72, 153, 0.3)'
                 : '0 4px 20px rgba(168, 85, 247, 0.3)',
@@ -142,8 +142,8 @@ export default function Home() {
             {isPro && (
               <div style={{
                 position: 'absolute',
-                top: '-6px',
-                right: '-6px',
+                top: '-4px',
+                right: '4px',
                 background: 'linear-gradient(135deg, #a855f7, #ec4899)',
                 color: 'white',
                 fontSize: '9px',
