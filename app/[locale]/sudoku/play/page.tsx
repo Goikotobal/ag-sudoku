@@ -24,8 +24,8 @@ export default function SudokuPlayPage() {
   }, []);
 
   const handleDifficultyClick = (difficulty: Difficulty) => {
-    // Pro difficulty is coming soon - disabled for now
-    if (difficulty === 'pro') {
+    // Pro difficulty only available for Pro subscribers
+    if (difficulty === 'pro' && !isPro) {
       return;
     }
 
@@ -273,33 +273,40 @@ export default function SudokuPlayPage() {
               WebkitBackdropFilter: 'blur(15px)',
               borderRadius: '24px',
               padding: '28px 20px',
-              border: '2px solid rgba(239, 68, 68, 0.5)',
+              border: isPro
+                ? '2px solid rgba(239, 68, 68, 0.7)'
+                : '2px solid rgba(239, 68, 68, 0.5)',
               boxShadow: hoveredCard === 'pro'
                 ? '0 12px 40px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                 : '0 4px 20px rgba(239, 68, 68, 0.2)',
-              transform: hoveredCard === 'pro' ? 'translateY(-4px)' : 'translateY(0)',
+              transform: hoveredCard === 'pro'
+                ? (isPro ? 'translateY(-8px) scale(1.02)' : 'translateY(-4px)')
+                : 'translateY(0)',
               transition: 'all 0.3s ease',
-              cursor: 'not-allowed',
+              cursor: isPro ? 'pointer' : 'not-allowed',
               position: 'relative',
-              opacity: 0.85,
+              opacity: isPro ? 1 : 0.85,
             }}
+            onClick={() => isPro && handleDifficultyClick('pro')}
           >
-            {/* Lock Badge */}
+            {/* Badge - Lock for Free, Star for Pro */}
             <div style={{
               position: 'absolute',
               top: 12,
               right: 12,
-              background: 'rgba(0, 0, 0, 0.6)',
+              background: isPro
+                ? 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'
+                : 'rgba(0, 0, 0, 0.6)',
               borderRadius: 8,
               padding: '4px 8px',
               fontSize: 11,
               fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.8)',
+              color: 'white',
               display: 'flex',
               alignItems: 'center',
               gap: 4,
             }}>
-              🔒 PRO
+              {isPro ? '⭐ PRO' : '🔒 PRO'}
             </div>
 
             <div style={{ fontSize: '48px', marginBottom: '16px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
@@ -328,28 +335,54 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               fontStyle: 'italic',
             }}>
-              Coming soon for Pro subscribers 🔒
+              {isPro ? 'The ultimate challenge awaits' : 'Coming soon for Pro subscribers 🔒'}
             </p>
-            <button
-              disabled
-              style={{
-                width: '100%',
-                padding: '14px 20px',
-                fontSize: '16px',
-                fontWeight: 700,
-                color: 'rgba(255, 255, 255, 0.5)',
-                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(220, 38, 38, 0.4) 100%)',
-                border: 'none',
-                borderRadius: '14px',
-                cursor: 'not-allowed',
-                boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)',
-                transition: 'all 0.2s ease',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}
-            >
-              COMING SOON
-            </button>
+            {isPro ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDifficultyClick('pro');
+                }}
+                style={{
+                  width: '100%',
+                  padding: '14px 20px',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  color: 'white',
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  border: 'none',
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  boxShadow: '0 6px 20px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                  transition: 'all 0.2s ease',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                PLAY NOW
+              </button>
+            ) : (
+              <button
+                disabled
+                style={{
+                  width: '100%',
+                  padding: '14px 20px',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(220, 38, 38, 0.4) 100%)',
+                  border: 'none',
+                  borderRadius: '14px',
+                  cursor: 'not-allowed',
+                  boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)',
+                  transition: 'all 0.2s ease',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                COMING SOON
+              </button>
+            )}
           </div>
         </div>
 
@@ -531,6 +564,61 @@ export default function SudokuPlayPage() {
               textAlign: 'center',
             }}>
               Already Pro? Your perks unlock as features launch
+            </p>
+          </div>
+        )}
+
+        {/* Pro Perks Section - Only show for Pro users */}
+        {isPro && (
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(15px)',
+            WebkitBackdropFilter: 'blur(15px)',
+            borderRadius: '20px',
+            padding: '24px',
+            border: '1px solid rgba(168, 85, 247, 0.3)',
+            marginBottom: '24px',
+            maxWidth: '400px',
+            margin: '0 auto 24px auto',
+          }}>
+            <h3 style={{
+              color: 'white',
+              fontSize: '16px',
+              fontWeight: 700,
+              margin: '0 0 16px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}>
+              <span>⭐</span> Your PRO Benefits
+            </h3>
+
+            <div style={{ fontSize: '14px', lineHeight: 1.8 }}>
+              <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ color: '#10b981' }}>✅</span> Expert: 3 AI hints per game
+              </div>
+              <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ color: '#10b981' }}>✅</span> Pro difficulty (0 mistakes, 2 hints)
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span>🔜</span> 1v1 Challenges — coming soon
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span>🔜</span> Quarterly prizes — coming soon
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span>🔜</span> Avatar accessories — coming soon
+              </div>
+            </div>
+
+            <p style={{
+              color: 'rgba(168, 85, 247, 0.9)',
+              fontSize: '13px',
+              margin: '16px 0 0 0',
+              textAlign: 'center',
+              fontStyle: 'italic',
+            }}>
+              Thank you for supporting AG Sudoku! 🙏
             </p>
           </div>
         )}
