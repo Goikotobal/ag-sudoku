@@ -22,17 +22,20 @@ export default function Home() {
   const levelInfo = profile?.xp !== undefined ? getLevelFromXP(profile.xp) : null;
 
   // Get display name: prefer display_name, fallback to first name from full_name (max 15 chars)
-  const rawDisplayName = profile?.display_name ||
-    profile?.full_name?.split(' ')[0] ||
-    user?.user_metadata?.full_name?.split(' ')[0] ||
-    'Player';
-  const displayName = rawDisplayName.slice(0, 15);
+  const rawDisplayName = (
+    (typeof profile?.display_name === 'string' && profile.display_name.trim()) ||
+    (typeof profile?.full_name === 'string' && profile.full_name.split(' ')[0]) ||
+    (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.split(' ')[0]) ||
+    'Player'
+  );
+  const displayName = String(rawDisplayName).slice(0, 15) || 'Player';
 
   // Check if user is Pro
   const isPro = profile?.subscription_tier === 'pro';
 
   // Use profile avatar if logged in, otherwise use default
-  const currentAvatar = (user && profile?.avatar_id) ? profile.avatar_id : 'shadow';
+  const avatarId = profile?.avatar_id;
+  const currentAvatar = (user && typeof avatarId === 'string' && avatarId.trim()) ? avatarId : 'shadow';
 
   useEffect(() => {
     setMounted(true);
@@ -96,11 +99,17 @@ export default function Home() {
           >
             <img
               src={`/avatars/${currentAvatar}.png`}
-              alt="Your avatar"
+              alt="Avatar"
+              onError={(e) => {
+                // Fallback to shadow avatar if the image fails to load
+                e.currentTarget.src = '/avatars/shadow.png';
+              }}
               style={{
                 width: '100%',
                 height: '100%',
                 objectFit: 'contain',
+                background: 'rgba(0,0,0,0.1)',
+                borderRadius: '12px',
               }}
             />
             {/* PRO Badge on Avatar */}
@@ -333,29 +342,6 @@ export default function Home() {
           gap: '8px',
           marginTop: '20px',
         }}>
-          {/* Manage Profile link - only show if logged in */}
-          {user && (
-            <a
-              href="https://alexgoiko.com/profile"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                background: 'rgba(168, 85, 247, 0.1)',
-                border: '1px solid rgba(168, 85, 247, 0.25)',
-                borderRadius: '8px',
-                color: 'rgba(168, 85, 247, 0.8)',
-                fontSize: '12px',
-                fontWeight: 600,
-                textDecoration: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Manage Profile
-            </a>
-          )}
           {/* Back to Website */}
           <a
             href="https://alexgoiko.com"
