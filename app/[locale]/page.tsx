@@ -22,44 +22,41 @@ export default function Home() {
   const levelInfo = profile?.xp !== undefined ? getLevelFromXP(profile.xp) : null;
 
   // Get display name: prefer display_name, fallback to first name from full_name (max 15 chars)
-  const rawDisplayName = (
-    (typeof profile?.display_name === 'string' && profile.display_name.trim()) ||
-    (typeof profile?.full_name === 'string' && profile.full_name.split(' ')[0]) ||
-    (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.split(' ')[0]) ||
-    'Player'
-  );
-  const displayName = String(rawDisplayName).slice(0, 15) || 'Player';
+  // Force string type to prevent rendering issues
+  const getDisplayName = (): string => {
+    if (typeof profile?.display_name === 'string' && profile.display_name.trim()) {
+      return profile.display_name.trim();
+    }
+    if (typeof profile?.full_name === 'string' && profile.full_name.trim()) {
+      return profile.full_name.split(' ')[0];
+    }
+    if (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) {
+      return user.user_metadata.full_name.split(' ')[0];
+    }
+    return 'Player';
+  };
+  const safeName = getDisplayName().slice(0, 15) || 'Player';
 
   // Check if user is Pro
   const isPro = profile?.subscription_tier === 'pro';
 
   // Use profile avatar if logged in, otherwise use default
+  // Load avatars from alexgoiko.com (central avatar repository)
   const avatarId = profile?.avatar_id;
   const currentAvatar = (user && typeof avatarId === 'string' && avatarId.trim()) ? avatarId : 'shadow';
-  const avatarSrc = `/avatars/${currentAvatar}.png`;
+  const avatarSrc = `https://www.alexgoiko.com/avatars/${currentAvatar}.png`;
 
-  // Debug logging for avatar and display name
+  // Debug logging (temporary)
   useEffect(() => {
     if (user) {
       console.log('[Welcome Screen Debug]', {
-        // Display name debugging
-        'displayName': displayName,
-        'rawDisplayName': rawDisplayName,
-        'typeof displayName': typeof displayName,
-        'profile.display_name': profile?.display_name,
-        'profile.full_name': profile?.full_name,
-        'user.user_metadata.full_name': user?.user_metadata?.full_name,
-        // Avatar debugging
+        safeName,
+        avatarSrc,
         'profile.avatar_id': profile?.avatar_id,
-        'typeof profile.avatar_id': typeof profile?.avatar_id,
-        'currentAvatar': currentAvatar,
-        'avatarSrc': avatarSrc,
-        // Full objects
-        'profile keys': profile ? Object.keys(profile) : 'no profile',
-        'full profile': JSON.stringify(profile, null, 2),
+        'profile.display_name': profile?.display_name,
       });
     }
-  }, [user, profile, currentAvatar, avatarSrc, displayName, rawDisplayName]);
+  }, [user, profile, safeName, avatarSrc]);
 
   useEffect(() => {
     setMounted(true);
@@ -125,9 +122,9 @@ export default function Home() {
               src={avatarSrc}
               alt="Avatar"
               onError={(e) => {
-                // Fallback to shadow avatar if the image fails to load
+                // Fallback to shadow avatar from alexgoiko.com
                 console.log('[Avatar onError] Failed to load:', avatarSrc);
-                e.currentTarget.src = '/avatars/shadow.png';
+                e.currentTarget.src = 'https://www.alexgoiko.com/avatars/shadow.png';
               }}
               style={{
                 width: '100%',
@@ -174,7 +171,7 @@ export default function Home() {
                   letterSpacing: '-0.5px',
                   margin: 0,
                 }}>
-                  {displayName}
+                  <span>{safeName}</span>
                 </h1>
                 {/* Level display */}
                 {levelInfo && (
