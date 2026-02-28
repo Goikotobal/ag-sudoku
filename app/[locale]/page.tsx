@@ -107,8 +107,8 @@ export default function Home() {
           {/* Avatar Display */}
           <div
             style={{
-              width: '72px',
-              height: '72px',
+              width: '80px',
+              height: '80px',
               borderRadius: '16px',
               border: isPro
                 ? '3px solid rgba(168, 85, 247, 0.7)'
@@ -116,7 +116,7 @@ export default function Home() {
               background: isPro
                 ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25))'
                 : 'rgba(168, 85, 247, 0.15)',
-              padding: '4px',
+              overflow: 'hidden',
               boxShadow: isPro
                 ? '0 4px 20px rgba(168, 85, 247, 0.5), 0 0 30px rgba(236, 72, 153, 0.3)'
                 : '0 4px 20px rgba(168, 85, 247, 0.3)',
@@ -134,8 +134,7 @@ export default function Home() {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
-                background: 'rgba(0,0,0,0.1)',
+                objectFit: 'cover',
                 borderRadius: '12px',
               }}
             />
@@ -167,16 +166,11 @@ export default function Home() {
                 <h1 style={{
                   fontSize: 'clamp(22px, 4vw, 28px)',
                   fontWeight: 800,
-                  background: isPro
-                    ? 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f472b6 100%)'
-                    : 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  color: 'white',
                   letterSpacing: '-0.5px',
                   margin: 0,
                 }}>
-                  <span>{safeName}</span>
+                  {safeName}
                 </h1>
                 {/* Level display */}
                 {levelInfo && (
