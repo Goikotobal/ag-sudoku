@@ -38,18 +38,28 @@ export default function Home() {
   const currentAvatar = (user && typeof avatarId === 'string' && avatarId.trim()) ? avatarId : 'shadow';
   const avatarSrc = `/avatars/${currentAvatar}.png`;
 
-  // Debug logging for avatar
+  // Debug logging for avatar and display name
   useEffect(() => {
     if (user) {
-      console.log('[Welcome Screen Avatar Debug]', {
+      console.log('[Welcome Screen Debug]', {
+        // Display name debugging
+        'displayName': displayName,
+        'rawDisplayName': rawDisplayName,
+        'typeof displayName': typeof displayName,
+        'profile.display_name': profile?.display_name,
+        'profile.full_name': profile?.full_name,
+        'user.user_metadata.full_name': user?.user_metadata?.full_name,
+        // Avatar debugging
         'profile.avatar_id': profile?.avatar_id,
         'typeof profile.avatar_id': typeof profile?.avatar_id,
         'currentAvatar': currentAvatar,
         'avatarSrc': avatarSrc,
-        'full profile': profile,
+        // Full objects
+        'profile keys': profile ? Object.keys(profile) : 'no profile',
+        'full profile': JSON.stringify(profile, null, 2),
       });
     }
-  }, [user, profile, currentAvatar, avatarSrc]);
+  }, [user, profile, currentAvatar, avatarSrc, displayName, rawDisplayName]);
 
   useEffect(() => {
     setMounted(true);
