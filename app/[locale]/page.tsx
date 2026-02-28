@@ -4,7 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { LoginButton } from '../components/auth/LoginButton';
-import { AvatarSelector, useAvatar } from '../components/avatars/AvatarSelector';
+import { useAuth } from '@/context/AuthContext';
+import { getLevelFromXP } from '@/hooks/useProfile';
 
 export default function Home() {
   const t = useTranslations();
@@ -13,8 +14,25 @@ export default function Home() {
   const locale = params.locale as string;
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
-  const { selectedAvatar, selectAvatar } = useAvatar();
+
+  // SSO: Get auth state from shared session
+  const { user, profile, loading, signOut } = useAuth();
+
+  // Derive level info from profile XP
+  const levelInfo = profile?.xp !== undefined ? getLevelFromXP(profile.xp) : null;
+
+  // Get display name: prefer display_name, fallback to first name from full_name (max 15 chars)
+  const rawDisplayName = profile?.display_name ||
+    profile?.full_name?.split(' ')[0] ||
+    user?.user_metadata?.full_name?.split(' ')[0] ||
+    'Player';
+  const displayName = rawDisplayName.slice(0, 15);
+
+  // Check if user is Pro
+  const isPro = profile?.subscription_tier === 'pro';
+
+  // Use profile avatar if logged in, otherwise use default
+  const currentAvatar = (user && profile?.avatar_id) ? profile.avatar_id : 'shadow';
 
   useEffect(() => {
     setMounted(true);
@@ -57,23 +75,27 @@ export default function Home() {
           gap: '16px',
           marginBottom: '20px',
         }}>
-          {/* Clickable Avatar */}
-          <button
-            onClick={() => setShowAvatarSelector(true)}
+          {/* Avatar Display */}
+          <div
             style={{
               width: '72px',
               height: '72px',
               borderRadius: '16px',
-              border: '3px solid rgba(168, 85, 247, 0.5)',
-              background: 'rgba(168, 85, 247, 0.15)',
+              border: isPro
+                ? '3px solid rgba(168, 85, 247, 0.7)'
+                : '3px solid rgba(168, 85, 247, 0.5)',
+              background: isPro
+                ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25))'
+                : 'rgba(168, 85, 247, 0.15)',
               padding: '4px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.3)',
+              boxShadow: isPro
+                ? '0 4px 20px rgba(168, 85, 247, 0.5), 0 0 30px rgba(236, 72, 153, 0.3)'
+                : '0 4px 20px rgba(168, 85, 247, 0.3)',
+              position: 'relative',
             }}
           >
             <img
-              src={`/avatars/${selectedAvatar}.png`}
+              src={`/avatars/${currentAvatar}.png`}
               alt="Your avatar"
               style={{
                 width: '100%',
@@ -81,29 +103,97 @@ export default function Home() {
                 objectFit: 'contain',
               }}
             />
-          </button>
+            {/* PRO Badge on Avatar */}
+            {isPro && (
+              <div style={{
+                position: 'absolute',
+                top: '-6px',
+                right: '-6px',
+                background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+                color: 'white',
+                fontSize: '9px',
+                fontWeight: 700,
+                padding: '2px 6px',
+                borderRadius: '6px',
+                boxShadow: '0 2px 8px rgba(168, 85, 247, 0.5)',
+                letterSpacing: '0.5px',
+              }}>
+                PRO
+              </div>
+            )}
+          </div>
 
-          {/* Title */}
+          {/* Title / User Info */}
           <div style={{ textAlign: 'left' }}>
-            <h1 style={{
-              fontSize: 'clamp(28px, 5vw, 36px)',
-              fontWeight: 800,
-              background: 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-1px',
-              margin: 0,
-            }}>
-              AG Sudoku
-            </h1>
-            <p style={{
-              color: 'rgba(255, 255, 255, 0.6)',
-              fontSize: '13px',
-              margin: '4px 0 0 0',
-            }}>
-              {t('sudoku.subtitle')}
-            </p>
+            {user && !loading ? (
+              <>
+                {/* Logged in: Show display name */}
+                <h1 style={{
+                  fontSize: 'clamp(22px, 4vw, 28px)',
+                  fontWeight: 800,
+                  background: isPro
+                    ? 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f472b6 100%)'
+                    : 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  letterSpacing: '-0.5px',
+                  margin: 0,
+                }}>
+                  {displayName}
+                </h1>
+                {/* Level display */}
+                {levelInfo && (
+                  <p style={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: '12px',
+                    margin: '4px 0 0 0',
+                    fontWeight: 600,
+                  }}>
+                    Lvl {levelInfo.level} • {levelInfo.title}
+                  </p>
+                )}
+                {/* Edit Avatar & Profile link */}
+                <a
+                  href="https://alexgoiko.com/profile"
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '11px',
+                    textDecoration: 'none',
+                    marginTop: '4px',
+                    display: 'inline-block',
+                    transition: 'color 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
+                >
+                  ✏️ Edit Avatar & Profile
+                </a>
+              </>
+            ) : (
+              <>
+                {/* Guest: Show title */}
+                <h1 style={{
+                  fontSize: 'clamp(28px, 5vw, 36px)',
+                  fontWeight: 800,
+                  background: 'linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  letterSpacing: '-1px',
+                  margin: 0,
+                }}>
+                  AG Sudoku
+                </h1>
+                <p style={{
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontSize: '13px',
+                  margin: '4px 0 0 0',
+                }}>
+                  {t('sudoku.subtitle')}
+                </p>
+              </>
+            )}
           </div>
         </div>
 
@@ -111,7 +201,28 @@ export default function Home() {
         <div style={{
           marginBottom: '28px',
         }}>
-          <LoginButton variant="compact" selectedAvatar={selectedAvatar} />
+          {user && !loading ? (
+            // Logged in: Show "Not you?" link
+            <button
+              onClick={() => signOut()}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'rgba(255, 255, 255, 0.5)',
+                fontSize: '13px',
+                cursor: 'pointer',
+                padding: '8px 16px',
+                transition: 'color 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
+            >
+              Not you? Sign out
+            </button>
+          ) : (
+            // Guest: Show Sign In with Google
+            <LoginButton variant="compact" selectedAvatar={currentAvatar} />
+          )}
         </div>
 
         {/* Play Sudoku Button - Main CTA */}
@@ -144,7 +255,7 @@ export default function Home() {
           }}
         >
           <span style={{ fontSize: '22px' }}>🎮</span>
-          {t('sudoku.landing.playNow')}
+          {t('sudoku.landing.play')}
         </button>
 
         {/* Difficulty Preview Cards */}
@@ -214,27 +325,58 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Back to Website */}
-        <a
-          href="https://alexgoiko.com"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '8px 14px',
-            background: 'transparent',
-            border: 'none',
-            color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '12px',
-            fontWeight: 500,
-            textDecoration: 'none',
-            cursor: 'pointer',
-            marginTop: '20px',
-            transition: 'color 0.2s ease',
-          }}
-        >
-          ← alexgoiko.com
-        </a>
+        {/* Bottom Links */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '20px',
+        }}>
+          {/* Manage Profile link - only show if logged in */}
+          {user && (
+            <a
+              href="https://alexgoiko.com/profile"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                background: 'rgba(168, 85, 247, 0.1)',
+                border: '1px solid rgba(168, 85, 247, 0.25)',
+                borderRadius: '8px',
+                color: 'rgba(168, 85, 247, 0.8)',
+                fontSize: '12px',
+                fontWeight: 600,
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Manage Profile
+            </a>
+          )}
+          {/* Back to Website */}
+          <a
+            href="https://alexgoiko.com"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              background: 'transparent',
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '12px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'color 0.2s ease',
+            }}
+          >
+            alexgoiko.com
+          </a>
+        </div>
       </div>
 
       {/* Language Selector */}
@@ -283,14 +425,6 @@ export default function Home() {
           </button>
         ))}
       </div>
-
-      {/* Avatar Selector Modal */}
-      <AvatarSelector
-        isOpen={showAvatarSelector}
-        onClose={() => setShowAvatarSelector(false)}
-        selectedAvatar={selectedAvatar}
-        onSelect={selectAvatar}
-      />
 
       {/* CSS Animations */}
       {mounted && (
