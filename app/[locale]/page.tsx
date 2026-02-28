@@ -42,13 +42,11 @@ export default function Home() {
 
   // Use profile avatar if logged in, otherwise use default
   // Load avatars from alexgoiko.com (central avatar repository)
-  // Special case: 'goiki' is a React component, not a PNG - use shadow fallback
   const avatarId = profile?.avatar_id;
   const validAvatarId = (
     user &&
     typeof avatarId === 'string' &&
-    avatarId.trim() &&
-    avatarId !== 'goiki'  // goiki is a special React component, not a PNG
+    avatarId.trim()
   ) ? avatarId : 'shadow';
   const avatarSrc = `https://www.alexgoiko.com/avatars/${validAvatarId}.png`;
 
