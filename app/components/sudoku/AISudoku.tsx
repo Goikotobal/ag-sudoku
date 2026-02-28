@@ -30,13 +30,18 @@ import {
     resetSettings as resetSettingsData,
     type GameSettings
 } from '@/utils/settingsManager'
+import { getDifficultyRules } from '@/utils/difficultyRules'
 
 interface AISudokuProps {
     onQuit?: () => void;
     initialDifficulty?: 'medium' | 'expert' | 'pro';
+    isPro?: boolean;
 }
 
-export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
+export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: AISudokuProps) {
+    // Debug: Log received props
+    console.log('[AISudoku] Component mounting/updating with initialDifficulty:', initialDifficulty, 'isPro:', isPro);
+
     // Translations
     const t = useSudokuTranslations()
 
@@ -197,8 +202,8 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             autoFinish: true,
         },
         pro: {
-            maxMistakes: 1, // UPDATED: 1 mistake = game over! (was 0 = infinite)
-            hints: 1, // UPDATED: 1 hint allowed! (was 0)
+            maxMistakes: 0, // Pro: 0 mistakes allowed - instant game over
+            hints: 2, // Pro: 2 AI hints allowed
             aiSolve: false,
             undo: true,
             autoFinish: false,
@@ -234,8 +239,15 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
         return () => window.removeEventListener("resize", checkDesktop)
     }, [])
 
-    // AUTO-SAVE: Load saved game on mount
+    // AUTO-SAVE: Load saved game on mount (skip if starting fresh game with initialDifficulty)
     useEffect(() => {
+        // If initialDifficulty is provided, user explicitly chose a difficulty - start fresh
+        if (initialDifficulty) {
+            localStorage.removeItem("ag-sudoku-save")
+            console.log("Auto-save cleared (starting fresh with selected difficulty)")
+            return
+        }
+
         try {
             const saved = localStorage.getItem("ag-sudoku-save")
             if (saved) {
@@ -273,7 +285,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             console.error("Failed to load saved game:", error)
             localStorage.removeItem("ag-sudoku-save")
         }
-    }, [])
+    }, [initialDifficulty])
 
     // PRO UNLOCK: Force Pro mode to always be unlocked
     useEffect(() => {
@@ -1058,6 +1070,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
 
     // Start new game
     const newGame = useCallback(() => {
+        console.log('[AISudoku] newGame called with currentDifficulty:', currentDifficulty, 'isPro:', isPro);
         const newSolution = generateSolution()
         const newBoard = createPuzzle(
             newSolution,
@@ -1068,7 +1081,12 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
         setBoard(newBoard)
         setInitialBoard(newBoard.map((row) => [...row]))
 
-        const rules = difficultyRules[currentDifficulty as keyof typeof difficultyRules]
+        // Use getDifficultyRules to get correct rules based on difficulty and subscription
+        const externalRules = getDifficultyRules(currentDifficulty, isPro);
+        const rules = externalRules
+            ? { maxMistakes: externalRules.maxErrors, hints: externalRules.maxHints }
+            : difficultyRules[currentDifficulty as keyof typeof difficultyRules];
+        console.log('[AISudoku] Applying rules:', rules);
         setMaxMistakes(rules.maxMistakes)
         setHintsRemaining(rules.hints)
         setMistakes(0)
@@ -1096,7 +1114,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
         // Clear auto-save when starting new game
         localStorage.removeItem("ag-sudoku-save")
         console.log("Auto-save cleared (new game)")
-    }, [currentDifficulty, generateSolution, createPuzzle])
+    }, [currentDifficulty, isPro, generateSolution, createPuzzle])
 
     // Timer effect
     useEffect(() => {
@@ -1270,7 +1288,9 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             if (num !== 0 && num !== solution[row][col]) {
                 const newMistakes = mistakes + 1
                 setMistakes(newMistakes)
-                if (newMistakes >= maxMistakes && maxMistakes > 0) {
+                // Pro mode (maxMistakes=0): first mistake = game over
+                // Other modes: game over when mistakes reach maxMistakes
+                if (maxMistakes === 0 || newMistakes >= maxMistakes) {
                     setTimeout(() => {
                         setShowGameOverModal(true)
                         // Record game result for stats (loss) - local + cloud
@@ -1765,7 +1785,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                         marginTop: 1,
                     }}
                 >
-                    {gameSettings.showMistakeCounter ? `${mistakes}/${maxMistakes || "∞"}` : "--"}
+                    {gameSettings.showMistakeCounter ? `${mistakes}/${maxMistakes}` : "--"}
                 </div>
             </div>
             <div
@@ -3574,7 +3594,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                         color: "#064e3b",
                                     }}
                                 >
-                                    {mistakes}/{maxMistakes || "∞"}
+                                    {mistakes}/{maxMistakes}
                                 </div>
                             </div>
                             <div

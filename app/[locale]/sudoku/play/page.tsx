@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AISudoku from '../../../components/sudoku/AISudoku';
 import { useAuth } from '@/context/AuthContext';
-import { canAccessDifficulty } from '@/utils/difficultyRules';
+import { getFreeRules, getProRules } from '@/utils/difficultyRules';
 
 type Difficulty = 'medium' | 'expert' | 'pro';
 
@@ -17,7 +17,8 @@ export default function SudokuPlayPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('medium');
   const [mounted, setMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<Difficulty | null>(null);
-  const [showProModal, setShowProModal] = useState(false);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
+  const [pendingDifficulty, setPendingDifficulty] = useState<Difficulty | null>(null);
 
   const isPro = profile?.subscription_tier === 'pro';
 
@@ -25,18 +26,37 @@ export default function SudokuPlayPage() {
     setMounted(true);
   }, []);
 
-  const startGame = (difficulty: Difficulty) => {
-    // Check if user can access this difficulty
-    if (!canAccessDifficulty(difficulty, isPro)) {
-      setShowProModal(true);
+  const handleDifficultyClick = (difficulty: Difficulty) => {
+    console.log('[Play Page] Difficulty clicked:', difficulty, 'isPro:', isPro);
+
+    // Pro users skip the modal entirely
+    if (isPro) {
+      console.log('[Play Page] Pro user - starting game directly');
+      setSelectedDifficulty(difficulty);
+      setShowGame(true);
       return;
     }
-    setSelectedDifficulty(difficulty);
+
+    // Free users see the comparison modal
+    setPendingDifficulty(difficulty);
+    setShowComparisonModal(true);
+  };
+
+  const handlePlayAsFree = () => {
+    if (!pendingDifficulty) return;
+
+    // Pro difficulty is not available for free users
+    if (pendingDifficulty === 'pro') return;
+
+    console.log('[Play Page] Playing as Free with difficulty:', pendingDifficulty);
+    setSelectedDifficulty(pendingDifficulty);
+    setShowComparisonModal(false);
     setShowGame(true);
   };
 
   if (showGame) {
-    return <AISudoku initialDifficulty={selectedDifficulty} />;
+    console.log('[Play Page] Rendering AISudoku with selectedDifficulty:', selectedDifficulty, 'isPro:', isPro);
+    return <AISudoku initialDifficulty={selectedDifficulty} isPro={isPro} />;
   }
 
   const difficulties: { key: Difficulty; color: string; icon: string; gradient: string }[] = [
@@ -44,6 +64,26 @@ export default function SudokuPlayPage() {
     { key: 'expert', color: '#f59e0b', icon: '🔥', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
     { key: 'pro', color: '#ef4444', icon: '💀', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' },
   ];
+
+  // Get the display name for the difficulty
+  const getDifficultyDisplayName = (diff: Difficulty) => {
+    const names: Record<Difficulty, string> = {
+      medium: 'Medium',
+      expert: 'Expert',
+      pro: 'Pro'
+    };
+    return names[diff];
+  };
+
+  // Get the icon for the difficulty
+  const getDifficultyIcon = (diff: Difficulty) => {
+    const icons: Record<Difficulty, string> = {
+      medium: '🎯',
+      expert: '🔥',
+      pro: '💀'
+    };
+    return icons[diff];
+  };
 
   return (
     <main suppressHydrationWarning style={{
@@ -138,7 +178,7 @@ export default function SudokuPlayPage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
               }}
-              onClick={() => startGame(diff.key)}
+              onClick={() => handleDifficultyClick(diff.key)}
             >
               {/* Icon */}
               <div style={{
@@ -175,7 +215,7 @@ export default function SudokuPlayPage() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  startGame(diff.key);
+                  handleDifficultyClick(diff.key);
                 }}
                 style={{
                   width: '100%',
@@ -293,110 +333,284 @@ export default function SudokuPlayPage() {
         `}</style>
       )}
 
-      {/* Pro Mode Upgrade Modal */}
-      {showProModal && (
+      {/* Free vs Pro Comparison Modal */}
+      {showComparisonModal && pendingDifficulty && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(8px)',
+            background: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 1000,
             padding: 20,
           }}
-          onClick={() => setShowProModal(false)}
+          onClick={() => setShowComparisonModal(false)}
         >
           <div
             style={{
-              background: 'linear-gradient(135deg, #1f1f2e 0%, #2d1f3d 100%)',
-              borderRadius: 24,
-              padding: 32,
-              maxWidth: 400,
+              background: 'linear-gradient(135deg, rgba(30, 30, 45, 0.98) 0%, rgba(45, 35, 60, 0.98) 100%)',
+              borderRadius: 28,
+              padding: '32px 28px',
+              maxWidth: 520,
               width: '100%',
               textAlign: 'center',
-              border: '2px solid rgba(168, 85, 247, 0.3)',
-              boxShadow: '0 20px 60px rgba(168, 85, 247, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 24px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(168, 85, 247, 0.15)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ fontSize: 48, marginBottom: 16 }}>💀</div>
-            <h2 style={{
-              color: '#ef4444',
-              fontSize: 24,
-              fontWeight: 700,
-              margin: '0 0 8px 0',
-            }}>
-              Pro Mode
-            </h2>
-            <p style={{
-              color: 'rgba(168, 85, 247, 0.9)',
-              fontSize: 14,
-              fontWeight: 600,
-              margin: '0 0 20px 0',
-            }}>
-              Subscribers Only
-            </p>
+            {/* Header */}
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>
+                {getDifficultyIcon(pendingDifficulty)}
+              </div>
+              <h2 style={{
+                color: 'white',
+                fontSize: 22,
+                fontWeight: 700,
+                margin: 0,
+              }}>
+                AG Sudoku — {getDifficultyDisplayName(pendingDifficulty)}
+              </h2>
+            </div>
 
+            {/* Comparison Grid */}
             <div style={{
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              borderRadius: 12,
-              padding: 16,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 16,
               marginBottom: 24,
             }}>
-              <div style={{ color: 'white', fontSize: 14, lineHeight: 1.6 }}>
-                <div style={{ marginBottom: 8 }}>
-                  <span style={{ color: '#ef4444', fontWeight: 700 }}>0</span> errors allowed
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                  <span style={{ color: '#a855f7', fontWeight: 700 }}>2</span> AI hints
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
-                  The ultimate challenge
+              {/* Free Column */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                borderRadius: 16,
+                padding: 20,
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}>
+                <h3 style={{
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: '0 0 16px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>
+                  Free
+                </h3>
+
+                {pendingDifficulty === 'pro' ? (
+                  <div style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: 14,
+                    fontStyle: 'italic',
+                    padding: '20px 0',
+                  }}>
+                    Not available
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'left' }}>
+                    {(() => {
+                      const freeRules = getFreeRules(pendingDifficulty);
+                      if (!freeRules) return null;
+                      return (
+                        <>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            marginBottom: 10,
+                            color: 'white',
+                            fontSize: 14,
+                          }}>
+                            <span style={{ color: '#10b981' }}>✓</span>
+                            {freeRules.maxErrors} {freeRules.maxErrors === 1 ? 'mistake' : 'mistakes'}
+                          </div>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            marginBottom: 10,
+                            color: 'white',
+                            fontSize: 14,
+                          }}>
+                            <span style={{ color: '#10b981' }}>✓</span>
+                            {freeRules.maxHints} AI {freeRules.maxHints === 1 ? 'hint' : 'hints'}
+                          </div>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            color: 'white',
+                            fontSize: 14,
+                          }}>
+                            <span style={{ color: '#10b981' }}>✓</span>
+                            Auto-save
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
+              </div>
+
+              {/* Pro Column */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%)',
+                borderRadius: 16,
+                padding: 20,
+                border: '2px solid rgba(168, 85, 247, 0.4)',
+                boxShadow: '0 0 30px rgba(168, 85, 247, 0.2)',
+              }}>
+                <h3 style={{
+                  background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: '0 0 16px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>
+                  PRO
+                </h3>
+
+                <div style={{ textAlign: 'left' }}>
+                  {(() => {
+                    const proRules = getProRules(pendingDifficulty);
+                    return (
+                      <>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 10,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          {proRules.maxErrors} {proRules.maxErrors === 1 ? 'mistake' : 'mistakes'}
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 10,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          {proRules.maxHints} AI {proRules.maxHints === 1 ? 'hint' : 'hints'}
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 10,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          Auto-save
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 10,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          Challenge Week
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          marginBottom: 10,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          1v1 Challenges
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          color: 'white',
+                          fontSize: 14,
+                        }}>
+                          <span style={{ color: '#a855f7' }}>✓</span>
+                          Leaderboards
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
 
-            <a
-              href="https://alexgoiko.com/subscribe"
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '14px 24px',
-                fontSize: 16,
-                fontWeight: 700,
-                color: 'white',
-                background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
-                border: 'none',
-                borderRadius: 12,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
-                marginBottom: 12,
-              }}
-            >
-              Upgrade to Pro
-            </a>
+            {/* Action Buttons */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              flexDirection: 'column',
+            }}>
+              {/* Upgrade to Pro Button */}
+              <a
+                href="https://alexgoiko.com/subscribe"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  width: '100%',
+                  padding: '14px 24px',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: 'white',
+                  background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                  border: 'none',
+                  borderRadius: 14,
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                Upgrade to Pro
+                <span style={{ fontSize: 14 }}>↗</span>
+              </a>
 
-            <button
-              onClick={() => setShowProModal(false)}
-              style={{
-                width: '100%',
-                padding: '12px 24px',
-                fontSize: 14,
-                fontWeight: 600,
-                color: 'rgba(255, 255, 255, 0.6)',
-                background: 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: 12,
-                cursor: 'pointer',
-              }}
-            >
-              Maybe later
-            </button>
+              {/* Play as Free Button */}
+              <button
+                onClick={handlePlayAsFree}
+                disabled={pendingDifficulty === 'pro'}
+                style={{
+                  width: '100%',
+                  padding: '14px 24px',
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: pendingDifficulty === 'pro' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.8)',
+                  background: 'transparent',
+                  border: `1px solid ${pendingDifficulty === 'pro' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.25)'}`,
+                  borderRadius: 14,
+                  cursor: pendingDifficulty === 'pro' ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {pendingDifficulty === 'pro' ? 'Pro subscribers only' : 'Play as Free'}
+              </button>
+            </div>
           </div>
         </div>
       )}

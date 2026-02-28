@@ -7,25 +7,43 @@ export interface DifficultyRules {
   maxHints: number;
 }
 
+// Get rules for Free tier
+export function getFreeRules(difficulty: string): DifficultyRules | null {
+  if (difficulty === 'medium') {
+    return { maxErrors: 3, maxHints: 3 };
+  }
+  if (difficulty === 'expert') {
+    return { maxErrors: 1, maxHints: 1 };
+  }
+  if (difficulty === 'pro') {
+    return null; // Pro difficulty not available for free users
+  }
+  return { maxErrors: 3, maxHints: 3 };
+}
+
+// Get rules for Pro tier
+export function getProRules(difficulty: string): DifficultyRules {
+  if (difficulty === 'medium') {
+    return { maxErrors: 3, maxHints: 3 };
+  }
+  if (difficulty === 'expert') {
+    return { maxErrors: 1, maxHints: 3 };
+  }
+  if (difficulty === 'pro') {
+    return { maxErrors: 0, maxHints: 2 };
+  }
+  return { maxErrors: 3, maxHints: 3 };
+}
+
+// Get rules based on user's subscription tier
 export function getDifficultyRules(
   difficulty: string,
   isPro: boolean
 ): DifficultyRules | null {
-  if (difficulty === 'medium') {
-    return { maxErrors: 3, maxHints: 3 };
+  if (isPro) {
+    return getProRules(difficulty);
   }
-
-  if (difficulty === 'expert') {
-    return { maxErrors: 1, maxHints: isPro ? 3 : 1 };
-  }
-
-  if (difficulty === 'pro') {
-    if (!isPro) return null; // blocked for non-pro users
-    return { maxErrors: 0, maxHints: 2 };
-  }
-
-  // Default fallback
-  return { maxErrors: 3, maxHints: 3 };
+  return getFreeRules(difficulty);
 }
 
 // Check if user can access a difficulty level
