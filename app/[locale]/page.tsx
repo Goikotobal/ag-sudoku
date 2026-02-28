@@ -42,9 +42,15 @@ export default function Home() {
 
   // Use profile avatar if logged in, otherwise use default
   // Load avatars from alexgoiko.com (central avatar repository)
+  // Special case: 'goiki' is a React component, not a PNG - use shadow fallback
   const avatarId = profile?.avatar_id;
-  const currentAvatar = (user && typeof avatarId === 'string' && avatarId.trim()) ? avatarId : 'shadow';
-  const avatarSrc = `https://www.alexgoiko.com/avatars/${currentAvatar}.png`;
+  const validAvatarId = (
+    user &&
+    typeof avatarId === 'string' &&
+    avatarId.trim() &&
+    avatarId !== 'goiki'  // goiki is a special React component, not a PNG
+  ) ? avatarId : 'shadow';
+  const avatarSrc = `https://www.alexgoiko.com/avatars/${validAvatarId}.png`;
 
   // Debug logging (temporary)
   useEffect(() => {
@@ -52,11 +58,12 @@ export default function Home() {
       console.log('[Welcome Screen Debug]', {
         safeName,
         avatarSrc,
-        'profile.avatar_id': profile?.avatar_id,
+        validAvatarId,
+        'profile.avatar_id (raw)': profile?.avatar_id,
         'profile.display_name': profile?.display_name,
       });
     }
-  }, [user, profile, safeName, avatarSrc]);
+  }, [user, profile, safeName, avatarSrc, validAvatarId]);
 
   useEffect(() => {
     setMounted(true);
@@ -252,7 +259,7 @@ export default function Home() {
             </button>
           ) : (
             // Guest: Show Sign In with Google
-            <LoginButton variant="compact" selectedAvatar={currentAvatar} />
+            <LoginButton variant="compact" selectedAvatar={validAvatarId} />
           )}
         </div>
 
