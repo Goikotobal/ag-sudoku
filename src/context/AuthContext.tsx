@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 interface Profile {
   id: string;
   email: string;
-  subscription_tier: 'free' | 'pro';
+  subscription_tier?: string;
   stripe_customer_id?: string;
   full_name?: string;
   display_name?: string;
@@ -15,6 +15,12 @@ interface Profile {
   avatar_id?: string;
   color_id?: string;
   loadout_json?: Record<string, unknown>;
+  xp?: number;
+  level?: number;
+  challenge_attempts_today?: number;
+  challenge_attempts_reset_date?: string;
+  challenge_qualified_until?: string;
+  challenge_best_time?: number;
 }
 
 interface AuthContextType {
