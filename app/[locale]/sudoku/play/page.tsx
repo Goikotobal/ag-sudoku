@@ -4,22 +4,33 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AISudoku from '../../../components/sudoku/AISudoku';
+import { useAuth } from '@/context/AuthContext';
+import { canAccessDifficulty } from '@/utils/difficultyRules';
 
 type Difficulty = 'medium' | 'expert' | 'pro';
 
 export default function SudokuPlayPage() {
   const t = useTranslations('sudoku');
   const router = useRouter();
+  const { profile } = useAuth();
   const [showGame, setShowGame] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('medium');
   const [mounted, setMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<Difficulty | null>(null);
+  const [showProModal, setShowProModal] = useState(false);
+
+  const isPro = profile?.subscription_tier === 'pro';
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const startGame = (difficulty: Difficulty) => {
+    // Check if user can access this difficulty
+    if (!canAccessDifficulty(difficulty, isPro)) {
+      setShowProModal(true);
+      return;
+    }
     setSelectedDifficulty(difficulty);
     setShowGame(true);
   };
@@ -280,6 +291,114 @@ export default function SudokuPlayPage() {
             }
           }
         `}</style>
+      )}
+
+      {/* Pro Mode Upgrade Modal */}
+      {showProModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000,
+            padding: 20,
+          }}
+          onClick={() => setShowProModal(false)}
+        >
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #1f1f2e 0%, #2d1f3d 100%)',
+              borderRadius: 24,
+              padding: 32,
+              maxWidth: 400,
+              width: '100%',
+              textAlign: 'center',
+              border: '2px solid rgba(168, 85, 247, 0.3)',
+              boxShadow: '0 20px 60px rgba(168, 85, 247, 0.3)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ fontSize: 48, marginBottom: 16 }}>💀</div>
+            <h2 style={{
+              color: '#ef4444',
+              fontSize: 24,
+              fontWeight: 700,
+              margin: '0 0 8px 0',
+            }}>
+              Pro Mode
+            </h2>
+            <p style={{
+              color: 'rgba(168, 85, 247, 0.9)',
+              fontSize: 14,
+              fontWeight: 600,
+              margin: '0 0 20px 0',
+            }}>
+              Subscribers Only
+            </p>
+
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              borderRadius: 12,
+              padding: 16,
+              marginBottom: 24,
+            }}>
+              <div style={{ color: 'white', fontSize: 14, lineHeight: 1.6 }}>
+                <div style={{ marginBottom: 8 }}>
+                  <span style={{ color: '#ef4444', fontWeight: 700 }}>0</span> errors allowed
+                </div>
+                <div style={{ marginBottom: 8 }}>
+                  <span style={{ color: '#a855f7', fontWeight: 700 }}>2</span> AI hints
+                </div>
+                <div style={{ color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
+                  The ultimate challenge
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="https://alexgoiko.com/subscribe"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '14px 24px',
+                fontSize: 16,
+                fontWeight: 700,
+                color: 'white',
+                background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                border: 'none',
+                borderRadius: 12,
+                cursor: 'pointer',
+                textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
+                marginBottom: 12,
+              }}
+            >
+              Upgrade to Pro
+            </a>
+
+            <button
+              onClick={() => setShowProModal(false)}
+              style={{
+                width: '100%',
+                padding: '12px 24px',
+                fontSize: 14,
+                fontWeight: 600,
+                color: 'rgba(255, 255, 255, 0.6)',
+                background: 'transparent',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: 12,
+                cursor: 'pointer',
+              }}
+            >
+              Maybe later
+            </button>
+          </div>
+        </div>
       )}
     </main>
   );

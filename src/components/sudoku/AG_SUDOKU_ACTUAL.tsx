@@ -1500,28 +1500,28 @@ export default function AISudoku() {
             {/* Right: Profile Badge */}
             {isLoggedIn && authProfile ? (
                 <a
-                    href="https://goiko-avatar.vercel.app/en/profile"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="https://alexgoiko.com/profile"
                     style={{
                         display: "flex",
-                        flexDirection: "column",
                         alignItems: "center",
-                        gap: 4,
+                        gap: 8,
                         textDecoration: "none",
                         flexShrink: 0,
                     }}
                 >
                     <div style={{ position: "relative" }}>
                         <img
-                            src={`/avatars/${authProfile.avatar_id || 'shadow'}.png`}
+                            src={`https://www.alexgoiko.com/avatars/${authProfile.avatar_id || 'shadow'}.png`}
                             alt="Avatar"
+                            onError={(e) => {
+                                e.currentTarget.src = 'https://www.alexgoiko.com/avatars/shadow.png';
+                            }}
                             style={{
-                                width: isDesktop ? 56 : 44,
-                                height: isDesktop ? 56 : 44,
-                                borderRadius: 14,
+                                width: 36,
+                                height: 36,
+                                borderRadius: 10,
                                 border: authProfile.subscription_tier === 'pro'
-                                    ? "3px solid #a855f7"
+                                    ? "2px solid #a855f7"
                                     : "2px solid #e5e7eb",
                                 objectFit: "cover",
                                 background: "#f3f4f6",
@@ -1531,14 +1531,14 @@ export default function AISudoku() {
                             <div
                                 style={{
                                     position: "absolute",
-                                    bottom: -4,
-                                    right: -4,
+                                    bottom: -3,
+                                    right: -3,
                                     background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
                                     color: "white",
-                                    fontSize: 8,
+                                    fontSize: 7,
                                     fontWeight: 700,
-                                    padding: "2px 5px",
-                                    borderRadius: 6,
+                                    padding: "1px 4px",
+                                    borderRadius: 4,
                                     textTransform: "uppercase",
                                 }}
                             >
@@ -1546,50 +1546,63 @@ export default function AISudoku() {
                             </div>
                         )}
                     </div>
-                    <div
-                        style={{
-                            fontSize: isDesktop ? 11 : 9,
-                            fontWeight: 600,
-                            color: "#4a5568",
-                            maxWidth: isDesktop ? 70 : 50,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            textAlign: "center",
-                        }}
-                    >
-                        {authProfile.display_name || (authProfile.full_name || '').split(' ')[0] || 'Player'}
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                        <div
+                            style={{
+                                fontSize: 13,
+                                fontWeight: 600,
+                                color: "#374151",
+                                maxWidth: 80,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {(authProfile.display_name || (authProfile.full_name || '').split(' ')[0] || 'Player').slice(0, 15)}
+                        </div>
+                        {levelInfo && (
+                            <div
+                                style={{
+                                    fontSize: 10,
+                                    fontWeight: 600,
+                                    color: "white",
+                                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                    padding: "1px 6px",
+                                    borderRadius: 8,
+                                    marginTop: 2,
+                                }}
+                            >
+                                Lv{levelInfo.level}
+                            </div>
+                        )}
                     </div>
                 </a>
             ) : (
                 <a
-                    href="https://goiko-avatar.vercel.app/en/login"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="https://alexgoiko.com"
                     style={{
                         display: "flex",
-                        flexDirection: "column",
                         alignItems: "center",
-                        gap: 4,
+                        gap: 6,
                         textDecoration: "none",
                         flexShrink: 0,
-                        padding: "8px 12px",
-                        borderRadius: 12,
+                        padding: "6px 10px",
+                        borderRadius: 10,
                         background: "rgba(168, 85, 247, 0.1)",
                         border: "1px dashed rgba(168, 85, 247, 0.3)",
                     }}
                 >
-                    <div style={{ fontSize: isDesktop ? 20 : 16 }}>👤</div>
+                    <div style={{ fontSize: 18 }}>👤</div>
                     <div
                         style={{
-                            fontSize: isDesktop ? 10 : 8,
+                            fontSize: 10,
                             fontWeight: 600,
                             color: "#a855f7",
-                            textAlign: "center",
+                            textAlign: "left",
                             lineHeight: 1.2,
                         }}
                     >
-                        Sign in at<br />alexgoiko.com
+                        Sign in
                     </div>
                 </a>
             )}
@@ -2508,18 +2521,25 @@ export default function AISudoku() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {/* Header */}
-                        <div style={{ fontSize: 36, marginBottom: 8 }}>💡</div>
+                        {/* Header - Technique Name */}
+                        <div style={{ fontSize: 32, marginBottom: 8 }}>💡</div>
                         <h2
                             style={{
                                 color: "#a855f7",
-                                marginBottom: 12,
-                                fontSize: 20,
-                                fontWeight: 700,
+                                marginBottom: 4,
+                                fontSize: 22,
+                                fontWeight: 800,
                             }}
                         >
-                            Found a Move!
+                            {hintExplanation.technique}
                         </h2>
+                        <div
+                            style={{
+                                height: 2,
+                                background: "linear-gradient(90deg, transparent, #a855f7, transparent)",
+                                marginBottom: 12,
+                            }}
+                        />
 
                         {/* Target Cell - Compact */}
                         <div
@@ -2578,25 +2598,6 @@ export default function AISudoku() {
                             </div>
                         </div>
 
-                        {/* Technique */}
-                        <div
-                            style={{
-                                background: "#f3e8ff",
-                                padding: 8,
-                                borderRadius: 8,
-                                marginBottom: 10,
-                            }}
-                        >
-                            <div
-                                style={{
-                                    fontSize: 11,
-                                    color: "#a855f7",
-                                    fontWeight: 600,
-                                }}
-                            >
-                                📚 {hintExplanation.technique}
-                            </div>
-                        </div>
 
                         {/* LOGICAL EXPLANATION - Why this number goes here */}
                         <div
