@@ -104,7 +104,7 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     const [bestExpertTime, setBestExpertTime] = useState<number | null>(null)
 
     // CLOUD PROFILE SYSTEM - XP & Level tracking
-    const { user, loading: authLoading } = useAuth()
+    const { user, profile: authProfile, loading: authLoading } = useAuth()
     const { profile, levelInfo, loading: profileLoading, updateProfile } = useProfile(user)
     const isLoggedIn = !!user
     const [lastGameXP, setLastGameXP] = useState<number>(0)
@@ -136,6 +136,10 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
     // WELCOME SCREEN - Show before game starts (skip if initialDifficulty provided)
     const [showWelcomeScreen, setShowWelcomeScreen] = useState(!initialDifficulty)
     const [welcomeDifficulty, setWelcomeDifficulty] = useState<'medium' | 'expert' | 'pro'>(initialDifficulty || "medium")
+
+    // PRO DIFFICULTY GATE - Check subscription tier from main alexgoiko.com profile
+    const [showProUpgradeModal, setShowProUpgradeModal] = useState(false)
+    const isProSubscriber = authProfile?.subscription_tier === 'pro'
 
     // STATS VIEW - Show statistics overlay
     const [showStatsView, setShowStatsView] = useState(false)
@@ -1562,45 +1566,110 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
             {/* Right: Profile Badge + Home Button */}
             <div style={{ display: "flex", alignItems: "center", gap: isDesktop ? 12 : 8 }}>
                 {/* Profile Badge */}
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 2,
-                    }}
-                >
-                    <div
+                {user && authProfile ? (
+                    <a
+                        href="https://alexgoiko.com/profile"
                         style={{
-                            width: isDesktop ? 42 : 36,
-                            height: isDesktop ? 42 : 36,
-                            borderRadius: 10,
-                            background: "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
-                            border: "2px dashed #d1d5db",
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: isDesktop ? 18 : 16,
-                            cursor: "pointer",
-                            transition: "all 0.2s ease",
+                            gap: 8,
+                            textDecoration: "none",
                         }}
-                        title="Profile (Coming Soon)"
                     >
-                        👤
-                    </div>
-                    <div
+                        <div style={{ position: "relative" }}>
+                            <img
+                                src={`https://www.alexgoiko.com/avatars/${authProfile.avatar_id || 'shadow'}.png`}
+                                alt="Avatar"
+                                onError={(e) => {
+                                    e.currentTarget.src = 'https://www.alexgoiko.com/avatars/shadow.png';
+                                }}
+                                style={{
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: 8,
+                                    border: authProfile.subscription_tier === 'pro'
+                                        ? "2px solid #a855f7"
+                                        : "2px solid #e5e7eb",
+                                    objectFit: "cover",
+                                    background: "#f3f4f6",
+                                }}
+                            />
+                            {authProfile.subscription_tier === 'pro' && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        bottom: -3,
+                                        right: -3,
+                                        background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                        color: "white",
+                                        fontSize: 7,
+                                        fontWeight: 700,
+                                        padding: "1px 4px",
+                                        borderRadius: 4,
+                                        textTransform: "uppercase",
+                                    }}
+                                >
+                                    PRO
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                            <div
+                                style={{
+                                    fontSize: 13,
+                                    fontWeight: 600,
+                                    color: "#374151",
+                                    maxWidth: 70,
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                {(authProfile.display_name || (authProfile.full_name || '').split(' ')[0] || 'Player').slice(0, 15)}
+                            </div>
+                            {levelInfo && (
+                                <div
+                                    style={{
+                                        fontSize: 9,
+                                        fontWeight: 600,
+                                        color: "white",
+                                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                        padding: "1px 5px",
+                                        borderRadius: 6,
+                                        marginTop: 1,
+                                    }}
+                                >
+                                    Lv{levelInfo.level}
+                                </div>
+                            )}
+                        </div>
+                    </a>
+                ) : (
+                    <a
+                        href="https://alexgoiko.com"
                         style={{
-                            fontSize: "8px",
-                            fontWeight: 600,
-                            color: "#64748b",
-                            background: "#f1f5f9",
-                            padding: "1px 5px",
-                            borderRadius: 6,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            textDecoration: "none",
+                            padding: "6px 10px",
+                            borderRadius: 8,
+                            background: "rgba(168, 85, 247, 0.1)",
+                            border: "1px dashed rgba(168, 85, 247, 0.3)",
                         }}
                     >
-                        Lvl 1
-                    </div>
-                </div>
+                        <div style={{ fontSize: 16 }}>👤</div>
+                        <div
+                            style={{
+                                fontSize: 10,
+                                fontWeight: 600,
+                                color: "#a855f7",
+                            }}
+                        >
+                            Sign in
+                        </div>
+                    </a>
+                )}
 
                 {/* Home Button */}
                 <button
@@ -2677,22 +2746,34 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                             {(['medium', 'expert', 'pro'] as const).map((diffKey) => {
                                 const diff = diffKey.charAt(0).toUpperCase() + diffKey.slice(1)
                                 const isSelected = welcomeDifficulty === diffKey
+                                // Pro difficulty requires subscription (unless already unlocked via gameplay)
+                                const isProLocked = diffKey === 'pro' && !isProSubscriber && !isProUnlocked
                                 return (
                                     <button
                                         key={diff}
-                                        onClick={() => setWelcomeDifficulty(diffKey)}
+                                        onClick={() => {
+                                            if (isProLocked) {
+                                                setShowProUpgradeModal(true)
+                                            } else {
+                                                setWelcomeDifficulty(diffKey)
+                                            }
+                                        }}
                                         style={{
                                             flex: 1,
                                             padding: '14px 12px',
                                             background: isSelected
                                                 ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                                                : 'rgba(255, 255, 255, 0.1)',
+                                                : isProLocked
+                                                    ? 'rgba(255, 255, 255, 0.05)'
+                                                    : 'rgba(255, 255, 255, 0.1)',
                                             backdropFilter: 'blur(10px)',
                                             WebkitBackdropFilter: 'blur(10px)',
-                                            color: '#ffffff',
+                                            color: isProLocked ? 'rgba(255, 255, 255, 0.5)' : '#ffffff',
                                             border: isSelected
                                                 ? '1px solid rgba(255, 255, 255, 0.3)'
-                                                : '1px solid rgba(255, 255, 255, 0.2)',
+                                                : isProLocked
+                                                    ? '1px solid rgba(168, 85, 247, 0.3)'
+                                                    : '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: '12px',
                                             fontSize: '14px',
                                             fontWeight: '700',
@@ -2702,21 +2783,38 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                                 ? '0 4px 16px rgba(16, 185, 129, 0.4)'
                                                 : '0 2px 8px rgba(0, 0, 0, 0.15)',
                                             textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+                                            position: 'relative',
                                         }}
                                         onMouseEnter={(e) => {
-                                            if (!isSelected) {
+                                            if (!isSelected && !isProLocked) {
                                                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)'
                                                 e.currentTarget.style.transform = 'translateY(-1px)'
                                             }
                                         }}
                                         onMouseLeave={(e) => {
-                                            if (!isSelected) {
+                                            if (!isSelected && !isProLocked) {
                                                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
                                                 e.currentTarget.style.transform = 'translateY(0)'
                                             }
                                         }}
                                     >
                                         {diff}
+                                        {isProLocked && (
+                                            <span style={{
+                                                position: 'absolute',
+                                                top: '-6px',
+                                                right: '-6px',
+                                                background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+                                                color: 'white',
+                                                fontSize: '8px',
+                                                fontWeight: 700,
+                                                padding: '2px 5px',
+                                                borderRadius: '4px',
+                                                boxShadow: '0 2px 6px rgba(168, 85, 247, 0.4)',
+                                            }}>
+                                                PRO
+                                            </span>
+                                        )}
                                     </button>
                                 )
                             })}
@@ -3581,6 +3679,134 @@ export default function AISudoku({ onQuit, initialDifficulty }: AISudokuProps) {
                                 {t.modals.pause.quitBtn}
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Pro Upgrade Modal */}
+            {showProUpgradeModal && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.85)",
+                        backdropFilter: "blur(10px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1000,
+                        padding: 20,
+                    }}
+                    onClick={() => setShowProUpgradeModal(false)}
+                >
+                    <div
+                        style={{
+                            background: "rgba(30, 30, 45, 0.95)",
+                            backdropFilter: "blur(30px)",
+                            WebkitBackdropFilter: "blur(30px)",
+                            padding: 32,
+                            borderRadius: 24,
+                            textAlign: "center",
+                            maxWidth: 400,
+                            width: "95%",
+                            boxShadow: "0 25px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(168, 85, 247, 0.15)",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div style={{ fontSize: 56, marginBottom: 16 }}>💀</div>
+                        <h2
+                            style={{
+                                background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                                marginBottom: 12,
+                                fontSize: 26,
+                                fontWeight: 700,
+                            }}
+                        >
+                            Pro Difficulty
+                        </h2>
+                        <p
+                            style={{
+                                color: "rgba(255, 255, 255, 0.7)",
+                                marginBottom: 24,
+                                fontSize: 14,
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            The ultimate challenge awaits! Pro difficulty is available exclusively for AG Games Premium subscribers.
+                        </p>
+
+                        <div
+                            style={{
+                                background: "rgba(255, 255, 255, 0.05)",
+                                borderRadius: 12,
+                                padding: 16,
+                                marginBottom: 24,
+                                textAlign: "left",
+                            }}
+                        >
+                            <div style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", marginBottom: 12 }}>
+                                Pro difficulty rules
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                                {[
+                                    "1 mistake = instant game over",
+                                    "Only 1 hint allowed",
+                                    "No AI solve assistance",
+                                    "23 starting numbers only",
+                                ].map((rule, i) => (
+                                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "rgba(255, 255, 255, 0.8)" }}>
+                                        <span style={{ color: "#ef4444" }}>•</span>
+                                        {rule}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <a
+                            href="https://alexgoiko.com/subscribe"
+                            style={{
+                                display: "block",
+                                width: "100%",
+                                padding: "16px 24px",
+                                background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 12,
+                                fontSize: 16,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                textDecoration: "none",
+                                boxShadow: "0 4px 20px rgba(168, 85, 247, 0.4)",
+                                marginBottom: 12,
+                            }}
+                        >
+                            Upgrade to Pro
+                        </a>
+
+                        <button
+                            onClick={() => setShowProUpgradeModal(false)}
+                            style={{
+                                width: "100%",
+                                padding: "14px 24px",
+                                background: "transparent",
+                                color: "rgba(255, 255, 255, 0.6)",
+                                border: "1px solid rgba(255, 255, 255, 0.15)",
+                                borderRadius: 12,
+                                fontSize: 14,
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            Maybe Later
+                        </button>
+
+                        <p style={{ marginTop: 16, fontSize: 11, color: "rgba(255, 255, 255, 0.4)" }}>
+                            Or beat Expert in under 15 minutes to unlock Pro for free!
+                        </p>
                     </div>
                 </div>
             )}
