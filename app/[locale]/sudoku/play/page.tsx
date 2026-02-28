@@ -353,33 +353,37 @@ export default function SudokuPlayPage() {
           </div>
         </div>
 
-        {/* Free vs Pro Comparison Section */}
-        <div style={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(15px)',
-          WebkitBackdropFilter: 'blur(15px)',
-          borderRadius: '20px',
-          padding: '28px 24px',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          marginBottom: '24px',
-        }}>
-          <h3 style={{
-            color: 'white',
-            fontSize: '18px',
-            fontWeight: 700,
-            margin: '0 0 20px 0',
-            textAlign: 'center',
-          }}>
-            Free vs PRO — What's the difference?
-          </h3>
-
-          {/* Comparison Table */}
+        {/* Free vs Pro Comparison Section - Only show for non-Pro users */}
+        {!isPro && (
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto auto',
-            gap: '0',
-            fontSize: '14px',
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(15px)',
+            WebkitBackdropFilter: 'blur(15px)',
+            borderRadius: '20px',
+            padding: '28px 24px',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            marginBottom: '24px',
+            width: '100%',
           }}>
+            <h3 style={{
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: 700,
+              margin: '0 0 20px 0',
+              textAlign: 'center',
+            }}>
+              Free vs PRO — What's the difference?
+            </h3>
+
+            {/* Comparison Table */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr auto auto',
+              gap: '0',
+              fontSize: '14px',
+              maxWidth: '500px',
+              margin: '0 auto',
+            }}>
             {/* Header Row */}
             <div style={{ padding: '12px 8px', borderBottom: '1px solid rgba(255,255,255,0.2)', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
               Feature
@@ -493,44 +497,43 @@ export default function SudokuPlayPage() {
             </div>
           </div>
 
-          {/* Upgrade Button */}
-          <a
-            href="https://alexgoiko.com/subscribe"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              width: '100%',
-              marginTop: '20px',
-              padding: '16px 24px',
-              fontSize: '16px',
-              fontWeight: 700,
-              color: 'white',
-              background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
-              border: 'none',
-              borderRadius: '14px',
-              cursor: 'pointer',
-              textDecoration: 'none',
-              boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Upgrade to PRO — €3.99/mo
-          </a>
+            {/* Upgrade Button */}
+            <a
+              href="https://alexgoiko.com/subscribe"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block',
+                width: '100%',
+                marginTop: '20px',
+                padding: '16px 24px',
+                fontSize: '16px',
+                fontWeight: 700,
+                color: 'white',
+                background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                border: 'none',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                textAlign: 'center',
+                boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Upgrade to PRO — €3.99/mo
+            </a>
 
-          {/* Already Pro note */}
-          <p style={{
-            color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '12px',
-            margin: '12px 0 0 0',
-            textAlign: 'center',
-          }}>
-            Already Pro? Your perks unlock as features launch
-          </p>
-        </div>
+            {/* Already Pro note */}
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '12px',
+              margin: '12px 0 0 0',
+              textAlign: 'center',
+            }}>
+              Already Pro? Your perks unlock as features launch
+            </p>
+          </div>
+        )}
 
         {/* Back to Home Button */}
         <button
