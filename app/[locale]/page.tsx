@@ -36,6 +36,20 @@ export default function Home() {
   // Use profile avatar if logged in, otherwise use default
   const avatarId = profile?.avatar_id;
   const currentAvatar = (user && typeof avatarId === 'string' && avatarId.trim()) ? avatarId : 'shadow';
+  const avatarSrc = `/avatars/${currentAvatar}.png`;
+
+  // Debug logging for avatar
+  useEffect(() => {
+    if (user) {
+      console.log('[Welcome Screen Avatar Debug]', {
+        'profile.avatar_id': profile?.avatar_id,
+        'typeof profile.avatar_id': typeof profile?.avatar_id,
+        'currentAvatar': currentAvatar,
+        'avatarSrc': avatarSrc,
+        'full profile': profile,
+      });
+    }
+  }, [user, profile, currentAvatar, avatarSrc]);
 
   useEffect(() => {
     setMounted(true);
@@ -98,10 +112,11 @@ export default function Home() {
             }}
           >
             <img
-              src={`/avatars/${currentAvatar}.png`}
+              src={avatarSrc}
               alt="Avatar"
               onError={(e) => {
                 // Fallback to shadow avatar if the image fails to load
+                console.log('[Avatar onError] Failed to load:', avatarSrc);
                 e.currentTarget.src = '/avatars/shadow.png';
               }}
               style={{
