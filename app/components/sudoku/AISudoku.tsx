@@ -1087,6 +1087,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             ? { maxMistakes: externalRules.maxErrors, hints: externalRules.maxHints }
             : difficultyRules[currentDifficulty as keyof typeof difficultyRules];
         console.log('[AISudoku] Applying rules:', rules);
+        console.log('[AISudoku] Setting maxMistakes:', rules.maxMistakes, 'hints:', rules.hints);
         setMaxMistakes(rules.maxMistakes)
         setHintsRemaining(rules.hints)
         setMistakes(0)
@@ -1142,8 +1143,10 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
     // Initialize game - only if no welcome screen (auto-restored game)
     useEffect(() => {
+        console.log('[AISudoku] Init useEffect - showWelcomeScreen:', showWelcomeScreen, 'board.length:', board.length, 'currentDifficulty:', currentDifficulty);
         // Only start new game if board is empty and welcome screen is hidden (restored game case)
         if (!showWelcomeScreen && board.length === 0) {
+            console.log('[AISudoku] Triggering newGame from init useEffect');
             newGame()
         }
     }, [showWelcomeScreen])
@@ -1813,7 +1816,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         marginTop: 1,
                     }}
                 >
-                    {hintsRemaining}/{rules.hints || 0}
+                    {(rules.hints || 0) - hintsRemaining}/{rules.hints || 0}
                 </div>
             </div>
         </div>
@@ -1824,11 +1827,12 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             style={{
                 display: "flex",
                 gap: isDesktop ? 3 : 1,
-                background: "#f7fafc",
-                padding: isDesktop ? 2 : 1,
-                borderRadius: 8,
+                background: "rgba(0, 0, 0, 0.3)",
+                padding: isDesktop ? 3 : 2,
+                borderRadius: 10,
                 width: "100%",
                 marginBottom: isDesktop ? 4 : 2,
+                backdropFilter: "blur(8px)",
             }}
         >
             {(["medium", "expert", "pro"] as const).map((diff) => {
@@ -1847,29 +1851,32 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         disabled={isAISolving}
                         style={{
                             flex: 1,
-                            padding: isDesktop ? "4px 6px" : "3px 4px",
+                            padding: isDesktop ? "6px 8px" : "5px 6px",
                             border: "none",
                             background:
                                 currentDifficulty === diff
                                     ? "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)"
                                     : isProLocked
-                                        ? "#e2e8f0"
+                                        ? "rgba(100, 100, 100, 0.3)"
                                         : "transparent",
-                            borderRadius: 6,
+                            borderRadius: 8,
                             cursor: isAISolving ? "not-allowed" : "pointer",
-                            fontWeight: 600,
-                            fontSize: isDesktop ? "11px" : "10px",
+                            fontWeight: currentDifficulty === diff ? 700 : 600,
+                            fontSize: isDesktop ? "12px" : "11px",
                             color:
                                 currentDifficulty === diff
                                     ? "white"
                                     : isProLocked
-                                        ? "#94a3b8"
-                                        : "#4a5568",
+                                        ? "rgba(255, 255, 255, 0.35)"
+                                        : "rgba(255, 255, 255, 0.6)",
                             textTransform: "capitalize",
                             transition: "all 0.2s ease",
                             opacity: isAISolving ? 0.5 : 1,
-                            minHeight: isDesktop ? "28px" : "24px",
+                            minHeight: isDesktop ? "32px" : "28px",
                             touchAction: "manipulation",
+                            boxShadow: currentDifficulty === diff
+                                ? "0 2px 8px rgba(168, 85, 247, 0.4)"
+                                : "none",
                         }}
                     >
                         {diff === "pro" && !isProUnlocked && "🔒 "}
