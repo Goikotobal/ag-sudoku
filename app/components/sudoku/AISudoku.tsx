@@ -61,8 +61,10 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     } | null>(null)
     const [mistakes, setMistakes] = useState(0)
     const [maxMistakes, setMaxMistakes] = useState(3)
-    const [hintsRemaining, setHintsRemaining] = useState(3)
-    const [maxHints, setMaxHints] = useState(3)
+    // Compute initial hints based on difficulty and subscription
+    const initialHints = getDifficultyRules(initialDifficulty || "expert", isPro)?.maxHints ?? 3
+    const [hintsRemaining, setHintsRemaining] = useState(initialHints)
+    const [maxHints, setMaxHints] = useState(initialHints)
     const [timer, setTimer] = useState(0)
     const [currentDifficulty, setCurrentDifficulty] = useState(initialDifficulty || "expert")
     const [showWinModal, setShowWinModal] = useState(false)
