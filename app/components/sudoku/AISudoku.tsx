@@ -62,6 +62,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const [mistakes, setMistakes] = useState(0)
     const [maxMistakes, setMaxMistakes] = useState(3)
     const [hintsRemaining, setHintsRemaining] = useState(3)
+    const [maxHints, setMaxHints] = useState(3)
     const [timer, setTimer] = useState(0)
     const [currentDifficulty, setCurrentDifficulty] = useState(initialDifficulty || "expert")
     const [showWinModal, setShowWinModal] = useState(false)
@@ -265,6 +266,16 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     setMistakes(state.mistakes)
                     setHintsRemaining(state.hintsRemaining)
                     setCurrentDifficulty(state.difficulty)
+                    // Restore maxHints from saved state or calculate from rules
+                    if (state.maxHints !== undefined) {
+                        setMaxHints(state.maxHints)
+                    } else {
+                        // Fallback: calculate from difficulty rules
+                        const restoredRules = getDifficultyRules(state.difficulty, isPro)
+                        if (restoredRules) {
+                            setMaxHints(restoredRules.maxHints)
+                        }
+                    }
 
                     // Restore notes if they exist
                     if (state.notes) {
@@ -320,6 +331,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     timer,
                     mistakes,
                     hintsRemaining,
+                    maxHints,
                     difficulty: currentDifficulty,
                     notes: notes.map((row) =>
                         row.map((cell) => Array.from(cell))
@@ -349,6 +361,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
         timer,
         mistakes,
         hintsRemaining,
+        maxHints,
         currentDifficulty,
         notes,
         showWinModal,
@@ -1090,6 +1103,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
         console.log('[AISudoku] Setting maxMistakes:', rules.maxMistakes, 'hints:', rules.hints);
         setMaxMistakes(rules.maxMistakes)
         setHintsRemaining(rules.hints)
+        setMaxHints(rules.hints)
         setMistakes(0)
         setMoveHistory([])
         setTimer(0)
@@ -1433,6 +1447,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
         const newBoard = board.map((r) => [...r])
         newBoard[cell.row][cell.col] = value
         setBoard(newBoard)
+        console.log('[AISudoku] Hint used - hintsRemaining:', hintsRemaining, 'maxHints:', maxHints)
         setHintsRemaining((h) => h - 1)
 
         // Close modal first
@@ -1816,7 +1831,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         marginTop: 1,
                     }}
                 >
-                    {(rules.hints || 0) - hintsRemaining}/{rules.hints || 0}
+                    {maxHints - hintsRemaining}/{maxHints}
                 </div>
             </div>
         </div>
@@ -1865,10 +1880,10 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             fontSize: isDesktop ? "12px" : "11px",
                             color:
                                 currentDifficulty === diff
-                                    ? "white"
+                                    ? "#ffffff"
                                     : isProLocked
                                         ? "rgba(255, 255, 255, 0.35)"
-                                        : "rgba(255, 255, 255, 0.6)",
+                                        : "rgba(255, 255, 255, 0.5)",
                             textTransform: "capitalize",
                             transition: "all 0.2s ease",
                             opacity: isAISolving ? 0.5 : 1,
