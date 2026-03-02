@@ -24,12 +24,15 @@ export default function SudokuPlayPage() {
   }, []);
 
   const handleDifficultyClick = (difficulty: Difficulty) => {
+    console.log('[Play Page] handleDifficultyClick called with:', difficulty);
     // Pro difficulty only available for Pro subscribers
     if (difficulty === 'pro' && !isPro) {
+      console.log('[Play Page] Pro difficulty blocked for free user');
       return;
     }
 
     console.log('[Play Page] Starting game with difficulty:', difficulty, 'isPro:', isPro);
+    console.log('[Play Page] Current selectedDifficulty before update:', selectedDifficulty);
     setSelectedDifficulty(difficulty);
     setShowGame(true);
   };
@@ -600,19 +603,19 @@ export default function SudokuPlayPage() {
               <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ color: '#10b981' }}>✅</span> Pro difficulty (0 mistakes, 2 hints)
               </div>
-              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span>🔜</span> 1v1 Challenges — coming soon
               </div>
-              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span>🔜</span> Quarterly prizes — coming soon
               </div>
-              <div style={{ color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span>🔜</span> Avatar accessories — coming soon
               </div>
             </div>
 
             <p style={{
-              color: 'rgba(168, 85, 247, 0.9)',
+              color: '#e9d5ff',
               fontSize: '13px',
               margin: '16px 0 0 0',
               textAlign: 'center',
