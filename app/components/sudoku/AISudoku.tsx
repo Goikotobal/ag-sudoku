@@ -1831,7 +1831,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         marginTop: 1,
                     }}
                 >
-                    {maxHints - hintsRemaining}/{maxHints}
+                    {Math.max(0, maxHints - hintsRemaining)}/{maxHints}
                 </div>
             </div>
         </div>
