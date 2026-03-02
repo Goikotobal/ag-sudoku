@@ -146,7 +146,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 12px 0',
               textShadow: '0 2px 8px rgba(16, 185, 129, 0.6)',
             }}>
-              Medium
+              {t('difficulties.medium')}
             </h2>
             <p style={{
               fontSize: '14px',
@@ -154,7 +154,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 8px 0',
               fontWeight: 600,
             }}>
-              3 mistakes · 3 AI hints · All tiers
+              {t('difficultySelect.mediumStats')}
             </p>
             <p style={{
               fontSize: '12px',
@@ -162,7 +162,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               fontStyle: 'italic',
             }}>
-              Perfect for learning and casual play
+              {t('difficultySelect.mediumDesc')}
             </p>
             <button
               onClick={(e) => {
@@ -185,7 +185,7 @@ export default function SudokuPlayPage() {
                 letterSpacing: '0.5px',
               }}
             >
-              PLAY NOW
+              {t('difficultySelect.playNow')}
             </button>
           </div>
 
@@ -219,7 +219,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 12px 0',
               textShadow: '0 2px 8px rgba(245, 158, 11, 0.6)',
             }}>
-              Expert
+              {t('difficulties.expert')}
             </h2>
             <div style={{
               fontSize: '14px',
@@ -228,9 +228,9 @@ export default function SudokuPlayPage() {
               fontWeight: 600,
             }}>
               {isPro ? (
-                <span>1 mistake · 3 AI hints ⭐</span>
+                <span>{t('difficultySelect.expertStatsPro')}</span>
               ) : (
-                <span>1 mistake · 1 AI hint</span>
+                <span>{t('difficultySelect.expertStatsFree')}</span>
               )}
             </div>
             <p style={{
@@ -239,7 +239,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               fontStyle: 'italic',
             }}>
-              A real challenge — every move counts
+              {t('difficultySelect.expertDesc')}
             </p>
             <button
               onClick={(e) => {
@@ -262,7 +262,7 @@ export default function SudokuPlayPage() {
                 letterSpacing: '0.5px',
               }}
             >
-              PLAY NOW
+              {t('difficultySelect.playNow')}
             </button>
           </div>
 
@@ -322,7 +322,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 12px 0',
               textShadow: '0 2px 8px rgba(239, 68, 68, 0.6)',
             }}>
-              Pro
+              {t('difficulties.pro')}
             </h2>
             <p style={{
               fontSize: '14px',
@@ -330,7 +330,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 8px 0',
               fontWeight: 600,
             }}>
-              0 mistakes · 2 AI hints · Pro only
+              {t('difficultySelect.proStats')}
             </p>
             <p style={{
               fontSize: '12px',
@@ -338,7 +338,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               fontStyle: 'italic',
             }}>
-              {isPro ? 'The ultimate challenge awaits' : 'Coming soon for Pro subscribers 🔒'}
+              {isPro ? t('difficultySelect.proDesc') : t('difficultySelect.proDescLocked')}
             </p>
             {isPro ? (
               <button
@@ -362,7 +362,7 @@ export default function SudokuPlayPage() {
                   letterSpacing: '0.5px',
                 }}
               >
-                PLAY NOW
+                {t('difficultySelect.playNow')}
               </button>
             ) : (
               <button
@@ -383,7 +383,7 @@ export default function SudokuPlayPage() {
                   letterSpacing: '0.5px',
                 }}
               >
-                COMING SOON
+                {t('difficultySelect.comingSoon')}
               </button>
             )}
           </div>
@@ -408,7 +408,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               textAlign: 'center',
             }}>
-              Free vs PRO — What's the difference?
+              {t('difficultySelect.comparisonTitle')}
             </h3>
 
             {/* Comparison Table */}
@@ -422,10 +422,10 @@ export default function SudokuPlayPage() {
             }}>
             {/* Header Row */}
             <div style={{ padding: '12px 8px', borderBottom: '1px solid rgba(255,255,255,0.2)', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-              Feature
+              {t('difficultySelect.feature')}
             </div>
             <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.2)', fontWeight: 600, color: 'rgba(255,255,255,0.9)', textAlign: 'center', minWidth: 70 }}>
-              Free
+              {t('difficultySelect.free')}
             </div>
             <div style={{
               padding: '12px 16px',
@@ -446,7 +446,7 @@ export default function SudokuPlayPage() {
 
             {/* Medium difficulty */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              Medium difficulty
+              {t('difficultySelect.mediumDiff')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: '#10b981' }}>
               ✅
@@ -457,7 +457,7 @@ export default function SudokuPlayPage() {
 
             {/* Expert difficulty */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              Expert difficulty
+              {t('difficultySelect.expertDiff')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: '#10b981' }}>
               ✅
@@ -468,29 +468,29 @@ export default function SudokuPlayPage() {
 
             {/* Pro difficulty */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              Pro difficulty
+              {t('difficultySelect.proDiff')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               🔒
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ Coming soon
+              ✅ {t('difficultySelect.comingSoonLabel')}
             </div>
 
             {/* AI hints (Expert) */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              AI hints (Expert)
+              {t('difficultySelect.aiHintsExpert')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.8)' }}>
-              1/game
+              {t('difficultySelect.hintsPerGameFree')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontWeight: 600, background: 'rgba(168, 85, 247, 0.05)' }}>
-              3/game
+              {t('difficultySelect.hintsPerGamePro')}
             </div>
 
             {/* Challenge Week */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              Challenge Week
+              {t('difficultySelect.challengeWeek')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: '#10b981' }}>
               ✅
@@ -501,35 +501,35 @@ export default function SudokuPlayPage() {
 
             {/* 1v1 Challenges */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              1v1 Challenges
+              {t('difficultySelect.challenges1v1')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ Coming soon
+              ✅ {t('difficultySelect.comingSoonLabel')}
             </div>
 
             {/* Quarterly prizes */}
             <div style={{ padding: '10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
-              Quarterly prizes
+              {t('difficultySelect.quarterlyPrizes')}
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ Coming soon
+              ✅ {t('difficultySelect.comingSoonLabel')}
             </div>
 
             {/* Avatar accessories */}
             <div style={{ padding: '10px 8px', color: 'white' }}>
-              Avatar accessories
+              {t('difficultySelect.avatarAccessories')}
             </div>
             <div style={{ padding: '10px 16px', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
             <div style={{ padding: '10px 16px', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)', borderRadius: '0 0 8px 0' }}>
-              ✅ Coming soon
+              ✅ {t('difficultySelect.comingSoonLabel')}
             </div>
           </div>
 
@@ -556,7 +556,7 @@ export default function SudokuPlayPage() {
                 transition: 'all 0.2s ease',
               }}
             >
-              Upgrade to PRO — €3.99/mo
+              {t('difficultySelect.upgradeBtn')}
             </a>
 
             {/* Already Pro note */}
@@ -566,7 +566,7 @@ export default function SudokuPlayPage() {
               margin: '12px 0 0 0',
               textAlign: 'center',
             }}>
-              Already Pro? Your perks unlock as features launch
+              {t('difficultySelect.alreadyProNote')}
             </p>
           </div>
         )}
@@ -593,24 +593,24 @@ export default function SudokuPlayPage() {
               alignItems: 'center',
               gap: 8,
             }}>
-              <span>⭐</span> Your PRO Benefits
+              <span>⭐</span> {t('difficultySelect.proBenefitsTitle')}
             </h3>
 
             <div style={{ fontSize: '14px', lineHeight: 1.8 }}>
               <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ color: '#10b981' }}>✅</span> Expert: 3 AI hints per game
+                <span style={{ color: '#10b981' }}>✅</span> {t('difficultySelect.benefit1')}
               </div>
               <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ color: '#10b981' }}>✅</span> Pro difficulty (0 mistakes, 2 hints)
+                <span style={{ color: '#10b981' }}>✅</span> {t('difficultySelect.benefit2')}
               </div>
               <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span>🔜</span> 1v1 Challenges — coming soon
+                <span>🔜</span> {t('difficultySelect.benefit3')}
               </div>
               <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span>🔜</span> Quarterly prizes — coming soon
+                <span>🔜</span> {t('difficultySelect.benefit4')}
               </div>
               <div style={{ color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span>🔜</span> Avatar accessories — coming soon
+                <span>🔜</span> {t('difficultySelect.benefit5')}
               </div>
             </div>
 
@@ -621,7 +621,7 @@ export default function SudokuPlayPage() {
               textAlign: 'center',
               fontStyle: 'italic',
             }}>
-              Thank you for supporting AG Sudoku! 🙏
+              {t('difficultySelect.thankYou')} 🙏
             </p>
           </div>
         )}
