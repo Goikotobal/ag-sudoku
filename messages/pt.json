@@ -281,6 +281,23 @@
       "cancelAnytime": "Cancele a qualquer momento",
       "securePayment": "Pagamento seguro via Stripe",
       "upgradeBtn": "Upgrade para Premium"
+    },
+    "offline": {
+      "title": "Modo Offline",
+      "enabled": "Ativado",
+      "disabled": "Desativado",
+      "proRequired": "PRO",
+      "description": "Jogue puzzles sem conexão com a internet",
+      "enabledDescription": "Ativado - Jogue em qualquer lugar sem internet",
+      "upgradePrompt": "Faça upgrade para Pro para jogar offline",
+      "statusOnline": "Online",
+      "statusOffline": "Offline",
+      "backOnline": "De volta online - sincronizando...",
+      "playingOffline": "Você está offline - jogando localmente",
+      "installPrompt": "Instalar AG Sudoku",
+      "installDescription": "Adicione à tela inicial para a melhor experiência offline",
+      "installButton": "Instalar App",
+      "dismissButton": "Talvez depois"
     }
   }
 }

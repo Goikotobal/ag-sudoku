@@ -281,6 +281,23 @@
       "cancelAnytime": "Edonoiz bertan behera utzi",
       "securePayment": "Ordainketa segurua Stripe bidez",
       "upgradeBtn": "Premium-era eguneratu"
+    },
+    "offline": {
+      "title": "Lineaz Kanpoko Modua",
+      "enabled": "Gaituta",
+      "disabled": "Desgaituta",
+      "proRequired": "PRO",
+      "description": "Jokatu puzzleak internet konexiorik gabe",
+      "enabledDescription": "Gaituta - Jokatu edozein lekutan internetik gabe",
+      "upgradePrompt": "Bertsio berritu Pro-ra lineaz kanpo jokatzeko",
+      "statusOnline": "Linean",
+      "statusOffline": "Lineaz kanpo",
+      "backOnline": "Linean berriz - sinkronizatzen...",
+      "playingOffline": "Lineaz kanpo zaude - lokalean jokatzen",
+      "installPrompt": "Instalatu AG Sudoku",
+      "installDescription": "Gehitu hasierako pantailara lineaz kanpoko esperientzia hoberenerako",
+      "installButton": "Instalatu App-a",
+      "dismissButton": "Geroago"
     }
   }
 }

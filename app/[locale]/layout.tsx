@@ -8,6 +8,7 @@ import { AuthProvider } from '@/context/AuthContext';
 export const metadata: Metadata = {
   title: 'AG Sudoku - AI-Powered Puzzle Game',
   description: 'Play Sudoku with AI-powered hints and multiple difficulty levels. Free, offline-capable, and available in 12 languages.',
+  manifest: '/manifest.json',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-touch-icon.png',
     shortcut: '/favicon.ico',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'AG Sudoku',
   },
 };
 

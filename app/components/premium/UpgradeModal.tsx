@@ -59,6 +59,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
 
   const benefits = [
     { icon: '⭐', text: 'All 20 Monster Avatars', available: true },
+    { icon: '📴', text: 'Offline Mode - Play Anywhere', available: true },
     { icon: '🎨', text: 'Premium Colors & Frames', available: false },
     { icon: '📊', text: 'Advanced Statistics', available: false },
     { icon: '🏆', text: 'Leaderboard Rankings', available: false },

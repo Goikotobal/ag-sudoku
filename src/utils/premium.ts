@@ -38,6 +38,7 @@ export function getTierFeatures(tier: SubscriptionTier) {
 
   const premiumFeatures = [
     'All 20 monster avatars',
+    'Offline Mode - Play Anywhere',
     'Premium colors & frames (coming soon)',
     'Advanced statistics (coming soon)',
     'Leaderboard rankings (coming soon)',
@@ -47,6 +48,13 @@ export function getTierFeatures(tier: SubscriptionTier) {
   return tier === 'pro'  // Changed from 'premium' to 'pro'
     ? [...freeFeatures, ...premiumFeatures]
     : freeFeatures;
+}
+
+/**
+ * Check if user can access offline mode
+ */
+export function canAccessOfflineMode(subscriptionTier: string | null | undefined): boolean {
+  return isPremium(subscriptionTier);
 }
 
 /**

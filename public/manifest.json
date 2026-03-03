@@ -1,0 +1,37 @@
+{
+  "name": "AG Sudoku - AI-Powered Puzzle Game",
+  "short_name": "AG Sudoku",
+  "description": "Challenge your mind with AI-powered Sudoku puzzles. Smart hints, multiple difficulties, works offline!",
+  "start_url": "/en",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#a855f7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "puzzle"],
+  "lang": "en",
+  "dir": "ltr"
+}

@@ -281,6 +281,23 @@
       "cancelAnytime": "いつでもキャンセル可能",
       "securePayment": "Stripeによる安全な決済",
       "upgradeBtn": "プレミアムにアップグレード"
+    },
+    "offline": {
+      "title": "オフラインモード",
+      "enabled": "有効",
+      "disabled": "無効",
+      "proRequired": "PRO",
+      "description": "インターネット接続なしでパズルをプレイ",
+      "enabledDescription": "有効 - インターネットなしでどこでもプレイ",
+      "upgradePrompt": "オフラインプレイにはProへアップグレード",
+      "statusOnline": "オンライン",
+      "statusOffline": "オフライン",
+      "backOnline": "オンラインに復帰 - 同期中...",
+      "playingOffline": "オフラインです - ローカルでプレイ中",
+      "installPrompt": "AG Sudokuをインストール",
+      "installDescription": "ホーム画面に追加して最高のオフライン体験を",
+      "installButton": "アプリをインストール",
+      "dismissButton": "後で"
     }
   }
 }

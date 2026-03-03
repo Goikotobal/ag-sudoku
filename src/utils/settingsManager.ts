@@ -9,6 +9,7 @@ export interface GameSettings {
   highlightSameNumbers: boolean; // default true (highlight matching numbers on board)
   autoRemoveNotes: boolean; // default true (auto-clear notes when number placed)
   language: string; // current locale
+  offlineModeEnabled: boolean; // Pro feature - enable offline puzzle generation
 }
 
 const STORAGE_KEY = 'ag_sudoku_settings';
@@ -20,6 +21,7 @@ const DEFAULT_SETTINGS: GameSettings = {
   highlightSameNumbers: true,
   autoRemoveNotes: true,
   language: 'en',
+  offlineModeEnabled: false,
 };
 
 /**

@@ -281,6 +281,23 @@
       "cancelAnytime": "언제든 취소 가능",
       "securePayment": "Stripe를 통한 안전한 결제",
       "upgradeBtn": "프리미엄으로 업그레이드"
+    },
+    "offline": {
+      "title": "오프라인 모드",
+      "enabled": "활성화됨",
+      "disabled": "비활성화됨",
+      "proRequired": "PRO",
+      "description": "인터넷 연결 없이 퍼즐 플레이",
+      "enabledDescription": "활성화됨 - 인터넷 없이 어디서든 플레이",
+      "upgradePrompt": "오프라인 플레이를 위해 Pro로 업그레이드",
+      "statusOnline": "온라인",
+      "statusOffline": "오프라인",
+      "backOnline": "다시 온라인 - 동기화 중...",
+      "playingOffline": "오프라인입니다 - 로컬에서 플레이 중",
+      "installPrompt": "AG Sudoku 설치",
+      "installDescription": "최고의 오프라인 경험을 위해 홈 화면에 추가",
+      "installButton": "앱 설치",
+      "dismissButton": "나중에"
     }
   }
 }

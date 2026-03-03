@@ -281,6 +281,23 @@
       "cancelAnytime": "कभी भी रद्द करें",
       "securePayment": "Stripe द्वारा सुरक्षित भुगतान",
       "upgradeBtn": "प्रीमियम में अपग्रेड करें"
+    },
+    "offline": {
+      "title": "ऑफ़लाइन मोड",
+      "enabled": "सक्षम",
+      "disabled": "अक्षम",
+      "proRequired": "PRO",
+      "description": "इंटरनेट कनेक्शन के बिना पहेलियाँ खेलें",
+      "enabledDescription": "सक्षम - इंटरनेट के बिना कहीं भी खेलें",
+      "upgradePrompt": "ऑफ़लाइन खेलने के लिए Pro में अपग्रेड करें",
+      "statusOnline": "ऑनलाइन",
+      "statusOffline": "ऑफ़लाइन",
+      "backOnline": "वापस ऑनलाइन - सिंक हो रहा है...",
+      "playingOffline": "आप ऑफ़लाइन हैं - स्थानीय रूप से खेल रहे हैं",
+      "installPrompt": "AG Sudoku इंस्टॉल करें",
+      "installDescription": "सर्वश्रेष्ठ ऑफ़लाइन अनुभव के लिए होम स्क्रीन पर जोड़ें",
+      "installButton": "ऐप इंस्टॉल करें",
+      "dismissButton": "बाद में"
     }
   }
 }

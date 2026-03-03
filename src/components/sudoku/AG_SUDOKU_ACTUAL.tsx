@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import { useGameStats, GameEndResult } from "@/hooks/useGameStats"
+import { useOnlineStatus } from "@/hooks/useOnlineStatus"
+import { OfflineIndicator } from "@/app/components/offline/OfflineIndicator"
+import { InstallPrompt } from "@/app/components/offline/InstallPrompt"
 
 export default function AISudoku() {
     const [board, setBoard] = useState<number[][]>([])
@@ -79,6 +82,9 @@ export default function AISudoku() {
 
     // 🔓 PRO ACCESS: Either subscription tier is 'pro' OR local unlock achieved
     const hasProAccess = authProfile?.subscription_tier === 'pro' || isProUnlocked
+
+    // 📴 OFFLINE STATUS - For PWA offline mode
+    const { isOnline, wasOffline } = useOnlineStatus()
 
     // 🎯 UPDATED: Only 3 difficulty levels - removed "hard"
     const difficulties = {
@@ -2429,6 +2435,14 @@ export default function AISudoku() {
                     }}
                 />
             </div>
+
+            {/* 📴 OFFLINE INDICATOR - Shows when user is offline */}
+            {(!isOnline || wasOffline) && (
+                <OfflineIndicator variant="banner" />
+            )}
+
+            {/* 📲 PWA INSTALL PROMPT - Shows for Pro users */}
+            {hasProAccess && <InstallPrompt />}
 
             {/* 🖥️ RESPONSIVE LAYOUT: Desktop vs Mobile */}
             <div style={{ position: "relative", zIndex: 1 }}>
