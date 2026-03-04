@@ -21,6 +21,11 @@ export default function SudokuPlayPage() {
 
   const isPro = profile?.subscription_tier === 'pro';
 
+  // Debug logging for Pro status
+  useEffect(() => {
+    console.log('isPro:', isPro, 'isOnline:', isOnline, 'profile:', profile);
+  }, [isPro, isOnline, profile]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -278,28 +283,28 @@ export default function SudokuPlayPage() {
               WebkitBackdropFilter: 'blur(15px)',
               borderRadius: '24px',
               padding: '28px 20px',
-              border: isPro
+              border: (isPro || !isOnline)
                 ? '2px solid rgba(239, 68, 68, 0.7)'
                 : '2px solid rgba(239, 68, 68, 0.5)',
               boxShadow: hoveredCard === 'pro'
                 ? '0 12px 40px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                 : '0 4px 20px rgba(239, 68, 68, 0.2)',
               transform: hoveredCard === 'pro'
-                ? (isPro ? 'translateY(-8px) scale(1.02)' : 'translateY(-4px)')
+                ? ((isPro || !isOnline) ? 'translateY(-8px) scale(1.02)' : 'translateY(-4px)')
                 : 'translateY(0)',
               transition: 'all 0.3s ease',
-              cursor: isPro ? 'pointer' : 'not-allowed',
+              cursor: (isPro || !isOnline) ? 'pointer' : 'not-allowed',
               position: 'relative',
-              opacity: isPro ? 1 : 0.85,
+              opacity: (isPro || !isOnline) ? 1 : 0.85,
             }}
-            onClick={() => isPro && handleDifficultyClick('pro')}
+            onClick={() => (isPro || !isOnline) && handleDifficultyClick('pro')}
           >
-            {/* Badge - Lock for Free, Star for Pro */}
+            {/* Badge - Lock for Free (online only), Star for Pro or Offline */}
             <div style={{
               position: 'absolute',
               top: 12,
               right: 12,
-              background: isPro
+              background: (isPro || !isOnline)
                 ? 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'
                 : 'rgba(0, 0, 0, 0.6)',
               borderRadius: 8,
@@ -311,7 +316,7 @@ export default function SudokuPlayPage() {
               alignItems: 'center',
               gap: 4,
             }}>
-              {isPro ? '⭐ PRO' : '🔒 PRO'}
+              {(isPro || !isOnline) ? '⭐ PRO' : '🔒 PRO'}
             </div>
 
             <div style={{ fontSize: '48px', marginBottom: '16px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
@@ -342,7 +347,7 @@ export default function SudokuPlayPage() {
             }}>
               {t('difficultySelect.proDesc')}
             </p>
-            {isPro ? (
+            {(isPro || !isOnline) ? (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -385,7 +390,7 @@ export default function SudokuPlayPage() {
                   letterSpacing: '0.5px',
                 }}
               >
-                {t('difficultySelect.comingSoon')}
+                PRO ONLY
               </button>
             )}
           </div>
@@ -402,6 +407,8 @@ export default function SudokuPlayPage() {
             border: '1px solid rgba(255, 255, 255, 0.15)',
             marginBottom: '24px',
             width: '100%',
+            boxSizing: 'border-box',
+            overflowX: 'hidden',
           }}>
             <h3 style={{
               color: 'white',
@@ -558,6 +565,7 @@ export default function SudokuPlayPage() {
                 textAlign: 'center',
                 boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
                 transition: 'all 0.2s ease',
+                boxSizing: 'border-box',
               }}
             >
               {t('difficultySelect.upgradeBtn')}
