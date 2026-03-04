@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSudokuTranslations } from '@/hooks/useSudokuTranslations'
 import { useAuth } from '@/context/AuthContext'
 import { useProfile, getLevelFromXP } from '@/hooks/useProfile'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import {
     recordGameResult as recordLocalGameResult,
     getStats,
@@ -148,6 +149,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     // PRO DIFFICULTY GATE - Check subscription tier from main alexgoiko.com profile
     const [showProUpgradeModal, setShowProUpgradeModal] = useState(false)
     const isProSubscriber = authProfile?.subscription_tier === 'pro'
+    const { isOnline } = useOnlineStatus()
 
     // STATS VIEW - Show statistics overlay
     const [showStatsView, setShowStatsView] = useState(false)
@@ -1853,13 +1855,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             }}
         >
             {(["medium", "expert", "pro"] as const).map((diff) => {
-                const isProLocked = diff === "pro" && !isProUnlocked
+                const isProLocked = diff === "pro" && !isProUnlocked && isOnline
 
                 return (
                     <button
                         key={diff}
                         onClick={() => {
-                            if (diff === "pro" && !isProUnlocked) {
+                            if (diff === "pro" && !isProUnlocked && isOnline) {
                                 alert(t.difficulties.locked)
                                 return
                             }
@@ -2791,7 +2793,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 const diff = diffKey.charAt(0).toUpperCase() + diffKey.slice(1)
                                 const isSelected = welcomeDifficulty === diffKey
                                 // Pro difficulty requires subscription (unless already unlocked via gameplay)
-                                const isProLocked = diffKey === 'pro' && !isProSubscriber && !isProUnlocked
+                                const isProLocked = diffKey === 'pro' && !isProSubscriber && !isProUnlocked && isOnline
                                 return (
                                     <button
                                         key={diff}
