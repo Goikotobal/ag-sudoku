@@ -151,6 +151,9 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const isProSubscriber = authProfile?.subscription_tier === 'pro'
     const { isOnline } = useOnlineStatus()
 
+    // OFFLINE MODE GATE - Block free users from playing offline
+    const [showOfflineBlockModal, setShowOfflineBlockModal] = useState(false)
+
     // STATS VIEW - Show statistics overlay
     const [showStatsView, setShowStatsView] = useState(false)
     const [playerStats, setPlayerStats] = useState<PlayerStats | null>(null)
@@ -243,6 +246,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
         window.addEventListener("resize", checkDesktop)
         return () => window.removeEventListener("resize", checkDesktop)
     }, [])
+
+    // Block free tier users from offline access
+    useEffect(() => {
+        if (!isOnline && !isProSubscriber) {
+            setShowOfflineBlockModal(true)
+        }
+    }, [isOnline, isProSubscriber])
 
     // AUTO-SAVE: Load saved game on mount (skip if starting fresh game with initialDifficulty)
     useEffect(() => {
@@ -1623,7 +1633,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 src={`https://www.alexgoiko.com/avatars/${authProfile.avatar_id || 'shadow'}.png`}
                                 alt="Avatar"
                                 onError={(e) => {
-                                    e.currentTarget.src = 'https://www.alexgoiko.com/avatars/shadow.png';
+                                    e.currentTarget.src = '/Avatars/Shadow.png';
                                 }}
                                 style={{
                                     width: 36,
@@ -1855,13 +1865,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             }}
         >
             {(["medium", "expert", "pro"] as const).map((diff) => {
-                const isProLocked = diff === "pro" && !isProUnlocked && isOnline
+                const isProLocked = diff === "pro" && !isProSubscriber && !isProUnlocked && isOnline
 
                 return (
                     <button
                         key={diff}
                         onClick={() => {
-                            if (diff === "pro" && !isProUnlocked && isOnline) {
+                            if (diff === "pro" && !isProSubscriber && !isProUnlocked && isOnline) {
                                 alert(t.difficulties.locked)
                                 return
                             }
@@ -2701,6 +2711,33 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                         borderRadius: '4px',
                                         transition: 'width 0.5s ease',
                                     }} />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Logged-in User Status - Show offline mode or sign out option */}
+                        {isLoggedIn && (
+                            <div style={{
+                                marginBottom: '20px',
+                                padding: '10px 16px',
+                                background: isOnline ? 'rgba(255, 255, 255, 0.08)' : 'rgba(239, 68, 68, 0.1)',
+                                border: isOnline ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(239, 68, 68, 0.3)',
+                                borderRadius: '10px',
+                                textAlign: 'center',
+                            }}>
+                                <div style={{
+                                    color: isOnline ? 'rgba(255, 255, 255, 0.7)' : '#fca5a5',
+                                    fontSize: '13px',
+                                }}>
+                                    {isOnline ? (
+                                        <>
+                                            Not you? <a href="https://alexgoiko.com/profile" style={{ color: '#a855f7', textDecoration: 'none' }}>Sign out</a>
+                                        </>
+                                    ) : (
+                                        <>
+                                            📵 Playing Offline
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -3853,6 +3890,83 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         <p style={{ marginTop: 16, fontSize: 11, color: "rgba(255, 255, 255, 0.4)" }}>
                             Or beat Expert in under 15 minutes to unlock Pro for free!
                         </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Offline Block Modal - Free users cannot play offline */}
+            {showOfflineBlockModal && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.92)",
+                        backdropFilter: "blur(10px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1001,
+                        padding: 20,
+                    }}
+                >
+                    <div
+                        style={{
+                            background: "rgba(30, 30, 45, 0.95)",
+                            backdropFilter: "blur(30px)",
+                            WebkitBackdropFilter: "blur(30px)",
+                            padding: 32,
+                            borderRadius: 24,
+                            textAlign: "center",
+                            maxWidth: 400,
+                            width: "95%",
+                            boxShadow: "0 25px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(239, 68, 68, 0.15)",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                        }}
+                    >
+                        <div style={{ fontSize: 56, marginBottom: 16 }}>🔒</div>
+                        <h2
+                            style={{
+                                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                                WebkitBackdropFilter: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                                marginBottom: 12,
+                                fontSize: 26,
+                                fontWeight: 700,
+                            }}
+                        >
+                            Offline Play is Pro Only
+                        </h2>
+                        <p
+                            style={{
+                                color: "rgba(255, 255, 255, 0.8)",
+                                marginBottom: 24,
+                                fontSize: 15,
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            You're currently offline. Offline play is a Pro feature. Connect to the internet to play, or upgrade to Pro for offline access.
+                        </p>
+
+                        <button
+                            onClick={() => {
+                                setShowOfflineBlockModal(false)
+                                quitToHome()
+                            }}
+                            style={{
+                                width: "100%",
+                                padding: "14px 24px",
+                                background: "rgba(255, 255, 255, 0.1)",
+                                color: "white",
+                                border: "1px solid rgba(255, 255, 255, 0.2)",
+                                borderRadius: 12,
+                                fontSize: 14,
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            OK
+                        </button>
                     </div>
                 </div>
             )}

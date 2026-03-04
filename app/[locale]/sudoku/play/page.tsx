@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AISudoku from '../../../components/sudoku/AISudoku';
 import { useAuth } from '@/context/AuthContext';
+import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 
 type Difficulty = 'medium' | 'expert' | 'pro';
 
@@ -12,6 +13,7 @@ export default function SudokuPlayPage() {
   const t = useTranslations('sudoku');
   const router = useRouter();
   const { profile } = useAuth();
+  const { isOnline } = useOnlineStatus();
   const [showGame, setShowGame] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('medium');
   const [mounted, setMounted] = useState(false);
@@ -338,7 +340,7 @@ export default function SudokuPlayPage() {
               margin: '0 0 20px 0',
               fontStyle: 'italic',
             }}>
-              {isPro ? t('difficultySelect.proDesc') : t('difficultySelect.proDescLocked')}
+              {t('difficultySelect.proDesc')}
             </p>
             {isPro ? (
               <button
@@ -389,8 +391,8 @@ export default function SudokuPlayPage() {
           </div>
         </div>
 
-        {/* Free vs Pro Comparison Section - Only show for non-Pro users */}
-        {!isPro && (
+        {/* Free vs Pro Comparison Section - Only show for non-Pro users who are online */}
+        {!isPro && isOnline && (
           <div style={{
             background: 'rgba(255, 255, 255, 0.08)',
             backdropFilter: 'blur(15px)',
@@ -414,11 +416,13 @@ export default function SudokuPlayPage() {
             {/* Comparison Table */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: '1fr auto auto',
+              gridTemplateColumns: '40% 30% 30%',
               gap: '0',
               fontSize: '14px',
               maxWidth: '500px',
               margin: '0 auto',
+              overflowX: 'hidden',
+              width: '100%',
             }}>
             {/* Header Row */}
             <div style={{ padding: '12px 8px', borderBottom: '1px solid rgba(255,255,255,0.2)', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
@@ -473,8 +477,8 @@ export default function SudokuPlayPage() {
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               🔒
             </div>
-            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ {t('difficultySelect.comingSoonLabel')}
+            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#10b981', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
+              ✅
             </div>
 
             {/* AI hints (Expert) */}
@@ -506,8 +510,8 @@ export default function SudokuPlayPage() {
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
-            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ {t('difficultySelect.comingSoonLabel')}
+            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '11px', background: 'rgba(168, 85, 247, 0.05)' }}>
+              ✅ Soon
             </div>
 
             {/* Quarterly prizes */}
@@ -517,8 +521,8 @@ export default function SudokuPlayPage() {
             <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
-            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)' }}>
-              ✅ {t('difficultySelect.comingSoonLabel')}
+            <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(168,85,247,0.2)', textAlign: 'center', color: '#a855f7', fontSize: '11px', background: 'rgba(168, 85, 247, 0.05)' }}>
+              ✅ Soon
             </div>
 
             {/* Avatar accessories */}
@@ -528,8 +532,8 @@ export default function SudokuPlayPage() {
             <div style={{ padding: '10px 16px', textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
               ❌
             </div>
-            <div style={{ padding: '10px 16px', textAlign: 'center', color: '#a855f7', fontSize: '12px', background: 'rgba(168, 85, 247, 0.05)', borderRadius: '0 0 8px 0' }}>
-              ✅ {t('difficultySelect.comingSoonLabel')}
+            <div style={{ padding: '10px 16px', textAlign: 'center', color: '#a855f7', fontSize: '11px', background: 'rgba(168, 85, 247, 0.05)', borderRadius: '0 0 8px 0' }}>
+              ✅ Soon
             </div>
           </div>
 

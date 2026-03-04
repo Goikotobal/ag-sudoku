@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   '/apple-touch-icon.png',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/Avatars/Shadow.png',  // Default avatar fallback for offline mode
 ];
 
 // Install event - pre-cache critical resources
@@ -108,6 +109,7 @@ self.addEventListener('fetch', (event) => {
   // Static assets (JS, CSS, images, fonts) - Cache first, fall back to network
   if (url.pathname.startsWith('/_next/static/') ||
       url.pathname.startsWith('/avatars/') ||
+      url.pathname.startsWith('/Avatars/') ||
       url.pathname.startsWith('/icons/') ||
       url.pathname.startsWith('/images/') ||
       url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|woff|woff2)$/)) {
