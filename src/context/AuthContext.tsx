@@ -51,9 +51,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!user?.id) {
       setProfile(null);
+      // Clear cached profile when logged out
+      localStorage.removeItem('ag_cached_profile');
+      localStorage.removeItem('ag_cached_avatar_url');
       return;
     }
 
+    // Check if online
+    const isOnline = navigator.onLine;
+
+    // Try to load from cache first for offline mode
+    if (!isOnline) {
+      const cached = localStorage.getItem('ag_cached_profile');
+      if (cached) {
+        try {
+          const cachedProfile = JSON.parse(cached);
+          // Check cache age (24 hours max)
+          const cacheAge = Date.now() - (cachedProfile.cachedAt || 0);
+          if (cacheAge < 24 * 60 * 60 * 1000) {
+            console.log('📦 Using cached profile (offline mode)');
+            setProfile(cachedProfile);
+            return;
+          }
+        } catch (e) {
+          console.error('Failed to parse cached profile:', e);
+        }
+      }
+    }
+
+    // Fetch from Supabase when online
     const supabase = createClient();
     supabase
       .from('profiles')
@@ -61,7 +87,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
-        setProfile(data);
+        if (data) {
+          setProfile(data);
+
+          // Cache profile data for offline use
+          const cacheData = {
+            ...data,
+            cachedAt: Date.now()
+          };
+          localStorage.setItem('ag_cached_profile', JSON.stringify(cacheData));
+
+          // Cache avatar URL separately if it exists
+          if (data.avatar_url) {
+            localStorage.setItem('ag_cached_avatar_url', data.avatar_url);
+          }
+
+          console.log('💾 Profile cached for offline use');
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch profile:', err);
+        // Fall back to cache on error
+        const cached = localStorage.getItem('ag_cached_profile');
+        if (cached) {
+          try {
+            const cachedProfile = JSON.parse(cached);
+            console.log('📦 Using cached profile (fetch error)');
+            setProfile(cachedProfile);
+          } catch (e) {
+            console.error('Failed to parse cached profile:', e);
+          }
+        }
       });
   }, [user?.id]);
 
