@@ -130,6 +130,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('🔍 SSO Debug - Session:', session);
+      console.log('🔍 SSO Debug - User:', session?.user);
+      console.log('🔍 SSO Debug - Cached profile:', localStorage.getItem('ag_cached_profile'));
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
