@@ -54,7 +54,7 @@ export default function SudokuPlayPage() {
       minHeight: '100vh',
       backgroundImage: 'url(/images/Frame1.png)',
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      backgroundPosition: '30% center',
       backgroundRepeat: 'no-repeat',
       display: 'flex',
       justifyContent: 'center',
