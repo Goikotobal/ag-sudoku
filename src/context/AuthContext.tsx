@@ -80,13 +80,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Fetch from Supabase when online
-    const supabase = createClient();
-    supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-      .then(({ data }) => {
+    const fetchProfile = async () => {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
         if (data) {
           setProfile(data);
 
@@ -104,8 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           console.log('💾 Profile cached for offline use');
         }
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Failed to fetch profile:', err);
         // Fall back to cache on error
         const cached = localStorage.getItem('ag_cached_profile');
@@ -118,7 +119,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             console.error('Failed to parse cached profile:', e);
           }
         }
-      });
+      }
+    };
+
+    fetchProfile();
   }, [user?.id]);
 
   useEffect(() => {
