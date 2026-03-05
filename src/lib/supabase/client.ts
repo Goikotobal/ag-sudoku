@@ -7,13 +7,14 @@ export function createClient() {
     {
       cookies: {
         get(name: string) {
-          // Read cookies from document.cookie
-          const value = document.cookie
-            .split('; ')
-            .find(row => row.startsWith(`${name}=`))
-            ?.split('=')[1];
-          console.log(`🍪 Getting cookie: ${name} = ${value ? 'found' : 'not found'}`);
-          return value;
+          const cookies = document.cookie.split(';');
+          for (const cookie of cookies) {
+            const [key, ...val] = cookie.trim().split('=');
+            if (key === name) {
+              return decodeURIComponent(val.join('='));
+            }
+          }
+          return undefined;
         },
         set(name: string, value: string, options: any) {
           // Set cookie with cross-subdomain options
@@ -32,7 +33,6 @@ export function createClient() {
           if (cookieOptions.sameSite) cookie += `; samesite=${cookieOptions.sameSite}`;
           if (cookieOptions.secure) cookie += `; secure`;
 
-          console.log(`🍪 Setting cookie: ${cookie}`);
           document.cookie = cookie;
         },
         remove(name: string, options: any) {
@@ -51,7 +51,6 @@ export function createClient() {
           if (cookieOptions.sameSite) cookie += `; samesite=${cookieOptions.sameSite}`;
           if (cookieOptions.secure) cookie += `; secure`;
 
-          console.log(`🍪 Removing cookie: ${cookie}`);
           document.cookie = cookie;
         },
       }
