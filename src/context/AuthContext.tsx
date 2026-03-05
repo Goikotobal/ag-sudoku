@@ -129,7 +129,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = createClient();
 
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      console.log('🔍 [AuthContext] getSession result:', {
+        hasSession: !!session,
+        sessionExpiry: session?.expires_at,
+        userId: session?.user?.id,
+        userEmail: session?.user?.email,
+        error: error,
+        cookies: document.cookie
+      });
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -138,7 +146,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('🔍 [AuthContext] onAuthStateChange:', {
+        event,
+        hasSession: !!session,
+        userId: session?.user?.id,
+        userEmail: session?.user?.email
+      });
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
