@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { useTranslations } from 'next-intl';
+import { createClient } from '@/lib/supabase/client';
 
 interface LoginButtonProps {
   variant?: 'default' | 'compact';
@@ -20,16 +21,17 @@ const GoogleIcon = () => (
 );
 
 export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en' }: LoginButtonProps) {
-  const { user, loading, signInWithGoogle, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const t = useTranslations('sudoku');
 
-  // Save locale before OAuth to preserve user's language selection
-  const handleSignIn = () => {
-    // Save to cookie (accessible server-side in callback)
-    document.cookie = `ag_preferred_locale=${locale}; path=/; max-age=3600; SameSite=Lax`;
-    // Also save to localStorage as backup
-    localStorage.setItem('ag_preferred_locale', locale);
-    signInWithGoogle();
+  const handleSignIn = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
   };
 
   if (loading) {
