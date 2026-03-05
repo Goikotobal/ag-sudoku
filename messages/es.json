@@ -237,7 +237,9 @@
       "signOut": "Cerrar sesión",
       "welcome": "¡Bienvenido, {name}!",
       "saveProgress": "Inicia sesión para guardar",
-      "guest": "Jugando como invitado"
+      "guest": "Jugando como invitado",
+      "notYouSignOut": "¿No eres tú? Cerrar sesión",
+      "editAvatarProfile": "Editar Avatar y Perfil"
     },
     "profile": {
       "level": "Nivel {level}",

@@ -237,7 +237,9 @@
       "signOut": "ログアウト",
       "welcome": "ようこそ、{name}さん！",
       "saveProgress": "ログインして保存",
-      "guest": "ゲストとしてプレイ"
+      "guest": "ゲストとしてプレイ",
+      "notYouSignOut": "違いますか？ログアウト",
+      "editAvatarProfile": "アバターとプロフィールを編集"
     },
     "profile": {
       "level": "レベル {level}",

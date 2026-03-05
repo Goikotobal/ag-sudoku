@@ -237,7 +237,9 @@
       "signOut": "Sign Out",
       "welcome": "Welcome, {name}!",
       "saveProgress": "Sign in to save progress",
-      "guest": "Playing as Guest"
+      "guest": "Playing as Guest",
+      "notYouSignOut": "Not you? Sign out",
+      "editAvatarProfile": "Edit Avatar & Profile"
     },
     "profile": {
       "level": "Level {level}",

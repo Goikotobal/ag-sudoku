@@ -237,7 +237,9 @@
       "signOut": "Sair",
       "welcome": "Bem-vindo, {name}!",
       "saveProgress": "Entre para salvar",
-      "guest": "Jogando como convidado"
+      "guest": "Jogando como convidado",
+      "notYouSignOut": "Não é você? Sair",
+      "editAvatarProfile": "Editar Avatar e Perfil"
     },
     "profile": {
       "level": "Nível {level}",

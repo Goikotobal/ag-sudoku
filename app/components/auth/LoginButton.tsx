@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 interface LoginButtonProps {
   variant?: 'default' | 'compact';
   selectedAvatar?: string;
+  locale?: string;
 }
 
 // Google icon SVG
@@ -18,9 +19,18 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export function LoginButton({ variant = 'default', selectedAvatar }: LoginButtonProps) {
+export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en' }: LoginButtonProps) {
   const { user, loading, signInWithGoogle, signOut } = useAuth();
   const t = useTranslations('sudoku');
+
+  // Save locale before OAuth to preserve user's language selection
+  const handleSignIn = () => {
+    // Save to cookie (accessible server-side in callback)
+    document.cookie = `ag_preferred_locale=${locale}; path=/; max-age=3600; SameSite=Lax`;
+    // Also save to localStorage as backup
+    localStorage.setItem('ag_preferred_locale', locale);
+    signInWithGoogle();
+  };
 
   if (loading) {
     return (
@@ -138,7 +148,7 @@ export function LoginButton({ variant = 'default', selectedAvatar }: LoginButton
       gap: '6px',
     }}>
       <button
-        onClick={signInWithGoogle}
+        onClick={handleSignIn}
         style={{
           display: 'inline-flex',
           alignItems: 'center',

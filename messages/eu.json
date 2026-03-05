@@ -237,7 +237,9 @@
       "signOut": "Amaitu saioa",
       "welcome": "Ongi etorri, {name}!",
       "saveProgress": "Hasi saioa gordetzeko",
-      "guest": "Gonbidatu gisa"
+      "guest": "Gonbidatu gisa",
+      "notYouSignOut": "Ez zara zu? Amaitu saioa",
+      "editAvatarProfile": "Editatu Avatarra eta Profila"
     },
     "profile": {
       "level": "Maila {level}",

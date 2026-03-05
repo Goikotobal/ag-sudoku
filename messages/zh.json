@@ -237,7 +237,9 @@
       "signOut": "退出登录",
       "welcome": "欢迎, {name}!",
       "saveProgress": "登录以保存进度",
-      "guest": "以访客身份游玩"
+      "guest": "以访客身份游玩",
+      "notYouSignOut": "不是您？退出登录",
+      "editAvatarProfile": "编辑头像和个人资料"
     },
     "profile": {
       "level": "等级 {level}",

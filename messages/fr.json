@@ -237,7 +237,9 @@
       "signOut": "Se déconnecter",
       "welcome": "Bienvenue, {name}!",
       "saveProgress": "Connectez-vous pour sauvegarder",
-      "guest": "Joueur invité"
+      "guest": "Joueur invité",
+      "notYouSignOut": "Pas vous? Se déconnecter",
+      "editAvatarProfile": "Modifier Avatar et Profil"
     },
     "profile": {
       "level": "Niveau {level}",

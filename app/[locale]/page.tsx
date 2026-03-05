@@ -186,6 +186,8 @@ export default function Home() {
                 {/* Edit Avatar & Profile link */}
                 <a
                   href="https://alexgoiko.com/profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     color: 'rgba(255, 255, 255, 0.5)',
                     fontSize: '11px',
@@ -197,7 +199,7 @@ export default function Home() {
                   onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
                 >
-                  ✏️ Edit Avatar & Profile
+                  ✏️ {t('sudoku.auth.editAvatarProfile')}
                 </a>
               </>
             ) : (
@@ -247,11 +249,11 @@ export default function Home() {
               onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
             >
-              Not you? Sign out
+              {t('sudoku.auth.notYouSignOut')}
             </button>
           ) : (
             // Guest: Show Sign In with Google
-            <LoginButton variant="compact" selectedAvatar={validAvatarId} />
+            <LoginButton variant="compact" selectedAvatar={validAvatarId} locale={locale} />
           )}
         </div>
 

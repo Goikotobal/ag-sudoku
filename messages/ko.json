@@ -237,7 +237,9 @@
       "signOut": "로그아웃",
       "welcome": "환영합니다, {name}님!",
       "saveProgress": "로그인하여 저장",
-      "guest": "게스트로 플레이"
+      "guest": "게스트로 플레이",
+      "notYouSignOut": "다른 사람인가요? 로그아웃",
+      "editAvatarProfile": "아바타 및 프로필 편집"
     },
     "profile": {
       "level": "레벨 {level}",

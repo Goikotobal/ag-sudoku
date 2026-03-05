@@ -237,7 +237,9 @@
       "signOut": "साइन आउट",
       "welcome": "स्वागत है, {name}!",
       "saveProgress": "सहेजने के लिए साइन इन",
-      "guest": "अतिथि के रूप में"
+      "guest": "अतिथि के रूप में",
+      "notYouSignOut": "आप नहीं हैं? साइन आउट करें",
+      "editAvatarProfile": "अवतार और प्रोफ़ाइल संपादित करें"
     },
     "profile": {
       "level": "स्तर {level}",

@@ -237,7 +237,9 @@
       "signOut": "Esci",
       "welcome": "Benvenuto, {name}!",
       "saveProgress": "Accedi per salvare",
-      "guest": "Ospite"
+      "guest": "Ospite",
+      "notYouSignOut": "Non sei tu? Esci",
+      "editAvatarProfile": "Modifica Avatar e Profilo"
     },
     "profile": {
       "level": "Livello {level}",

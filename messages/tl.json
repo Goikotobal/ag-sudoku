@@ -237,7 +237,9 @@
       "signOut": "Mag-sign out",
       "welcome": "Maligayang pagdating, {name}!",
       "saveProgress": "Mag-sign in para i-save",
-      "guest": "Naglalaro bilang bisita"
+      "guest": "Naglalaro bilang bisita",
+      "notYouSignOut": "Hindi ikaw? Mag-sign out",
+      "editAvatarProfile": "I-edit ang Avatar at Profile"
     },
     "profile": {
       "level": "Antas {level}",
