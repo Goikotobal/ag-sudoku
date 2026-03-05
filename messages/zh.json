@@ -236,7 +236,7 @@
       "signInGoogle": "使用Google登录",
       "signOut": "退出登录",
       "welcome": "欢迎, {name}!",
-      "saveProgress": "登录以保存进度",
+      "saveProgress": "登录以在所有AlexGoiko应用中保存进度",
       "guest": "以访客身份游玩",
       "notYouSignOut": "不是您？退出登录",
       "editAvatarProfile": "编辑头像和个人资料"
