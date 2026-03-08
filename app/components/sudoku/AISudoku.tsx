@@ -121,6 +121,30 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const gameResultRecorded = useRef(false)
     const hasMigrated = useRef(false)
 
+    // Fallback profile from localStorage while authProfile loads
+    const [fallbackProfile, setFallbackProfile] = useState<any>(null)
+    useEffect(() => {
+        if (!authProfile && user) {
+            // Try to get cached profile from localStorage
+            const cached = localStorage.getItem('ag_cached_profile')
+            if (cached) {
+                try {
+                    const cachedProfile = JSON.parse(cached)
+                    console.log('[Fallback Profile] Loaded from localStorage:', cachedProfile)
+                    setFallbackProfile(cachedProfile)
+                } catch (e) {
+                    console.error('[Fallback Profile] Failed to parse cached profile:', e)
+                }
+            }
+        } else if (authProfile) {
+            // Clear fallback once real profile loads
+            setFallbackProfile(null)
+        }
+    }, [authProfile, user])
+
+    // Use authProfile if available, otherwise use fallback
+    const effectiveProfile = authProfile || fallbackProfile
+
     // Migrate stats on first login
     useEffect(() => {
         if (!user || profileLoading || hasMigrated.current) return
@@ -148,7 +172,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
     // PRO DIFFICULTY GATE - Check subscription tier from main alexgoiko.com profile
     const [showProUpgradeModal, setShowProUpgradeModal] = useState(false)
-    const isProSubscriber = authProfile?.subscription_tier === 'pro'
+    const isProSubscriber = effectiveProfile?.subscription_tier === 'pro'
     const { isOnline } = useOnlineStatus()
 
     // OFFLINE MODE GATE - Block free users from playing offline
@@ -239,7 +263,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     // Detect desktop screen size
     useEffect(() => {
         const checkDesktop = () => {
-            setIsDesktop(window.innerWidth >= 1024) // TABLETS IN LANDSCAPE USE HORIZONTAL!
+            setIsDesktop(window.innerWidth >= 768) // Show name on tablet and desktop
         }
 
         checkDesktop()
@@ -1618,7 +1642,20 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             {/* Right: Profile Badge + Home Button */}
             <div style={{ display: "flex", alignItems: "center", gap: isDesktop ? 12 : 8 }}>
                 {/* Profile Badge */}
-                {user && authProfile ? (
+                {(() => {
+                    // DEBUG: Log entire header state at render time
+                    console.log('[Header Render Debug] ===== START =====');
+                    console.log('[Header Render Debug] user:', user);
+                    console.log('[Header Render Debug] authProfile:', authProfile);
+                    console.log('[Header Render Debug] fallbackProfile:', fallbackProfile);
+                    console.log('[Header Render Debug] effectiveProfile:', effectiveProfile);
+                    console.log('[Header Render Debug] authLoading:', authLoading);
+                    console.log('[Header Render Debug] Condition (user && effectiveProfile):', !!(user && effectiveProfile));
+                    console.log('[Header Render Debug] ===== END =====');
+
+                    return null;
+                })()}
+                {user && effectiveProfile ? (
                     <a
                         href="https://alexgoiko.com/profile"
                         style={{
@@ -1630,7 +1667,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     >
                         <div style={{ position: "relative" }}>
                             <img
-                                src={`https://www.alexgoiko.com/avatars/${authProfile.avatar_id || 'shadow'}.png`}
+                                src={`https://www.alexgoiko.com/avatars/${effectiveProfile.avatar_id || 'shadow'}.png`}
                                 alt="Avatar"
                                 onError={(e) => {
                                     e.currentTarget.src = '/Avatars/Shadow.png';
@@ -1639,14 +1676,14 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                     width: 36,
                                     height: 36,
                                     borderRadius: 8,
-                                    border: authProfile.subscription_tier === 'pro'
+                                    border: effectiveProfile.subscription_tier === 'pro'
                                         ? "2px solid #a855f7"
                                         : "2px solid #e5e7eb",
                                     objectFit: "cover",
                                     background: "#f3f4f6",
                                 }}
                             />
-                            {authProfile.subscription_tier === 'pro' && (
+                            {effectiveProfile.subscription_tier === 'pro' && (
                                 <div
                                     style={{
                                         position: "absolute",
@@ -1665,33 +1702,55 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 </div>
                             )}
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            background: "rgba(0, 0, 0, 0.4)",
+                            padding: "4px 8px",
+                            borderRadius: "8px",
+                            backdropFilter: "blur(10px)"
+                        }}>
                             <div
                                 style={{
-                                    fontSize: 13,
+                                    fontSize: isDesktop ? 14 : 12,
                                     fontWeight: 600,
-                                    color: "#374151",
-                                    maxWidth: 70,
+                                    color: "#ffffff",
+                                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
+                                    maxWidth: isDesktop ? 120 : 80,
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                 }}
                             >
-                                {(authProfile.display_name || (authProfile.full_name || '').split(' ')[0] || 'Player').slice(0, 15)}
+                                {(() => {
+                                    const displayName = effectiveProfile.display_name || (effectiveProfile.full_name || '').split(' ')[0] || 'Player';
+                                    console.log('[Header Name Debug] effectiveProfile:', effectiveProfile);
+                                    console.log('[Header Name Debug] display_name:', effectiveProfile.display_name);
+                                    console.log('[Header Name Debug] full_name:', effectiveProfile.full_name);
+                                    console.log('[Header Name Debug] final displayName:', displayName);
+                                    console.log('[Header Name Debug] isDesktop:', isDesktop);
+                                    console.log('[Header Name Debug] Returning text:', displayName.slice(0, 15));
+                                    console.log('[Header Name Debug] JSX name element will render with:', {
+                                        text: displayName.slice(0, 15),
+                                        fontSize: isDesktop ? 14 : 12,
+                                        color: "#ffffff",
+                                        visible: true
+                                    });
+                                    return displayName.slice(0, 15);
+                                })()}
                             </div>
                             {levelInfo && (
                                 <div
                                     style={{
-                                        fontSize: 9,
-                                        fontWeight: 600,
-                                        color: "white",
-                                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                                        padding: "1px 5px",
-                                        borderRadius: 6,
-                                        marginTop: 1,
+                                        fontSize: isDesktop ? 10 : 9,
+                                        fontWeight: 500,
+                                        color: "#ffffff",
+                                        textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)",
+                                        marginTop: 2,
                                     }}
                                 >
-                                    Lv{levelInfo.level}
+                                    Lv {levelInfo.level}
                                 </div>
                             )}
                         </div>
