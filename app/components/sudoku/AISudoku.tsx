@@ -1743,10 +1743,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             {levelInfo && (
                                 <div
                                     style={{
-                                        fontSize: isDesktop ? 10 : 9,
-                                        fontWeight: 500,
+                                        background: "linear-gradient(135deg, #10b981, #059669)",
                                         color: "#ffffff",
-                                        textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)",
+                                        fontSize: 11,
+                                        fontWeight: 700,
+                                        padding: "2px 7px",
+                                        borderRadius: "10px",
+                                        display: "inline-block",
                                         marginTop: 2,
                                     }}
                                 >
