@@ -192,6 +192,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     // SETTINGS - Game settings
     const [showSettingsView, setShowSettingsView] = useState(false)
     const [showHowToPlay, setShowHowToPlay] = useState(false)
+    const [showHowLevelsWork, setShowHowLevelsWork] = useState(false)
     const [gameSettings, setGameSettings] = useState<GameSettings>(() => getSettings())
 
     // Load settings on mount
@@ -1711,49 +1712,87 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             borderRadius: "8px",
                             backdropFilter: "blur(10px)"
                         }}>
-                            <div
-                                style={{
-                                    fontSize: isDesktop ? 14 : 12,
-                                    fontWeight: 600,
-                                    color: "#ffffff",
-                                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
-                                    maxWidth: isDesktop ? 120 : 80,
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                }}
-                            >
-                                {(() => {
-                                    const displayName = effectiveProfile.display_name || (effectiveProfile.full_name || '').split(' ')[0] || 'Player';
-                                    console.log('[Header Name Debug] effectiveProfile:', effectiveProfile);
-                                    console.log('[Header Name Debug] display_name:', effectiveProfile.display_name);
-                                    console.log('[Header Name Debug] full_name:', effectiveProfile.full_name);
-                                    console.log('[Header Name Debug] final displayName:', displayName);
-                                    console.log('[Header Name Debug] isDesktop:', isDesktop);
-                                    console.log('[Header Name Debug] Returning text:', displayName.slice(0, 15));
-                                    console.log('[Header Name Debug] JSX name element will render with:', {
-                                        text: displayName.slice(0, 15),
-                                        fontSize: isDesktop ? 14 : 12,
-                                        color: "#ffffff",
-                                        visible: true
-                                    });
-                                    return displayName.slice(0, 15);
-                                })()}
-                            </div>
-                            {levelInfo && (
+                            {/* Name and Level Badge Row */}
+                            <div style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 6,
+                            }}>
                                 <div
                                     style={{
-                                        background: "linear-gradient(135deg, #10b981, #059669)",
+                                        fontSize: isDesktop ? 14 : 12,
+                                        fontWeight: 600,
                                         color: "#ffffff",
-                                        fontSize: 11,
-                                        fontWeight: 700,
-                                        padding: "2px 7px",
-                                        borderRadius: "10px",
-                                        display: "inline-block",
-                                        marginTop: 2,
+                                        textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
+                                        maxWidth: isDesktop ? 120 : 80,
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
                                     }}
                                 >
-                                    Lv {levelInfo.level}
+                                    {(() => {
+                                        const displayName = effectiveProfile.display_name || (effectiveProfile.full_name || '').split(' ')[0] || 'Player';
+                                        console.log('[Header Name Debug] effectiveProfile:', effectiveProfile);
+                                        console.log('[Header Name Debug] display_name:', effectiveProfile.display_name);
+                                        console.log('[Header Name Debug] full_name:', effectiveProfile.full_name);
+                                        console.log('[Header Name Debug] final displayName:', displayName);
+                                        console.log('[Header Name Debug] isDesktop:', isDesktop);
+                                        console.log('[Header Name Debug] Returning text:', displayName.slice(0, 15));
+                                        console.log('[Header Name Debug] JSX name element will render with:', {
+                                            text: displayName.slice(0, 15),
+                                            fontSize: isDesktop ? 14 : 12,
+                                            color: "#ffffff",
+                                            visible: true
+                                        });
+                                        return displayName.slice(0, 15);
+                                    })()}
+                                </div>
+                                {levelInfo && (
+                                    <div
+                                        style={{
+                                            background: "linear-gradient(135deg, #10b981, #059669)",
+                                            color: "#ffffff",
+                                            fontSize: 11,
+                                            fontWeight: 700,
+                                            padding: "2px 7px",
+                                            borderRadius: "10px",
+                                            display: "inline-block",
+                                        }}
+                                    >
+                                        Lv {levelInfo.level}
+                                    </div>
+                                )}
+                            </div>
+                            {/* XP Progress Bar - Desktop Only */}
+                            {levelInfo && isDesktop && (
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                    marginTop: 4,
+                                }}>
+                                    <div style={{
+                                        width: "80px",
+                                        height: "6px",
+                                        background: "rgba(255, 255, 255, 0.15)",
+                                        borderRadius: "3px",
+                                        overflow: "hidden",
+                                    }}>
+                                        <div style={{
+                                            width: `${levelInfo.progress}%`,
+                                            height: "100%",
+                                            background: "linear-gradient(90deg, #a855f7, #ec4899)",
+                                            borderRadius: "3px",
+                                            transition: "width 0.3s ease",
+                                        }} />
+                                    </div>
+                                    <div style={{
+                                        fontSize: "9px",
+                                        color: "rgba(255, 255, 255, 0.6)",
+                                        marginTop: "2px",
+                                    }}>
+                                        {levelInfo.currentXP} / {levelInfo.nextLevelXP} XP
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -5179,24 +5218,44 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 }}>
                                     Help
                                 </h3>
-                                <button
-                                    onClick={() => setShowHowToPlay(true)}
-                                    style={{
-                                        width: "100%",
-                                        padding: "14px 20px",
-                                        background: "rgba(59, 130, 246, 0.15)",
-                                        border: "1px solid rgba(59, 130, 246, 0.3)",
-                                        borderRadius: 12,
-                                        color: "#3b82f6",
-                                        fontSize: 15,
-                                        fontWeight: 600,
-                                        cursor: "pointer",
-                                        transition: "all 0.2s ease",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    How to Play
-                                </button>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                    <button
+                                        onClick={() => setShowHowToPlay(true)}
+                                        style={{
+                                            width: "100%",
+                                            padding: "14px 20px",
+                                            background: "rgba(59, 130, 246, 0.15)",
+                                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                                            borderRadius: 12,
+                                            color: "#3b82f6",
+                                            fontSize: 15,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        How to Play
+                                    </button>
+                                    <button
+                                        onClick={() => setShowHowLevelsWork(true)}
+                                        style={{
+                                            width: "100%",
+                                            padding: "14px 20px",
+                                            background: "rgba(16, 185, 129, 0.15)",
+                                            border: "1px solid rgba(16, 185, 129, 0.3)",
+                                            borderRadius: 12,
+                                            color: "#10b981",
+                                            fontSize: 15,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        How Levels Work
+                                    </button>
+                                </div>
                             </div>
 
                             {/* Data Section */}
@@ -5282,6 +5341,260 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 </div>
                                 <div style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: 12 }}>
                                     © 2026 alexgoiko.com
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* HOW LEVELS WORK MODAL */}
+            {showHowLevelsWork && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0, 0, 0, 0.85)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1003,
+                        padding: isDesktop ? 20 : 10,
+                    }}
+                    onClick={() => setShowHowLevelsWork(false)}
+                >
+                    <div
+                        style={{
+                            background: "rgba(15, 23, 42, 0.95)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
+                            borderRadius: isDesktop ? 24 : 20,
+                            width: isDesktop ? "min(600px, 95vw)" : "95vw",
+                            maxHeight: "90vh",
+                            overflowY: "auto",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            boxShadow: "0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(16, 185, 129, 0.1)",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div style={{
+                            padding: isDesktop ? "24px 28px 20px" : "20px 20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}>
+                            <h2 style={{
+                                margin: 0,
+                                fontSize: isDesktop ? 24 : 20,
+                                fontWeight: 700,
+                                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}>
+                                How Levels Work
+                            </h2>
+                            <button
+                                onClick={() => setShowHowLevelsWork(false)}
+                                style={{
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                    border: "none",
+                                    borderRadius: 8,
+                                    width: 36,
+                                    height: 36,
+                                    cursor: "pointer",
+                                    color: "#fff",
+                                    fontSize: 18,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Content */}
+                        <div style={{ padding: isDesktop ? 28 : 20 }}>
+                            {/* XP Earning Rules */}
+                            <div style={{ marginBottom: 32 }}>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 16,
+                                    fontWeight: 600,
+                                    color: "#fff",
+                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                    backgroundClip: "text",
+                                }}>
+                                    XP Earning Rules
+                                </h3>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                    {/* Play a game */}
+                                    <div style={{
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        borderRadius: 12,
+                                        padding: "14px 16px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    }}>
+                                        <div style={{ color: "#fff", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+                                            Play a game
+                                        </div>
+                                        <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 13 }}>
+                                            Medium: <span style={{ color: "#10b981", fontWeight: 600 }}>+10 XP</span> •
+                                            Expert: <span style={{ color: "#10b981", fontWeight: 600 }}>+25 XP</span> •
+                                            Pro: <span style={{ color: "#a855f7", fontWeight: 600 }}>+50 XP</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Win a game */}
+                                    <div style={{
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        borderRadius: 12,
+                                        padding: "14px 16px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    }}>
+                                        <div style={{ color: "#fff", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+                                            Win a game
+                                        </div>
+                                        <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 13 }}>
+                                            Medium: <span style={{ color: "#10b981", fontWeight: 600 }}>+15 XP</span> •
+                                            Expert: <span style={{ color: "#10b981", fontWeight: 600 }}>+35 XP</span> •
+                                            Pro: <span style={{ color: "#a855f7", fontWeight: 600 }}>+75 XP</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Perfect game */}
+                                    <div style={{
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        borderRadius: 12,
+                                        padding: "14px 16px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    }}>
+                                        <div style={{ color: "#fff", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+                                            Perfect game (0 mistakes)
+                                        </div>
+                                        <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 13 }}>
+                                            Any difficulty: <span style={{ color: "#f59e0b", fontWeight: 600 }}>+25 XP bonus</span>
+                                        </div>
+                                    </div>
+
+                                    {/* No hints used */}
+                                    <div style={{
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        borderRadius: 12,
+                                        padding: "14px 16px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    }}>
+                                        <div style={{ color: "#fff", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+                                            No hints used
+                                        </div>
+                                        <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 13 }}>
+                                            <span style={{ color: "#10b981", fontWeight: 600 }}>+10 XP bonus</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Fast completion */}
+                                    <div style={{
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        borderRadius: 12,
+                                        padding: "14px 16px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    }}>
+                                        <div style={{ color: "#fff", fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+                                            Fast completion
+                                        </div>
+                                        <div style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: 13 }}>
+                                            Medium &lt;5min: <span style={{ color: "#3b82f6", fontWeight: 600 }}>+20 XP</span> •
+                                            Expert &lt;10min: <span style={{ color: "#3b82f6", fontWeight: 600 }}>+30 XP</span> •
+                                            Pro: <span style={{ color: "#a855f7", fontWeight: 600 }}>+50 XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Level Thresholds */}
+                            <div>
+                                <h3 style={{
+                                    margin: "0 0 16px 0",
+                                    fontSize: 16,
+                                    fontWeight: 600,
+                                    color: "#fff",
+                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                    backgroundClip: "text",
+                                }}>
+                                    Level Thresholds
+                                </h3>
+                                <div style={{
+                                    maxHeight: "300px",
+                                    overflowY: "auto",
+                                    background: "rgba(255, 255, 255, 0.03)",
+                                    borderRadius: 12,
+                                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                                }}>
+                                    {/* Table Header */}
+                                    <div style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "60px 1fr 1fr",
+                                        gap: 12,
+                                        padding: "12px 16px",
+                                        background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                        color: "#fff",
+                                        fontSize: 13,
+                                        fontWeight: 700,
+                                        position: "sticky",
+                                        top: 0,
+                                        zIndex: 1,
+                                    }}>
+                                        <div>Level</div>
+                                        <div>XP Needed</div>
+                                        <div>Title</div>
+                                    </div>
+
+                                    {/* Table Rows */}
+                                    {[
+                                        { level: 1, xp: 0, title: "Beginner" },
+                                        { level: 3, xp: 150, title: "Novice" },
+                                        { level: 5, xp: 400, title: "Learner" },
+                                        { level: 10, xp: 1000, title: "Player" },
+                                        { level: 15, xp: 2000, title: "Solver" },
+                                        { level: 20, xp: 3500, title: "Expert" },
+                                        { level: 25, xp: 5500, title: "Master" },
+                                        { level: 30, xp: 8000, title: "Champion" },
+                                        { level: 50, xp: 18000, title: "Legend" },
+                                        { level: 100, xp: 50000, title: "Immortal" },
+                                    ].map((item) => {
+                                        const isCurrentLevel = levelInfo?.level === item.level;
+                                        return (
+                                            <div
+                                                key={item.level}
+                                                style={{
+                                                    display: "grid",
+                                                    gridTemplateColumns: "60px 1fr 1fr",
+                                                    gap: 12,
+                                                    padding: "12px 16px",
+                                                    background: isCurrentLevel
+                                                        ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                                                        : "transparent",
+                                                    color: isCurrentLevel ? "#fff" : "rgba(255, 255, 255, 0.7)",
+                                                    fontSize: 13,
+                                                    fontWeight: isCurrentLevel ? 600 : 400,
+                                                    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                                                }}
+                                            >
+                                                <div>{item.level}</div>
+                                                <div>{item.xp.toLocaleString()}</div>
+                                                <div>{item.title}</div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
