@@ -1,0 +1,1080 @@
+import { useState } from "react"
+
+type PanelTab = "leaderboard" | "profile"
+type ProfileTab = "avatar" | "profile" | "stats" | "about"
+
+interface AvatarProfile {
+    animal: string
+    color: string
+    nickname: string
+    isPro: boolean
+}
+
+export default function RightPanel() {
+    const [activeTab, setActiveTab] = useState<PanelTab>("leaderboard")
+    const [profileTab, setProfileTab] = useState<ProfileTab>("avatar")
+    const [profile, setProfile] = useState<AvatarProfile>(() => {
+        const saved = localStorage.getItem("sudoku_avatar")
+        return saved
+            ? JSON.parse(saved)
+            : {
+                  animal: "fox",
+                  color: "#FF6B35",
+                  nickname: "",
+                  isPro: false,
+              }
+    })
+
+    // Available animals with REAL IMAGES
+    const animals = {
+        free: [
+            {
+                id: "fox",
+                url: "https://i.postimg.cc/1XrpXfBZ/fox.png",
+                name: "Fox",
+            },
+            {
+                id: "cat",
+                url: "https://i.postimg.cc/yxyFxkjK/cat.png",
+                name: "Cat",
+            },
+            {
+                id: "dog",
+                url: "https://i.postimg.cc/zvrCqnCv/dog.png",
+                name: "Dog",
+            },
+        ],
+        pro: [
+            {
+                id: "panda",
+                url: "https://i.postimg.cc/8cmhcj4J/panda.png",
+                name: "Panda",
+            },
+            {
+                id: "owl",
+                url: "https://i.postimg.cc/PJQmJPyq/owl.png",
+                name: "Owl",
+            },
+            {
+                id: "bear",
+                url: "https://i.postimg.cc/0MVMfKXH/bear.png",
+                name: "Bear",
+            },
+            {
+                id: "lion",
+                url: "https://i.postimg.cc/mkyQktjg/lion.png",
+                name: "Lion",
+            },
+            {
+                id: "tiger",
+                url: "https://i.postimg.cc/T1Jr1p05/tiger.png",
+                name: "Tiger",
+            },
+            {
+                id: "koala",
+                url: "https://i.postimg.cc/NFk1F5Dc/koala.png",
+                name: "Koala",
+            },
+            {
+                id: "wolf",
+                url: "https://i.postimg.cc/gjHvjnsV/wolf.png",
+                name: "Wolf",
+            },
+        ],
+    }
+
+    // Color options
+    const colors = {
+        free: ["#FF6B35", "#4ECDC4", "#95E1D3", "#F38181", "#AA96DA"],
+        pro: [
+            "#667eea",
+            "#764ba2",
+            "#f093fb",
+            "#4facfe",
+            "#43e97b",
+            "#fa709a",
+            "#fee140",
+            "#30cfd0",
+        ],
+    }
+
+    const getAnimalUrl = (animalId: string) => {
+        const allAnimals = [...animals.free, ...animals.pro]
+        return (
+            allAnimals.find((a) => a.id === animalId)?.url ||
+            animals.free[0].url
+        )
+    }
+
+    const saveProfile = () => {
+        if (!profile.nickname.trim()) {
+            alert("Please enter a nickname!")
+            return
+        }
+
+        if (profile.nickname.length > 15) {
+            alert("Nickname must be 15 characters or less!")
+            return
+        }
+
+        localStorage.setItem("sudoku_avatar", JSON.stringify(profile))
+        alert("Profile saved successfully!")
+    }
+
+    // LEADERBOARD CONTENT
+    const renderLeaderboard = () => (
+        <div style={{ padding: "20px 24px" }}>
+            {/* Header */}
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 20,
+                }}
+            >
+                <span style={{ fontSize: 24 }}>🏆</span>
+                <h3
+                    style={{
+                        fontSize: 20,
+                        fontWeight: 700,
+                        margin: 0,
+                        background:
+                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
+                >
+                    Leaderboard
+                </h3>
+            </div>
+
+            <p
+                style={{
+                    fontSize: 12,
+                    color: "#94a3b8",
+                    marginBottom: 20,
+                }}
+            >
+                Top Players Today
+            </p>
+
+            {/* Top Players */}
+            <div style={{ marginBottom: 30 }}>
+                {[
+                    {
+                        rank: 1,
+                        name: "FoxMaster",
+                        time: "03:24",
+                        emoji: "🦊",
+                        color: "#FFD700",
+                    },
+                    {
+                        rank: 2,
+                        name: "PandaPro",
+                        time: "04:15",
+                        emoji: "🐼",
+                        color: "#C0C0C0",
+                    },
+                    {
+                        rank: 3,
+                        name: "WolfGuy",
+                        time: "05:02",
+                        emoji: "🐺",
+                        color: "#CD7F32",
+                    },
+                ].map((player) => (
+                    <div
+                        key={player.rank}
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 12,
+                            padding: "12px 16px",
+                            background:
+                                player.rank === 1 ? "#fff9e6" : "#f7fafc",
+                            borderRadius: 12,
+                            marginBottom: 8,
+                            border:
+                                player.rank === 1
+                                    ? "2px solid #FFD700"
+                                    : "1px solid #e2e8f0",
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 700,
+                                color: player.color,
+                                minWidth: 24,
+                            }}
+                        >
+                            {player.rank}
+                        </div>
+                        <div
+                            style={{
+                                width: 36,
+                                height: 36,
+                                borderRadius: "50%",
+                                background: "#FF6B35",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: 20,
+                            }}
+                        >
+                            {player.emoji}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <div
+                                style={{
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: "#2d3748",
+                                }}
+                            >
+                                {player.name}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 700,
+                                color: "#667eea",
+                            }}
+                        >
+                            {player.time}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Coming Soon Section */}
+            <div
+                style={{
+                    background: "#f7fafc",
+                    padding: 20,
+                    borderRadius: 12,
+                    textAlign: "center",
+                    marginBottom: 20,
+                }}
+            >
+                <div style={{ fontSize: 32, marginBottom: 10 }}>🏅</div>
+                <div
+                    style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 8,
+                    }}
+                >
+                    Coming Soon
+                </div>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                        lineHeight: 1.5,
+                    }}
+                >
+                    • Daily Rankings
+                    <br />
+                    • Weekly Championships
+                    <br />• Personal Statistics
+                </div>
+            </div>
+
+            {/* PRO Section */}
+            <div
+                style={{
+                    background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    padding: 24,
+                    borderRadius: 16,
+                    color: "white",
+                    textAlign: "center",
+                }}
+            >
+                <div style={{ fontSize: 28, marginBottom: 8 }}>👑</div>
+                <div
+                    style={{
+                        fontSize: 16,
+                        fontWeight: 700,
+                        marginBottom: 8,
+                    }}
+                >
+                    Unlock Pro Mode
+                </div>
+                <div
+                    style={{
+                        fontSize: 12,
+                        opacity: 0.9,
+                        marginBottom: 16,
+                        lineHeight: 1.5,
+                    }}
+                >
+                    Compete in tournaments and climb the leaderboard!
+                </div>
+                <button
+                    style={{
+                        background: "white",
+                        color: "#667eea",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: 8,
+                        fontWeight: 700,
+                        fontSize: 13,
+                        cursor: "pointer",
+                    }}
+                >
+                    Learn More
+                </button>
+            </div>
+        </div>
+    )
+
+    // AVATAR TAB CONTENT
+    const renderAvatarTab = () => (
+        <>
+            {/* Avatar Preview */}
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: 30,
+                }}
+            >
+                <div
+                    style={{
+                        width: 120,
+                        height: 120,
+                        borderRadius: "50%",
+                        background: profile.color,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                        overflow: "hidden",
+                        padding: 10,
+                    }}
+                >
+                    <img
+                        src={getAnimalUrl(profile.animal)}
+                        alt={profile.animal}
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                        }}
+                    />
+                </div>
+            </div>
+
+            {/* Nickname Input */}
+            <div style={{ marginBottom: 30 }}>
+                <label
+                    style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 8,
+                        display: "block",
+                    }}
+                >
+                    Nickname
+                </label>
+                <input
+                    type="text"
+                    value={profile.nickname}
+                    onChange={(e) =>
+                        setProfile({
+                            ...profile,
+                            nickname: e.target.value,
+                        })
+                    }
+                    placeholder="Enter your name..."
+                    maxLength={15}
+                    style={{
+                        width: "100%",
+                        padding: "10px 14px",
+                        border: "2px solid #e2e8f0",
+                        borderRadius: 10,
+                        fontSize: 14,
+                        fontWeight: 600,
+                        outline: "none",
+                        transition: "border 0.2s",
+                        boxSizing: "border-box",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#667eea")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
+                />
+                <div
+                    style={{
+                        fontSize: 11,
+                        color: "#94a3b8",
+                        marginTop: 4,
+                        textAlign: "right",
+                    }}
+                >
+                    {profile.nickname.length}/15
+                </div>
+            </div>
+
+            {/* Animal Selection */}
+            <div style={{ marginBottom: 30 }}>
+                <label
+                    style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 8,
+                        display: "block",
+                    }}
+                >
+                    Choose Animal
+                </label>
+
+                {/* Free Animals */}
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(3, 1fr)",
+                        gap: 8,
+                        marginBottom: 12,
+                    }}
+                >
+                    {animals.free.map((animal) => (
+                        <button
+                            key={animal.id}
+                            onClick={() =>
+                                setProfile({
+                                    ...profile,
+                                    animal: animal.id,
+                                })
+                            }
+                            style={{
+                                padding: 12,
+                                border:
+                                    profile.animal === animal.id
+                                        ? "3px solid #667eea"
+                                        : "2px solid #e2e8f0",
+                                borderRadius: 10,
+                                background:
+                                    profile.animal === animal.id
+                                        ? "#f0f4ff"
+                                        : "white",
+                                cursor: "pointer",
+                                transition: "all 0.2s",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: 4,
+                            }}
+                        >
+                            <img
+                                src={animal.url}
+                                alt={animal.name}
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    objectFit: "contain",
+                                }}
+                            />
+                            <div
+                                style={{
+                                    fontSize: 10,
+                                    fontWeight: 600,
+                                    color: "#64748b",
+                                }}
+                            >
+                                {animal.name}
+                            </div>
+                        </button>
+                    ))}
+                </div>
+
+                {/* Pro Animals */}
+                <div
+                    style={{
+                        background: "#f7fafc",
+                        padding: 12,
+                        borderRadius: 10,
+                        border: "1px dashed #cbd5e0",
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            marginBottom: 8,
+                        }}
+                    >
+                        <span
+                            style={{
+                                fontSize: 11,
+                                fontWeight: 600,
+                                color: "#64748b",
+                            }}
+                        >
+                            👑 PRO Animals
+                        </span>
+                        {!profile.isPro && (
+                            <span
+                                style={{
+                                    fontSize: 9,
+                                    background: "#667eea",
+                                    color: "white",
+                                    padding: "3px 6px",
+                                    borderRadius: 4,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Upgrade
+                            </span>
+                        )}
+                    </div>
+                    <div
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(4, 1fr)",
+                            gap: 6,
+                            opacity: profile.isPro ? 1 : 0.5,
+                            pointerEvents: profile.isPro ? "auto" : "none",
+                        }}
+                    >
+                        {animals.pro.map((animal) => (
+                            <button
+                                key={animal.id}
+                                onClick={() =>
+                                    setProfile({
+                                        ...profile,
+                                        animal: animal.id,
+                                    })
+                                }
+                                style={{
+                                    padding: 8,
+                                    border:
+                                        profile.animal === animal.id
+                                            ? "3px solid #667eea"
+                                            : "2px solid #e2e8f0",
+                                    borderRadius: 8,
+                                    background:
+                                        profile.animal === animal.id
+                                            ? "#f0f4ff"
+                                            : "white",
+                                    cursor: "pointer",
+                                    transition: "all 0.2s",
+                                }}
+                            >
+                                <img
+                                    src={animal.url}
+                                    alt={animal.name}
+                                    style={{
+                                        width: 32,
+                                        height: 32,
+                                        objectFit: "contain",
+                                    }}
+                                />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Color Selection */}
+            <div style={{ marginBottom: 20 }}>
+                <label
+                    style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 8,
+                        display: "block",
+                    }}
+                >
+                    Choose Color
+                </label>
+                <div
+                    style={{
+                        display: "flex",
+                        gap: 6,
+                        flexWrap: "wrap",
+                    }}
+                >
+                    {colors.free.map((color) => (
+                        <button
+                            key={color}
+                            onClick={() =>
+                                setProfile({
+                                    ...profile,
+                                    color,
+                                })
+                            }
+                            style={{
+                                width: 36,
+                                height: 36,
+                                borderRadius: "50%",
+                                background: color,
+                                border:
+                                    profile.color === color
+                                        ? "3px solid #2d3748"
+                                        : "2px solid #e2e8f0",
+                                cursor: "pointer",
+                                transition: "all 0.2s",
+                            }}
+                        />
+                    ))}
+                </div>
+                {!profile.isPro && (
+                    <p
+                        style={{
+                            fontSize: 10,
+                            color: "#94a3b8",
+                            marginTop: 6,
+                        }}
+                    >
+                        👑 More colors available with PRO
+                    </p>
+                )}
+            </div>
+
+            {/* Save Button */}
+            <button
+                onClick={saveProfile}
+                style={{
+                    width: "100%",
+                    padding: "12px",
+                    border: "none",
+                    borderRadius: 10,
+                    background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: "pointer",
+                }}
+            >
+                Save Profile
+            </button>
+        </>
+    )
+
+    // PROFILE INFO TAB
+    const renderProfileInfo = () => (
+        <div>
+            {/* Profile Stats Card */}
+            <div
+                style={{
+                    background: "#f7fafc",
+                    padding: 16,
+                    borderRadius: 12,
+                    marginBottom: 16,
+                }}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        marginBottom: 12,
+                    }}
+                >
+                    <div
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: "50%",
+                            background: profile.color,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "hidden",
+                            padding: 6,
+                        }}
+                    >
+                        <img
+                            src={getAnimalUrl(profile.animal)}
+                            alt={profile.animal}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "contain",
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <div
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 700,
+                                color: "#2d3748",
+                            }}
+                        >
+                            {profile.nickname || "No nickname"}
+                        </div>
+                        <div
+                            style={{
+                                fontSize: 11,
+                                color: "#64748b",
+                            }}
+                        >
+                            {profile.isPro ? "👑 PRO Member" : "Free User"}
+                        </div>
+                    </div>
+                </div>
+
+                {!profile.isPro && (
+                    <button
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            background:
+                                "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 8,
+                            fontWeight: 600,
+                            fontSize: 12,
+                            cursor: "pointer",
+                        }}
+                    >
+                        Upgrade to PRO - $4.99/month
+                    </button>
+                )}
+            </div>
+
+            {/* Account Info */}
+            <div style={{ marginBottom: 16 }}>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                        marginBottom: 4,
+                    }}
+                >
+                    Member Since
+                </div>
+                <div
+                    style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                    }}
+                >
+                    November 2025
+                </div>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                        marginBottom: 4,
+                    }}
+                >
+                    Account Status
+                </div>
+                <div
+                    style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: profile.isPro ? "#43e97b" : "#667eea",
+                    }}
+                >
+                    {profile.isPro ? "Active PRO" : "Free Tier"}
+                </div>
+            </div>
+        </div>
+    )
+
+    // STATS TAB
+    const renderStats = () => (
+        <div>
+            {/* Stats Grid */}
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: 10,
+                    marginBottom: 16,
+                }}
+            >
+                <StatCard title="Games Played" value="0" />
+                <StatCard title="Win Rate" value="0%" />
+                <StatCard title="Best Time" value="--:--" />
+                <StatCard title="Avg Time" value="--:--" />
+                <StatCard title="Current Streak" value="0" icon="🔥" />
+                <StatCard title="Best Streak" value="0" icon="⭐" />
+            </div>
+
+            {/* Coming Soon Message */}
+            <div
+                style={{
+                    background: "#f7fafc",
+                    padding: 16,
+                    borderRadius: 10,
+                    textAlign: "center",
+                }}
+            >
+                <div style={{ fontSize: 28, marginBottom: 8 }}>📊</div>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                    }}
+                >
+                    Start playing to see your stats!
+                </div>
+            </div>
+        </div>
+    )
+
+    // ABOUT TAB
+    const renderAbout = () => (
+        <div>
+            <div style={{ marginBottom: 16 }}>
+                <h4
+                    style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 6,
+                    }}
+                >
+                    How to Play
+                </h4>
+                <p
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                        lineHeight: 1.5,
+                    }}
+                >
+                    Fill the 9×9 grid so that each row, column, and 3×3 box
+                    contains the digits 1-9 without repetition.
+                </p>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+                <h4
+                    style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#2d3748",
+                        marginBottom: 6,
+                    }}
+                >
+                    Features
+                </h4>
+                <ul
+                    style={{
+                        fontSize: 12,
+                        color: "#64748b",
+                        lineHeight: 1.6,
+                        paddingLeft: 20,
+                        margin: 0,
+                    }}
+                >
+                    <li>4 difficulty levels</li>
+                    <li>AI-powered hints</li>
+                    <li>Auto-solve feature</li>
+                    <li>Custom avatars</li>
+                    <li>Tournaments (PRO)</li>
+                </ul>
+            </div>
+
+            <div
+                style={{
+                    background: "#f7fafc",
+                    padding: 12,
+                    borderRadius: 10,
+                    fontSize: 11,
+                    color: "#94a3b8",
+                    textAlign: "center",
+                }}
+            >
+                Version 1.0 MVP
+                <br />
+                Created by Alex Goiko
+            </div>
+        </div>
+    )
+
+    // Helper component for stats
+    const StatCard = ({
+        title,
+        value,
+        icon,
+    }: {
+        title: string
+        value: string
+        icon?: string
+    }) => (
+        <div
+            style={{
+                background: "#f7fafc",
+                padding: 12,
+                borderRadius: 8,
+                textAlign: "center",
+            }}
+        >
+            <div
+                style={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: "#667eea",
+                    marginBottom: 2,
+                }}
+            >
+                {icon && <span style={{ marginRight: 4 }}>{icon}</span>}
+                {value}
+            </div>
+            <div
+                style={{
+                    fontSize: 10,
+                    color: "#64748b",
+                    fontWeight: 600,
+                }}
+            >
+                {title}
+            </div>
+        </div>
+    )
+
+    return (
+        <div
+            style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                background: "white",
+                borderRadius: 24,
+                overflow: "hidden",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            }}
+        >
+            {/* Main Tab Navigation */}
+            <div
+                style={{
+                    display: "flex",
+                    borderBottom: "2px solid #e2e8f0",
+                    background: "#fafafa",
+                }}
+            >
+                <button
+                    onClick={() => setActiveTab("leaderboard")}
+                    style={{
+                        flex: 1,
+                        padding: "14px",
+                        border: "none",
+                        background:
+                            activeTab === "leaderboard"
+                                ? "white"
+                                : "transparent",
+                        color:
+                            activeTab === "leaderboard" ? "#667eea" : "#64748b",
+                        fontWeight: 600,
+                        fontSize: 13,
+                        cursor: "pointer",
+                        borderBottom:
+                            activeTab === "leaderboard"
+                                ? "3px solid #667eea"
+                                : "none",
+                        marginBottom: activeTab === "leaderboard" ? -2 : 0,
+                        transition: "all 0.2s",
+                    }}
+                >
+                    🏆 Leaderboard
+                </button>
+                <button
+                    onClick={() => setActiveTab("profile")}
+                    style={{
+                        flex: 1,
+                        padding: "14px",
+                        border: "none",
+                        background:
+                            activeTab === "profile" ? "white" : "transparent",
+                        color: activeTab === "profile" ? "#667eea" : "#64748b",
+                        fontWeight: 600,
+                        fontSize: 13,
+                        cursor: "pointer",
+                        borderBottom:
+                            activeTab === "profile"
+                                ? "3px solid #667eea"
+                                : "none",
+                        marginBottom: activeTab === "profile" ? -2 : 0,
+                        transition: "all 0.2s",
+                    }}
+                >
+                    👤 Profile
+                </button>
+            </div>
+
+            {/* Tab Content */}
+            <div style={{ flex: 1, overflow: "auto" }}>
+                {activeTab === "leaderboard" && renderLeaderboard()}
+
+                {activeTab === "profile" && (
+                    <div style={{ padding: "16px 20px" }}>
+                        {/* Profile Sub-tabs */}
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: 6,
+                                marginBottom: 20,
+                                borderBottom: "2px solid #e2e8f0",
+                            }}
+                        >
+                            {[
+                                { id: "avatar", label: "Avatar", icon: "🎨" },
+                                { id: "profile", label: "Info", icon: "👤" },
+                                { id: "stats", label: "Stats", icon: "📊" },
+                                { id: "about", label: "About", icon: "ℹ️" },
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() =>
+                                        setProfileTab(tab.id as ProfileTab)
+                                    }
+                                    style={{
+                                        flex: 1,
+                                        padding: "8px 6px",
+                                        border: "none",
+                                        background: "transparent",
+                                        color:
+                                            profileTab === tab.id
+                                                ? "#667eea"
+                                                : "#64748b",
+                                        fontWeight: 600,
+                                        fontSize: 11,
+                                        cursor: "pointer",
+                                        borderBottom:
+                                            profileTab === tab.id
+                                                ? "3px solid #667eea"
+                                                : "3px solid transparent",
+                                        transition: "all 0.2s",
+                                        marginBottom: -2,
+                                    }}
+                                >
+                                    <span style={{ marginRight: 2 }}>
+                                        {tab.icon}
+                                    </span>
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Profile Tab Content */}
+                        {profileTab === "avatar" && renderAvatarTab()}
+                        {profileTab === "profile" && renderProfileInfo()}
+                        {profileTab === "stats" && renderStats()}
+                        {profileTab === "about" && renderAbout()}
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}

@@ -2,24 +2,39 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import AISudoku from '../../../components/sudoku/AISudoku';
 import { useAuth } from '@/context/AuthContext';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
+import { useProfileCache } from '@/hooks/useProfileCache';
+import { OfflineBanner } from '@/components/OfflineBanner';
+import { OfflineFreeModal } from '@/components/OfflineFreeModal';
 
 type Difficulty = 'medium' | 'expert' | 'pro';
 
 export default function SudokuPlayPage() {
   const t = useTranslations('sudoku');
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const { profile } = useAuth();
   const { isOnline } = useOnlineStatus();
+  const profileCache = useProfileCache();
   const [showGame, setShowGame] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('medium');
   const [mounted, setMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<Difficulty | null>(null);
+  const [showOfflineFreeModal, setShowOfflineFreeModal] = useState(false);
 
-  const isPro = profile?.subscription_tier === 'pro';
+  // Determine Pro status: online from profile, offline from cache
+  const isPro = isOnline ? profile?.subscription_tier === 'pro' : profileCache?.isPro;
+
+  // Check if user is offline and not Pro - show modal
+  useEffect(() => {
+    if (!isOnline && !isPro && profileCache) {
+      setShowOfflineFreeModal(true);
+    }
+  }, [isOnline, isPro, profileCache]);
 
   // Debug logging for Pro status
   useEffect(() => {
@@ -44,12 +59,37 @@ export default function SudokuPlayPage() {
     setShowGame(true);
   };
 
+  const handleUpgradeClick = () => {
+    router.push(`https://www.alexgoiko.com/${locale}/subscribe`);
+  };
+
+  const handleBackToHome = () => {
+    router.push(`/${locale}`);
+  };
+
   if (showGame) {
     console.log('[Play Page] Rendering AISudoku with selectedDifficulty:', selectedDifficulty, 'isPro:', isPro);
-    return <AISudoku initialDifficulty={selectedDifficulty} isPro={isPro} />;
+    return (
+      <>
+        {!isOnline && isPro && <OfflineBanner />}
+        <AISudoku initialDifficulty={selectedDifficulty} isPro={isPro} isOffline={!isOnline} />
+      </>
+    );
   }
 
   return (
+    <>
+      {/* Offline Free User Modal */}
+      {showOfflineFreeModal && (
+        <OfflineFreeModal
+          onClose={handleBackToHome}
+          onUpgrade={handleUpgradeClick}
+        />
+      )}
+
+      {/* Offline Banner for Pro Users */}
+      {!isOnline && isPro && <OfflineBanner />}
+
     <main suppressHydrationWarning style={{
       minHeight: '100vh',
       backgroundImage: 'url(/images/Frame1.png)',
@@ -685,5 +725,6 @@ export default function SudokuPlayPage() {
         `}</style>
       )}
     </main>
+    </>
   );
 }

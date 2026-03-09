@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Sudoku Master</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header .subtitle {
+            color: #718096;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: #f7fafc;
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .difficulty-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4a5568;
+            transition: all 0.2s;
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 1px;
+            background: #2d3748;
+            border: 3px solid #2d3748;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 1;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .cell:hover:not(.given):not(.solved) {
+            background: #edf2f7;
+        }
+
+        .cell.selected {
+            background: #e6fffa !important;
+            border: 2px solid #38b2ac;
+        }
+
+        .cell.given {
+            background: #f7fafc;
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .cell.user-input {
+            color: #667eea;
+        }
+
+        .cell.error {
+            background: #fff5f5;
+            color: #e53e3e;
+        }
+
+        .cell.hint {
+            background: #fefcbf;
+            color: #d69e2e;
+            animation: highlight 0.5s;
+        }
+
+        .cell.solved {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .cell:nth-child(3n):not(:nth-child(9n)) {
+            border-right: 2px solid #2d3748;
+        }
+
+        .cell:nth-child(n+19):nth-child(-n+27),
+        .cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #2d3748;
+        }
+
+        .cell-notes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            font-size: 8px;
+            color: #a0aec0;
+            position: absolute;
+            inset: 2px;
+        }
+
+        .cell-notes span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toggle-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4a5568;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: modalSlide 0.3s;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes highlight {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .modal-content h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            color: #718096;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .trophy {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .cell {
+                font-size: 18px;
+            }
+
+            .controls {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .control-btn {
+                padding: 10px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><img src="/mnt/user-data/uploads/1762141686587_image.png" alt="AG Logo" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">🧠 <span style="display:none;">AI</span> Sudoku Master</h1>
+            <div class="subtitle">
+                <span>Built with AI Engineering</span>
+                <div class="ai-badge">⚡ AI-Powered</div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Time</div>
+                <div class="stat-value" id="timer">00:00</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Mistakes</div>
+                <div class="stat-value" id="mistakes">0/3</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Hints</div>
+                <div class="stat-value" id="hints">3</div>
+            </div>
+        </div>
+
+        <div class="difficulty-selector">
+            <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+            <button class="difficulty-btn active" data-difficulty="hard">Hard</button>
+            <button class="difficulty-btn" data-difficulty="expert">Expert</button>
+            <button class="difficulty-btn" data-difficulty="pro">Pro</button>
+        </div>
+
+        <div class="sudoku-grid" id="grid"></div>
+
+        <div class="controls" id="controls">
+            <button class="control-btn" data-number="1">1</button>
+            <button class="control-btn" data-number="2">2</button>
+            <button class="control-btn" data-number="3">3</button>
+            <button class="control-btn" data-number="4">4</button>
+            <button class="control-btn" data-number="5">5</button>
+            <button class="control-btn" data-number="6">6</button>
+            <button class="control-btn" data-number="7">7</button>
+            <button class="control-btn" data-number="8">8</button>
+            <button class="control-btn" data-number="9">9</button>
+            <button class="control-btn" data-number="0">✕</button>
+        </div>
+
+        <div class="toggle-group">
+            <button class="toggle-btn" id="notesToggle">📝 Notes: OFF</button>
+            <button class="toggle-btn" id="autoCheckToggle">✓ Auto-Check: OFF</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn primary" id="hintBtn">💡 AI Hint</button>
+            <button class="action-btn primary" id="solveBtn">🤖 AI Solve</button>
+            <button class="action-btn secondary" id="undoBtn">↶ Undo</button>
+            <button class="action-btn secondary" id="newGameBtn">🎮 New Game</button>
+        </div>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <div class="trophy">🏆</div>
+            <h2>Congratulations!</h2>
+            <p>You've mastered this puzzle!</p>
+            <p><strong>Time:</strong> <span id="finalTime"></span></p>
+            <p><strong>Mistakes:</strong> <span id="finalMistakes"></span></p>
+            <button class="action-btn primary" onclick="newGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let board = [];
+        let solution = [];
+        let initialBoard = [];
+        let selectedCell = null;
+        let notesMode = false;
+        let autoCheck = false;
+        let mistakes = 0;
+        let maxMistakes = 3;
+        let hintsRemaining = 3;
+        let timer = 0;
+        let timerInterval = null;
+        let moveHistory = [];
+        let currentDifficulty = 'hard';
+
+        // Difficulty settings (cells to remove)
+        const difficulties = {
+            medium: 50,
+            hard: 56,
+            expert: 60,
+            pro: 64
+        };
+
+        // Difficulty rules
+        const difficultyRules = {
+            medium: { maxMistakes: 3, hints: 3, aiSolve: true },
+            hard: { maxMistakes: 3, hints: 3, aiSolve: true },
+            expert: { maxMistakes: 1, hints: 1, aiSolve: false },
+            pro: { maxMistakes: 0, hints: 0, aiSolve: false }
+        };
+
+        // Initialize game
+        function init() {
+            createGrid();
+            setupEventListeners();
+            newGame();
+        }
+
+        // Create grid cells
+        function createGrid() {
+            const grid = document.getElementById('grid');
+            for (let i = 0; i < 81; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = i;
+                grid.appendChild(cell);
+            }
+        }
+
+        // Generate a valid Sudoku board using backtracking
+        function generateSolution() {
+            const board = Array(9).fill(0).map(() => Array(9).fill(0));
+            
+            function isValid(board, row, col, num) {
+                // Check row
+                for (let x = 0; x < 9; x++) {
+                    if (board[row][x] === num) return false;
+                }
+                
+                // Check column
+                for (let x = 0; x < 9; x++) {
+                    if (board[x][col] === num) return false;
+                }
+                
+                // Check 3x3 box
+                const startRow = row - row % 3;
+                const startCol = col - col % 3;
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        if (board[i + startRow][j + startCol] === num) return false;
+                    }
+                }
+                
+                return true;
+            }
+            
+            function solve(board) {
+                for (let row = 0; row < 9; row++) {
+                    for (let col = 0; col < 9; col++) {
+                        if (board[row][col] === 0) {
+                            const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
+                            for (let num of numbers) {
+                                if (isValid(board, row, col, num)) {
+                                    board[row][col] = num;
+                                    if (solve(board)) return true;
+                                    board[row][col] = 0;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            solve(board);
+            return board;
+        }
+
+        // Remove cells based on difficulty
+        function createPuzzle(solution, cellsToRemove) {
+            const puzzle = solution.map(row => [...row]);
+            let removed = 0;
+            
+            while (removed < cellsToRemove) {
+                const row = Math.floor(Math.random() * 9);
+                const col = Math.floor(Math.random() * 9);
+                
+                if (puzzle[row][col] !== 0) {
+                    puzzle[row][col] = 0;
+                    removed++;
+                }
+            }
+            
+            return puzzle;
+        }
+
+        // Start new game
+        function newGame() {
+            solution = generateSolution();
+            board = createPuzzle(solution, difficulties[currentDifficulty]);
+            initialBoard = board.map(row => [...row]);
+            
+            // Apply difficulty rules
+            const rules = difficultyRules[currentDifficulty];
+            maxMistakes = rules.maxMistakes;
+            hintsRemaining = rules.hints;
+            mistakes = 0;
+            moveHistory = [];
+            timer = 0;
+            
+            // Update button states
+            updateButtonStates();
+            updateDisplay();
+            startTimer();
+            closeModal();
+        }
+
+        // Update button states based on difficulty
+        function updateButtonStates() {
+            const rules = difficultyRules[currentDifficulty];
+            const hintBtn = document.getElementById('hintBtn');
+            const solveBtn = document.getElementById('solveBtn');
+            
+            // Update hint button
+            if (rules.hints === 0) {
+                hintBtn.disabled = true;
+                hintBtn.style.opacity = '0.3';
+                hintBtn.textContent = '💡 No Hints';
+            } else {
+                hintBtn.disabled = false;
+                hintBtn.style.opacity = '1';
+                hintBtn.textContent = '💡 AI Hint';
+            }
+            
+            // Update solve button
+            if (!rules.aiSolve) {
+                solveBtn.disabled = true;
+                solveBtn.style.opacity = '0.3';
+                solveBtn.textContent = '🤖 Disabled';
+            } else {
+                solveBtn.disabled = false;
+                solveBtn.style.opacity = '1';
+                solveBtn.textContent = '🤖 AI Solve';
+            }
+        }
+
+        // Update grid display
+        function updateDisplay() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                const row = Math.floor(index / 9);
+                const col = index % 9;
+                const value = board[row][col];
+                
+                cell.textContent = value || '';
+                cell.innerHTML = value || '';
+                cell.className = 'cell';
+                
+                if (initialBoard[row][col] !== 0) {
+                    cell.classList.add('given');
+                } else if (value !== 0) {
+                    cell.classList.add('user-input');
+                    
+                    if (autoCheck && value !== solution[row][col]) {
+                        cell.classList.add('error');
+                    }
+                }
+            });
+            
+            document.getElementById('mistakes').textContent = `${mistakes}/${maxMistakes}`;
+            document.getElementById('hints').textContent = hintsRemaining;
+        }
+
+        // Handle cell selection
+        function selectCell(index) {
+            document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+            
+            const cell = document.querySelector(`[data-index="${index}"]`);
+            const row = Math.floor(index / 9);
+            const col = index % 9;
+            
+            if (initialBoard[row][col] === 0) {
+                selectedCell = { row, col, index };
+                cell.classList.add('selected');
+            }
+        }
+
+        // Place number
+        function placeNumber(num) {
+            if (!selectedCell) return;
+            
+            const { row, col } = selectedCell;
+            const oldValue = board[row][col];
+            
+            moveHistory.push({ row, col, oldValue, newValue: num });
+            
+            board[row][col] = num;
+            
+            if (num !== 0 && num !== solution[row][col]) {
+                mistakes++;
+                if (mistakes >= maxMistakes) {
+                    endGame(false);
+                }
+            }
+            
+            updateDisplay();
+            
+            if (checkWin()) {
+                endGame(true);
+            }
+        }
+
+        // Undo last move
+        function undo() {
+            if (moveHistory.length === 0) return;
+            
+            const lastMove = moveHistory.pop();
+            board[lastMove.row][lastMove.col] = lastMove.oldValue;
+            updateDisplay();
+        }
+
+        // AI Hint - reveals one cell
+        function giveHint() {
+            const rules = difficultyRules[currentDifficulty];
+            if (rules.hints === 0 || hintsRemaining <= 0) return;
+            
+            const emptyCells = [];
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0) {
+                        emptyCells.push({ row, col });
+                    }
+                }
+            }
+            
+            if (emptyCells.length > 0) {
+                const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                board[randomCell.row][randomCell.col] = solution[randomCell.row][randomCell.col];
+                
+                const index = randomCell.row * 9 + randomCell.col;
+                const cell = document.querySelector(`[data-index="${index}"]`);
+                cell.classList.add('hint');
+                
+                hintsRemaining--;
+                updateDisplay();
+                
+                setTimeout(() => cell.classList.remove('hint'), 1000);
+                
+                if (checkWin()) {
+                    endGame(true);
+                }
+            }
+        }
+
+        // AI Solve - solves entire puzzle
+        function solvePuzzle() {
+            const rules = difficultyRules[currentDifficulty];
+            if (!rules.aiSolve) return;
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    board[row][col] = solution[row][col];
+                }
+            }
+            
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.classList.add('solved');
+            });
+            
+            updateDisplay();
+            stopTimer();
+            
+            setTimeout(() => {
+                showModal('AI Solved! 🤖', 'The AI has completed the puzzle for you.', false);
+            }, 500);
+        }
+
+        // Check if puzzle is complete
+        function checkWin() {
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] !== solution[row][col]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Timer functions
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                timer++;
+                const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
+                const seconds = (timer % 60).toString().padStart(2, '0');
+                document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // End game
+        function endGame(won) {
+            stopTimer();
+            
+            if (won) {
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
+                document.getElementById('finalTime').textContent = 
+                    `${minutes}m ${seconds}s`;
+                document.getElementById('finalMistakes').textContent = mistakes;
+                document.getElementById('winModal').classList.add('show');
+            } else {
+                showModal('Game Over! 😢', `You made ${maxMistakes} mistakes. Try again!`, true);
+            }
+        }
+
+        // Modal functions
+        function showModal(title, message, showNewGame) {
+            const modal = document.getElementById('winModal');
+            modal.querySelector('h2').textContent = title;
+            modal.querySelector('p').textContent = message;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('winModal').classList.remove('show');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Grid clicks
+            document.getElementById('grid').addEventListener('click', (e) => {
+                if (e.target.classList.contains('cell')) {
+                    selectCell(parseInt(e.target.dataset.index));
+                }
+            });
+
+            // Number controls
+            document.getElementById('controls').addEventListener('click', (e) => {
+                if (e.target.classList.contains('control-btn')) {
+                    const num = parseInt(e.target.dataset.number);
+                    placeNumber(num);
+                }
+            });
+
+            // Keyboard input
+            document.addEventListener('keydown', (e) => {
+                if (e.key >= '1' && e.key <= '9') {
+                    placeNumber(parseInt(e.key));
+                } else if (e.key === '0' || e.key === 'Backspace' || e.key === 'Delete') {
+                    placeNumber(0);
+                }
+            });
+
+            // Action buttons
+            document.getElementById('hintBtn').addEventListener('click', giveHint);
+            document.getElementById('solveBtn').addEventListener('click', solvePuzzle);
+            document.getElementById('undoBtn').addEventListener('click', undo);
+            document.getElementById('newGameBtn').addEventListener('click', newGame);
+
+            // Toggle buttons
+            document.getElementById('notesToggle').addEventListener('click', function() {
+                notesMode = !notesMode;
+                this.textContent = `📝 Notes: ${notesMode ? 'ON' : 'OFF'}`;
+                this.classList.toggle('active');
+            });
+
+            document.getElementById('autoCheckToggle').addEventListener('click', function() {
+                autoCheck = !autoCheck;
+                this.textContent = `✓ Auto-Check: ${autoCheck ? 'ON' : 'OFF'}`;
+                this.classList.toggle('active');
+                updateDisplay();
+            });
+
+            // Difficulty selector
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.difficulty-btn').forEach(b => 
+                        b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentDifficulty = this.dataset.difficulty;
+                    newGame();
+                });
+            });
+
+            // Initialize button states
+            updateButtonStates();
+        }
+
+        // Start the game
+        init();
+    </script>
+</body>
+</html>

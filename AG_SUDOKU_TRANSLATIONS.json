@@ -1,0 +1,849 @@
+{
+  "en": {
+    "title": "AG Sudoku",
+    "subtitle": "AI-Powered",
+    "stats": {
+      "time": "TIME",
+      "mistakes": "MISTAKES",
+      "hints": "HINTS"
+    },
+    "difficulties": {
+      "medium": "Medium",
+      "expert": "Expert",
+      "pro": "Pro",
+      "locked": "🔒 PRO MODE LOCKED!\n\nComplete Expert difficulty in under 15 minutes to unlock Pro mode."
+    },
+    "controls": {
+      "notes": "Notes",
+      "pause": "Pause",
+      "resume": "Resume",
+      "hint": "Hint",
+      "new": "New",
+      "none": "None"
+    },
+    "modals": {
+      "pause": {
+        "title": "Game Paused",
+        "time": "Time",
+        "mistakes": "Mistakes",
+        "difficulty": "Difficulty",
+        "resumeBtn": "▶️ Resume Game",
+        "restartBtn": "🔄 Restart Game",
+        "quitBtn": "🏠 Quit to Home",
+        "confirmRestart": "Are you sure you want to restart? Your progress will be lost."
+      },
+      "win": {
+        "title": "Well Done!",
+        "message": "You've completed the puzzle!",
+        "time": "Time",
+        "mistakes": "Mistakes",
+        "tryHarderBtn": "🚀 Try Harder Level",
+        "playAgainBtn": "🔄 Play Again",
+        "quitBtn": "🏠 Quit to Home"
+      },
+      "gameOver": {
+        "title": "Game Over",
+        "message": "You've made {count} mistakes. Don't give up!",
+        "time": "Time",
+        "difficulty": "Difficulty",
+        "tryAgainBtn": "🔄 Try Again",
+        "tryEasierBtn": "⬇️ Try Easier Level",
+        "quitBtn": "🏠 Quit to Home"
+      },
+      "hint": {
+        "title": "Found a Move!",
+        "placeHere": "Place Here",
+        "rowCol": "Row {row}, Col {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Logic Explanation",
+        "visualTitle": "📊 Visual Guide",
+        "targetLabel": "Target: Place {value}",
+        "conflictsLabel": "Conflicts block other options",
+        "afterApplyTitle": "✨ After clicking \"Apply Hint\":",
+        "afterApply1": "• Yellow cell shows where {value} was placed",
+        "afterApply2": "• Red cells show blocking numbers",
+        "afterApply3": "💡 Highlights stay for 3 seconds!",
+        "applyBtn": "✓ Apply Hint & Show Visual Guide",
+        "closeBtn": "Close",
+        "techniques": {
+          "nakedSingle": "Naked Single",
+          "hiddenSingle": "Hidden Single"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 AI is solving... Please wait",
+      "autoFinish": "✨ Auto-Finish Puzzle"
+    }
+  },
+  "es": {
+    "title": "AG Sudoku",
+    "subtitle": "Potenciado por IA",
+    "stats": {
+      "time": "TIEMPO",
+      "mistakes": "ERRORES",
+      "hints": "PISTAS"
+    },
+    "difficulties": {
+      "medium": "Medio",
+      "expert": "Experto",
+      "pro": "Pro",
+      "locked": "🔒 ¡MODO PRO BLOQUEADO!\n\nCompleta la dificultad Experto en menos de 15 minutos para desbloquear el modo Pro."
+    },
+    "controls": {
+      "notes": "Notas",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "hint": "Pista",
+      "new": "Nuevo",
+      "none": "Ninguno"
+    },
+    "modals": {
+      "pause": {
+        "title": "Juego Pausado",
+        "time": "Tiempo",
+        "mistakes": "Errores",
+        "difficulty": "Dificultad",
+        "resumeBtn": "▶️ Reanudar Juego",
+        "restartBtn": "🔄 Reiniciar Juego",
+        "quitBtn": "🏠 Salir al Inicio",
+        "confirmRestart": "¿Estás seguro de que quieres reiniciar? Se perderá tu progreso."
+      },
+      "win": {
+        "title": "¡Bien Hecho!",
+        "message": "¡Has completado el rompecabezas!",
+        "time": "Tiempo",
+        "mistakes": "Errores",
+        "tryHarderBtn": "🚀 Probar Nivel Más Difícil",
+        "playAgainBtn": "🔄 Jugar de Nuevo",
+        "quitBtn": "🏠 Salir al Inicio"
+      },
+      "gameOver": {
+        "title": "Juego Terminado",
+        "message": "Has cometido {count} errores. ¡No te rindas!",
+        "time": "Tiempo",
+        "difficulty": "Dificultad",
+        "tryAgainBtn": "🔄 Intentar de Nuevo",
+        "tryEasierBtn": "⬇️ Probar Nivel Más Fácil",
+        "quitBtn": "🏠 Salir al Inicio"
+      },
+      "hint": {
+        "title": "¡Movimiento Encontrado!",
+        "placeHere": "Colocar Aquí",
+        "rowCol": "Fila {row}, Col {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Explicación Lógica",
+        "visualTitle": "📊 Guía Visual",
+        "targetLabel": "Objetivo: Colocar {value}",
+        "conflictsLabel": "Los conflictos bloquean otras opciones",
+        "afterApplyTitle": "✨ Después de hacer clic en \"Aplicar Pista\":",
+        "afterApply1": "• Celda amarilla muestra dónde se colocó {value}",
+        "afterApply2": "• Celdas rojas muestran números bloqueantes",
+        "afterApply3": "💡 ¡Los resaltados permanecen 3 segundos!",
+        "applyBtn": "✓ Aplicar Pista y Mostrar Guía Visual",
+        "closeBtn": "Cerrar",
+        "techniques": {
+          "nakedSingle": "Individual Desnudo",
+          "hiddenSingle": "Individual Oculto"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 La IA está resolviendo... Por favor espera",
+      "autoFinish": "✨ Auto-Completar Rompecabezas"
+    }
+  },
+  "eu": {
+    "title": "AG Sudoku",
+    "subtitle": "AI bidez suspertua",
+    "stats": {
+      "time": "DENBORA",
+      "mistakes": "AKATSAK",
+      "hints": "PISTAK"
+    },
+    "difficulties": {
+      "medium": "Ertaina",
+      "expert": "Aditua",
+      "pro": "Pro",
+      "locked": "🔒 PRO MODUA BLOKEATUTA!\n\nOsatu Aditu zailtasuna 15 minutu baino gutxiagoan Pro modua desblokeatzeko."
+    },
+    "controls": {
+      "notes": "Oharrak",
+      "pause": "Pausatu",
+      "resume": "Jarraitu",
+      "hint": "Pista",
+      "new": "Berria",
+      "none": "Bat ere ez"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jokoa Pausatuta",
+        "time": "Denbora",
+        "mistakes": "Akatsak",
+        "difficulty": "Zailtasuna",
+        "resumeBtn": "▶️ Jokoa Jarraitu",
+        "restartBtn": "🔄 Jokoa Berrabiarazi",
+        "quitBtn": "🏠 Hasierara Itzuli",
+        "confirmRestart": "Ziur zaude berrabiarazi nahi duzula? Zure aurrerapena galduko da."
+      },
+      "win": {
+        "title": "Ondo Egina!",
+        "message": "Puzzlea osatu duzu!",
+        "time": "Denbora",
+        "mistakes": "Akatsak",
+        "tryHarderBtn": "🚀 Zailtasun Handiagoa Probatu",
+        "playAgainBtn": "🔄 Berriro Jokatu",
+        "quitBtn": "🏠 Hasierara Itzuli"
+      },
+      "gameOver": {
+        "title": "Jokoa Amaituta",
+        "message": "{count} akats egin dituzu. Ez etsi!",
+        "time": "Denbora",
+        "difficulty": "Zailtasuna",
+        "tryAgainBtn": "🔄 Berriro Saiatu",
+        "tryEasierBtn": "⬇️ Errazagoa Probatu",
+        "quitBtn": "🏠 Hasierara Itzuli"
+      },
+      "hint": {
+        "title": "Mugimendua Aurkituta!",
+        "placeHere": "Hemen Jarri",
+        "rowCol": "Errenkada {row}, Zut {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Azalpen Logikoa",
+        "visualTitle": "📊 Gida Bisuala",
+        "targetLabel": "Helburua: {value} jarri",
+        "conflictsLabel": "Gatazk ak beste aukerak blokeatzen dituzte",
+        "afterApplyTitle": "✨ \"Pista Aplikatu\" klik egin ondoren:",
+        "afterApply1": "• Gelaxka horiak {value} non jarri zen erakusten du",
+        "afterApply2": "• Gelaxka gorriak blokeatze-zenbakiak erakusten dituzte",
+        "afterApply3": "💡 Nabarmendutakoak 3 segundo irauten dute!",
+        "applyBtn": "✓ Pista Aplikatu eta Gida Bisuala Erakutsi",
+        "closeBtn": "Itxi",
+        "techniques": {
+          "nakedSingle": "Bakarra Biluzik",
+          "hiddenSingle": "Bakarra Ezkutuan"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 AIak konpontzen ari da... Itxaron mesedez",
+      "autoFinish": "✨ Auto-Osatu Puzzlea"
+    }
+  },
+  "fr": {
+    "title": "AG Sudoku",
+    "subtitle": "Propulsé par l'IA",
+    "stats": {
+      "time": "TEMPS",
+      "mistakes": "ERREURS",
+      "hints": "INDICES"
+    },
+    "difficulties": {
+      "medium": "Moyen",
+      "expert": "Expert",
+      "pro": "Pro",
+      "locked": "🔒 MODE PRO VERROUILLÉ !\n\nTerminez la difficulté Expert en moins de 15 minutes pour débloquer le mode Pro."
+    },
+    "controls": {
+      "notes": "Notes",
+      "pause": "Pause",
+      "resume": "Reprendre",
+      "hint": "Indice",
+      "new": "Nouveau",
+      "none": "Aucun"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jeu en Pause",
+        "time": "Temps",
+        "mistakes": "Erreurs",
+        "difficulty": "Difficulté",
+        "resumeBtn": "▶️ Reprendre le Jeu",
+        "restartBtn": "🔄 Recommencer le Jeu",
+        "quitBtn": "🏠 Quitter vers l'Accueil",
+        "confirmRestart": "Êtes-vous sûr de vouloir recommencer ? Votre progression sera perdue."
+      },
+      "win": {
+        "title": "Bien Joué !",
+        "message": "Vous avez terminé le puzzle !",
+        "time": "Temps",
+        "mistakes": "Erreurs",
+        "tryHarderBtn": "🚀 Essayer Niveau Supérieur",
+        "playAgainBtn": "🔄 Rejouer",
+        "quitBtn": "🏠 Quitter vers l'Accueil"
+      },
+      "gameOver": {
+        "title": "Jeu Terminé",
+        "message": "Vous avez fait {count} erreurs. N'abandonnez pas !",
+        "time": "Temps",
+        "difficulty": "Difficulté",
+        "tryAgainBtn": "🔄 Réessayer",
+        "tryEasierBtn": "⬇️ Essayer Niveau Inférieur",
+        "quitBtn": "🏠 Quitter vers l'Accueil"
+      },
+      "hint": {
+        "title": "Mouvement Trouvé !",
+        "placeHere": "Placer Ici",
+        "rowCol": "Ligne {row}, Col {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Explication Logique",
+        "visualTitle": "📊 Guide Visuel",
+        "targetLabel": "Cible : Placer {value}",
+        "conflictsLabel": "Les conflits bloquent d'autres options",
+        "afterApplyTitle": "✨ Après avoir cliqué sur \"Appliquer l'Indice\" :",
+        "afterApply1": "• La cellule jaune montre où {value} a été placé",
+        "afterApply2": "• Les cellules rouges montrent les numéros bloquants",
+        "afterApply3": "💡 Les surbrillances restent 3 secondes !",
+        "applyBtn": "✓ Appliquer l'Indice et Afficher le Guide Visuel",
+        "closeBtn": "Fermer",
+        "techniques": {
+          "nakedSingle": "Singleton Nu",
+          "hiddenSingle": "Singleton Caché"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 L'IA résout... Veuillez patienter",
+      "autoFinish": "✨ Finir Automatiquement le Puzzle"
+    }
+  },
+  "it": {
+    "title": "AG Sudoku",
+    "subtitle": "Alimentato dall'IA",
+    "stats": {
+      "time": "TEMPO",
+      "mistakes": "ERRORI",
+      "hints": "SUGGERIMENTI"
+    },
+    "difficulties": {
+      "medium": "Medio",
+      "expert": "Esperto",
+      "pro": "Pro",
+      "locked": "🔒 MODALITÀ PRO BLOCCATA!\n\nCompleta la difficoltà Esperto in meno di 15 minuti per sbloccare la modalità Pro."
+    },
+    "controls": {
+      "notes": "Note",
+      "pause": "Pausa",
+      "resume": "Riprendi",
+      "hint": "Suggerimento",
+      "new": "Nuovo",
+      "none": "Nessuno"
+    },
+    "modals": {
+      "pause": {
+        "title": "Gioco in Pausa",
+        "time": "Tempo",
+        "mistakes": "Errori",
+        "difficulty": "Difficoltà",
+        "resumeBtn": "▶️ Riprendi Gioco",
+        "restartBtn": "🔄 Riavvia Gioco",
+        "quitBtn": "🏠 Esci alla Home",
+        "confirmRestart": "Sei sicuro di voler riavviare? I tuoi progressi andranno persi."
+      },
+      "win": {
+        "title": "Ben Fatto!",
+        "message": "Hai completato il puzzle!",
+        "time": "Tempo",
+        "mistakes": "Errori",
+        "tryHarderBtn": "🚀 Prova Livello Superiore",
+        "playAgainBtn": "🔄 Gioca Ancora",
+        "quitBtn": "🏠 Esci alla Home"
+      },
+      "gameOver": {
+        "title": "Game Over",
+        "message": "Hai fatto {count} errori. Non arrenderti!",
+        "time": "Tempo",
+        "difficulty": "Difficoltà",
+        "tryAgainBtn": "🔄 Riprova",
+        "tryEasierBtn": "⬇️ Prova Livello Inferiore",
+        "quitBtn": "🏠 Esci alla Home"
+      },
+      "hint": {
+        "title": "Mossa Trovata!",
+        "placeHere": "Posiziona Qui",
+        "rowCol": "Riga {row}, Col {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Spiegazione Logica",
+        "visualTitle": "📊 Guida Visiva",
+        "targetLabel": "Obiettivo: Posiziona {value}",
+        "conflictsLabel": "I conflitti bloccano altre opzioni",
+        "afterApplyTitle": "✨ Dopo aver cliccato \"Applica Suggerimento\":",
+        "afterApply1": "• La cella gialla mostra dove è stato posizionato {value}",
+        "afterApply2": "• Le celle rosse mostrano i numeri bloccanti",
+        "afterApply3": "💡 Le evidenziazioni rimangono per 3 secondi!",
+        "applyBtn": "✓ Applica Suggerimento e Mostra Guida Visiva",
+        "closeBtn": "Chiudi",
+        "techniques": {
+          "nakedSingle": "Singolo Nudo",
+          "hiddenSingle": "Singolo Nascosto"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 L'IA sta risolvendo... Attendere prego",
+      "autoFinish": "✨ Completa Automaticamente il Puzzle"
+    }
+  },
+  "de": {
+    "title": "AG Sudoku",
+    "subtitle": "KI-Gestützt",
+    "stats": {
+      "time": "ZEIT",
+      "mistakes": "FEHLER",
+      "hints": "HINWEISE"
+    },
+    "difficulties": {
+      "medium": "Mittel",
+      "expert": "Experte",
+      "pro": "Profi",
+      "locked": "🔒 PROFI-MODUS GESPERRT!\n\nSchließe den Experten-Schwierigkeitsgrad in unter 15 Minuten ab, um den Profi-Modus freizuschalten."
+    },
+    "controls": {
+      "notes": "Notizen",
+      "pause": "Pause",
+      "resume": "Fortsetzen",
+      "hint": "Hinweis",
+      "new": "Neu",
+      "none": "Keine"
+    },
+    "modals": {
+      "pause": {
+        "title": "Spiel Pausiert",
+        "time": "Zeit",
+        "mistakes": "Fehler",
+        "difficulty": "Schwierigkeit",
+        "resumeBtn": "▶️ Spiel Fortsetzen",
+        "restartBtn": "🔄 Spiel Neu Starten",
+        "quitBtn": "🏠 Zur Startseite",
+        "confirmRestart": "Möchtest du wirklich neu starten? Dein Fortschritt geht verloren."
+      },
+      "win": {
+        "title": "Gut Gemacht!",
+        "message": "Du hast das Rätsel gelöst!",
+        "time": "Zeit",
+        "mistakes": "Fehler",
+        "tryHarderBtn": "🚀 Schwereren Level Probieren",
+        "playAgainBtn": "🔄 Nochmal Spielen",
+        "quitBtn": "🏠 Zur Startseite"
+      },
+      "gameOver": {
+        "title": "Spiel Vorbei",
+        "message": "Du hast {count} Fehler gemacht. Gib nicht auf!",
+        "time": "Zeit",
+        "difficulty": "Schwierigkeit",
+        "tryAgainBtn": "🔄 Nochmal Versuchen",
+        "tryEasierBtn": "⬇️ Einfacheren Level Probieren",
+        "quitBtn": "🏠 Zur Startseite"
+      },
+      "hint": {
+        "title": "Zug Gefunden!",
+        "placeHere": "Hier Platzieren",
+        "rowCol": "Reihe {row}, Spalte {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Logische Erklärung",
+        "visualTitle": "📊 Visuelle Anleitung",
+        "targetLabel": "Ziel: {value} platzieren",
+        "conflictsLabel": "Konflikte blockieren andere Optionen",
+        "afterApplyTitle": "✨ Nach Klick auf \"Hinweis Anwenden\":",
+        "afterApply1": "• Gelbe Zelle zeigt wo {value} platziert wurde",
+        "afterApply2": "• Rote Zellen zeigen blockierende Zahlen",
+        "afterApply3": "💡 Hervorhebungen bleiben 3 Sekunden!",
+        "applyBtn": "✓ Hinweis Anwenden und Visuelle Anleitung Zeigen",
+        "closeBtn": "Schließen",
+        "techniques": {
+          "nakedSingle": "Nackter Einzelner",
+          "hiddenSingle": "Versteckter Einzelner"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 KI löst... Bitte warten",
+      "autoFinish": "✨ Rätsel Automatisch Beenden"
+    }
+  },
+  "pt": {
+    "title": "AG Sudoku",
+    "subtitle": "Powered by IA",
+    "stats": {
+      "time": "TEMPO",
+      "mistakes": "ERROS",
+      "hints": "DICAS"
+    },
+    "difficulties": {
+      "medium": "Médio",
+      "expert": "Especialista",
+      "pro": "Pro",
+      "locked": "🔒 MODO PRO BLOQUEADO!\n\nComplete a dificuldade Especialista em menos de 15 minutos para desbloquear o modo Pro."
+    },
+    "controls": {
+      "notes": "Notas",
+      "pause": "Pausar",
+      "resume": "Retomar",
+      "hint": "Dica",
+      "new": "Novo",
+      "none": "Nenhum"
+    },
+    "modals": {
+      "pause": {
+        "title": "Jogo Pausado",
+        "time": "Tempo",
+        "mistakes": "Erros",
+        "difficulty": "Dificuldade",
+        "resumeBtn": "▶️ Retomar Jogo",
+        "restartBtn": "🔄 Reiniciar Jogo",
+        "quitBtn": "🏠 Sair para Início",
+        "confirmRestart": "Tem certeza que deseja reiniciar? Seu progresso será perdido."
+      },
+      "win": {
+        "title": "Muito Bem!",
+        "message": "Você completou o quebra-cabeça!",
+        "time": "Tempo",
+        "mistakes": "Erros",
+        "tryHarderBtn": "🚀 Tentar Nível Mais Difícil",
+        "playAgainBtn": "🔄 Jogar Novamente",
+        "quitBtn": "🏠 Sair para Início"
+      },
+      "gameOver": {
+        "title": "Fim de Jogo",
+        "message": "Você cometeu {count} erros. Não desista!",
+        "time": "Tempo",
+        "difficulty": "Dificuldade",
+        "tryAgainBtn": "🔄 Tentar Novamente",
+        "tryEasierBtn": "⬇️ Tentar Nível Mais Fácil",
+        "quitBtn": "🏠 Sair para Início"
+      },
+      "hint": {
+        "title": "Movimento Encontrado!",
+        "placeHere": "Colocar Aqui",
+        "rowCol": "Linha {row}, Col {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Explicação Lógica",
+        "visualTitle": "📊 Guia Visual",
+        "targetLabel": "Alvo: Colocar {value}",
+        "conflictsLabel": "Conflitos bloqueiam outras opções",
+        "afterApplyTitle": "✨ Após clicar em \"Aplicar Dica\":",
+        "afterApply1": "• Célula amarela mostra onde {value} foi colocado",
+        "afterApply2": "• Células vermelhas mostram números bloqueantes",
+        "afterApply3": "💡 Destaques permanecem por 3 segundos!",
+        "applyBtn": "✓ Aplicar Dica e Mostrar Guia Visual",
+        "closeBtn": "Fechar",
+        "techniques": {
+          "nakedSingle": "Único Nu",
+          "hiddenSingle": "Único Escondido"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 IA está resolvendo... Por favor aguarde",
+      "autoFinish": "✨ Finalizar Automaticamente o Quebra-cabeça"
+    }
+  },
+  "ja": {
+    "title": "AG 数独",
+    "subtitle": "AI搭載",
+    "stats": {
+      "time": "時間",
+      "mistakes": "ミス",
+      "hints": "ヒント"
+    },
+    "difficulties": {
+      "medium": "中級",
+      "expert": "上級",
+      "pro": "プロ",
+      "locked": "🔒 プロモードがロックされています！\n\n15分以内に上級難易度をクリアしてプロモードをアンロックしてください。"
+    },
+    "controls": {
+      "notes": "メモ",
+      "pause": "一時停止",
+      "resume": "再開",
+      "hint": "ヒント",
+      "new": "新規",
+      "none": "なし"
+    },
+    "modals": {
+      "pause": {
+        "title": "一時停止中",
+        "time": "時間",
+        "mistakes": "ミス",
+        "difficulty": "難易度",
+        "resumeBtn": "▶️ ゲームを再開",
+        "restartBtn": "🔄 ゲームを再起動",
+        "quitBtn": "🏠 ホームに戻る",
+        "confirmRestart": "本当に再起動しますか？進行状況が失われます。"
+      },
+      "win": {
+        "title": "よくできました！",
+        "message": "パズルを完成させました！",
+        "time": "時間",
+        "mistakes": "ミス",
+        "tryHarderBtn": "🚀 難しいレベルに挑戦",
+        "playAgainBtn": "🔄 もう一度プレイ",
+        "quitBtn": "🏠 ホームに戻る"
+      },
+      "gameOver": {
+        "title": "ゲームオーバー",
+        "message": "{count}回ミスしました。諦めないで！",
+        "time": "時間",
+        "difficulty": "難易度",
+        "tryAgainBtn": "🔄 もう一度挑戦",
+        "tryEasierBtn": "⬇️ 簡単なレベルに挑戦",
+        "quitBtn": "🏠 ホームに戻る"
+      },
+      "hint": {
+        "title": "手が見つかりました！",
+        "placeHere": "ここに配置",
+        "rowCol": "行 {row}、列 {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 論理的説明",
+        "visualTitle": "📊 ビジュアルガイド",
+        "targetLabel": "ターゲット：{value}を配置",
+        "conflictsLabel": "競合が他のオプションをブロックします",
+        "afterApplyTitle": "✨「ヒントを適用」をクリックした後：",
+        "afterApply1": "• 黄色のセルは{value}が配置された場所を示します",
+        "afterApply2": "• 赤いセルはブロッキング番号を示します",
+        "afterApply3": "💡 ハイライトは3秒間表示されます！",
+        "applyBtn": "✓ ヒントを適用してビジュアルガイドを表示",
+        "closeBtn": "閉じる",
+        "techniques": {
+          "nakedSingle": "ネイキッドシングル",
+          "hiddenSingle": "ヒドゥンシングル"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 AIが解決中...お待ちください",
+      "autoFinish": "✨ パズルを自動完成"
+    }
+  },
+  "tl": {
+    "title": "AG Sudoku",
+    "subtitle": "Pinapagana ng AI",
+    "stats": {
+      "time": "ORAS",
+      "mistakes": "MGA MALI",
+      "hints": "MGA PAHIWATIG"
+    },
+    "difficulties": {
+      "medium": "Katamtaman",
+      "expert": "Dalubhasa",
+      "pro": "Pro",
+      "locked": "🔒 NAKAKANDADO ANG PRO MODE!\n\nKumpletuhin ang Dalubhasa na kahirapan sa loob ng 15 minuto upang i-unlock ang Pro mode."
+    },
+    "controls": {
+      "notes": "Mga Tala",
+      "pause": "I-pause",
+      "resume": "Ipagpatuloy",
+      "hint": "Pahiwatig",
+      "new": "Bago",
+      "none": "Wala"
+    },
+    "modals": {
+      "pause": {
+        "title": "Naka-pause ang Laro",
+        "time": "Oras",
+        "mistakes": "Mga Mali",
+        "difficulty": "Kahirapan",
+        "resumeBtn": "▶️ Ipagpatuloy ang Laro",
+        "restartBtn": "🔄 Simulan Muli ang Laro",
+        "quitBtn": "🏠 Bumalik sa Home",
+        "confirmRestart": "Sigurado ka bang gusto mong magsimula muli? Mawawala ang iyong progreso."
+      },
+      "win": {
+        "title": "Mahusay!",
+        "message": "Nakumpleto mo ang puzzle!",
+        "time": "Oras",
+        "mistakes": "Mga Mali",
+        "tryHarderBtn": "🚀 Subukan ang Mas Mahirap na Level",
+        "playAgainBtn": "🔄 Maglaro Muli",
+        "quitBtn": "🏠 Bumalik sa Home"
+      },
+      "gameOver": {
+        "title": "Tapos na ang Laro",
+        "message": "Gumawa ka ng {count} mga pagkakamali. Huwag sumuko!",
+        "time": "Oras",
+        "difficulty": "Kahirapan",
+        "tryAgainBtn": "🔄 Subukan Muli",
+        "tryEasierBtn": "⬇️ Subukan ang Mas Madaling Level",
+        "quitBtn": "🏠 Bumalik sa Home"
+      },
+      "hint": {
+        "title": "May Natagpuang Galaw!",
+        "placeHere": "Ilagay Dito",
+        "rowCol": "Hilera {row}, Kolum {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 Lohikal na Paliwanag",
+        "visualTitle": "📊 Visual na Gabay",
+        "targetLabel": "Target: Ilagay ang {value}",
+        "conflictsLabel": "Ang mga salungatan ay humahadlang sa iba pang mga opsyon",
+        "afterApplyTitle": "✨ Pagkatapos mag-click ng \"Ilapat ang Pahiwatig\":",
+        "afterApply1": "• Ang dilaw na cell ay nagpapakita kung saan inilagay ang {value}",
+        "afterApply2": "• Ang mga pulang cell ay nagpapakita ng mga humahadlang na numero",
+        "afterApply3": "💡 Ang mga highlight ay nananatili ng 3 segundo!",
+        "applyBtn": "✓ Ilapat ang Pahiwatig at Ipakita ang Visual na Gabay",
+        "closeBtn": "Isara",
+        "techniques": {
+          "nakedSingle": "Hubad na Nag-iisa",
+          "hiddenSingle": "Nakatagong Nag-iisa"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 Ang AI ay naglulutos... Mangyaring maghintay",
+      "autoFinish": "✨ Awtomatikong Tapusin ang Puzzle"
+    }
+  },
+  "ko": {
+    "title": "AG 스도쿠",
+    "subtitle": "AI 기반",
+    "stats": {
+      "time": "시간",
+      "mistakes": "실수",
+      "hints": "힌트"
+    },
+    "difficulties": {
+      "medium": "중급",
+      "expert": "고급",
+      "pro": "프로",
+      "locked": "🔒 프로 모드 잠김!\n\n15분 이내에 고급 난이도를 완료하여 프로 모드를 잠금 해제하세요."
+    },
+    "controls": {
+      "notes": "메모",
+      "pause": "일시정지",
+      "resume": "재개",
+      "hint": "힌트",
+      "new": "새 게임",
+      "none": "없음"
+    },
+    "modals": {
+      "pause": {
+        "title": "게임 일시정지",
+        "time": "시간",
+        "mistakes": "실수",
+        "difficulty": "난이도",
+        "resumeBtn": "▶️ 게임 재개",
+        "restartBtn": "🔄 게임 재시작",
+        "quitBtn": "🏠 홈으로 나가기",
+        "confirmRestart": "정말 재시작하시겠습니까? 진행 상황이 손실됩니다."
+      },
+      "win": {
+        "title": "잘했어요!",
+        "message": "퍼즐을 완성했습니다!",
+        "time": "시간",
+        "mistakes": "실수",
+        "tryHarderBtn": "🚀 더 어려운 레벨 시도",
+        "playAgainBtn": "🔄 다시 플레이",
+        "quitBtn": "🏠 홈으로 나가기"
+      },
+      "gameOver": {
+        "title": "게임 오버",
+        "message": "{count}번 실수했습니다. 포기하지 마세요!",
+        "time": "시간",
+        "difficulty": "난이도",
+        "tryAgainBtn": "🔄 다시 시도",
+        "tryEasierBtn": "⬇️ 더 쉬운 레벨 시도",
+        "quitBtn": "🏠 홈으로 나가기"
+      },
+      "hint": {
+        "title": "수를 찾았습니다!",
+        "placeHere": "여기에 배치",
+        "rowCol": "행 {row}, 열 {col}",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 논리 설명",
+        "visualTitle": "📊 시각 가이드",
+        "targetLabel": "목표: {value} 배치",
+        "conflictsLabel": "충돌이 다른 옵션을 차단합니다",
+        "afterApplyTitle": "✨ \"힌트 적용\" 클릭 후:",
+        "afterApply1": "• 노란색 셀은 {value}이(가) 배치된 위치를 표시합니다",
+        "afterApply2": "• 빨간색 셀은 차단 번호를 표시합니다",
+        "afterApply3": "💡 하이라이트는 3초 동안 유지됩니다!",
+        "applyBtn": "✓ 힌트 적용 및 시각 가이드 표시",
+        "closeBtn": "닫기",
+        "techniques": {
+          "nakedSingle": "네이키드 싱글",
+          "hiddenSingle": "히든 싱글"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 AI가 해결 중입니다... 잠시 기다려주세요",
+      "autoFinish": "✨ 퍼즐 자동 완성"
+    }
+  },
+  "zh": {
+    "title": "AG 数独",
+    "subtitle": "AI驱动",
+    "stats": {
+      "time": "时间",
+      "mistakes": "错误",
+      "hints": "提示"
+    },
+    "difficulties": {
+      "medium": "中级",
+      "expert": "专家",
+      "pro": "职业",
+      "locked": "🔒 职业模式已锁定！\n\n在15分钟内完成专家难度以解锁职业模式。"
+    },
+    "controls": {
+      "notes": "笔记",
+      "pause": "暂停",
+      "resume": "继续",
+      "hint": "提示",
+      "new": "新游戏",
+      "none": "无"
+    },
+    "modals": {
+      "pause": {
+        "title": "游戏已暂停",
+        "time": "时间",
+        "mistakes": "错误",
+        "difficulty": "难度",
+        "resumeBtn": "▶️ 继续游戏",
+        "restartBtn": "🔄 重新开始游戏",
+        "quitBtn": "🏠 退出到主页",
+        "confirmRestart": "确定要重新开始吗？你的进度将丢失。"
+      },
+      "win": {
+        "title": "做得好！",
+        "message": "你已完成拼图！",
+        "time": "时间",
+        "mistakes": "错误",
+        "tryHarderBtn": "🚀 尝试更难的级别",
+        "playAgainBtn": "🔄 再玩一次",
+        "quitBtn": "🏠 退出到主页"
+      },
+      "gameOver": {
+        "title": "游戏结束",
+        "message": "你犯了{count}个错误。不要放弃！",
+        "time": "时间",
+        "difficulty": "难度",
+        "tryAgainBtn": "🔄 再试一次",
+        "tryEasierBtn": "⬇️ 尝试更简单的级别",
+        "quitBtn": "🏠 退出到主页"
+      },
+      "hint": {
+        "title": "找到了一步！",
+        "placeHere": "放置在这里",
+        "rowCol": "第 {row} 行，第 {col} 列",
+        "technique": "📚 {technique}",
+        "logicTitle": "🧠 逻辑解释",
+        "visualTitle": "📊 视觉指南",
+        "targetLabel": "目标：放置 {value}",
+        "conflictsLabel": "冲突阻止其他选项",
+        "afterApplyTitle": "✨ 点击"应用提示"后：",
+        "afterApply1": "• 黄色单元格显示 {value} 放置的位置",
+        "afterApply2": "• 红色单元格显示阻止的数字",
+        "afterApply3": "💡 高亮显示持续3秒！",
+        "applyBtn": "✓ 应用提示并显示视觉指南",
+        "closeBtn": "关闭",
+        "techniques": {
+          "nakedSingle": "裸单元",
+          "hiddenSingle": "隐单元"
+        }
+      }
+    },
+    "messages": {
+      "aiSolving": "🤖 AI正在解决...请稍候",
+      "autoFinish": "✨ 自动完成拼图"
+    }
+  }
+}
