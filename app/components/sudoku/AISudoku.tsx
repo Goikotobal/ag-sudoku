@@ -38,6 +38,7 @@ interface AISudokuProps {
     onQuit?: () => void;
     initialDifficulty?: 'medium' | 'expert' | 'pro';
     isPro?: boolean;
+    isOffline?: boolean;
 }
 
 // Google icon SVG
