@@ -3,6 +3,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
+import { useState } from 'react';
 
 interface LoginButtonProps {
   variant?: 'default' | 'compact';
@@ -23,6 +24,12 @@ const GoogleIcon = () => (
 export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en' }: LoginButtonProps) {
   const { user, loading, signOut } = useAuth();
   const t = useTranslations('sudoku');
+  const [showEmailAuth, setShowEmailAuth] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [authSuccess, setAuthSuccess] = useState('');
 
   const handleSignIn = async () => {
     const supabase = createClient();
@@ -32,6 +39,44 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
         redirectTo: `${window.location.origin}/auth/callback`
       }
     });
+  };
+
+  const handleEmailAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+    setAuthSuccess('');
+    const supabase = createClient();
+
+    if (isSignUp) {
+      // Sign up with email
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?redirect=/${locale}`
+        }
+      });
+
+      if (error) {
+        setAuthError(error.message);
+      } else {
+        setAuthSuccess('Check your email to confirm your account ✉️');
+        setEmail('');
+        setPassword('');
+      }
+    } else {
+      // Sign in with email
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setAuthError('Invalid email or password');
+      } else {
+        window.location.reload();
+      }
+    }
   };
 
   if (loading) {
@@ -141,13 +186,148 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
     );
   }
 
-  // Not logged in - show Google sign in button
+  // Not logged in - show auth options
+  if (showEmailAuth) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '12px',
+        width: '100%',
+        maxWidth: '320px',
+      }}>
+        <h3 style={{
+          color: 'rgba(255, 255, 255, 0.95)',
+          fontSize: '16px',
+          fontWeight: 600,
+          margin: 0,
+        }}>
+          {isSignUp ? t('auth.createAccount') : t('auth.signInWithEmail')}
+        </h3>
+
+        {authError && (
+          <div style={{
+            padding: '8px 12px',
+            background: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            borderRadius: '8px',
+            color: '#f87171',
+            fontSize: '13px',
+            width: '100%',
+          }}>
+            {authError}
+          </div>
+        )}
+
+        {authSuccess && (
+          <div style={{
+            padding: '8px 12px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            borderRadius: '8px',
+            color: '#34d399',
+            fontSize: '13px',
+            width: '100%',
+          }}>
+            {authSuccess}
+          </div>
+        )}
+
+        <form onSubmit={handleEmailAuth} style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          width: '100%',
+        }}>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            style={{
+              padding: '10px 14px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              color: 'rgba(255, 255, 255, 0.95)',
+              fontSize: '14px',
+            }}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+            minLength={6}
+            style={{
+              padding: '10px 14px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              color: 'rgba(255, 255, 255, 0.95)',
+              fontSize: '14px',
+            }}
+          />
+          <button
+            type="submit"
+            style={{
+              padding: '10px 20px',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            {isSignUp ? t('auth.createAccount') : t('auth.signInWithEmail')}
+          </button>
+        </form>
+
+        <button
+          onClick={() => setIsSignUp(!isSignUp)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontSize: '12px',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+          }}
+        >
+          {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+        </button>
+
+        <button
+          onClick={() => {
+            setShowEmailAuth(false);
+            setAuthError('');
+            setAuthSuccess('');
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '12px',
+            cursor: 'pointer',
+          }}
+        >
+          ← Back
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '6px',
+      gap: '8px',
     }}>
       <button
         onClick={handleSignIn}
@@ -168,13 +348,61 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
         }}
       >
         <GoogleIcon />
-        <span>{t('auth.signInGoogle')}</span>
+        <span>{t('auth.continueWithGoogle')}</span>
       </button>
+
       <span style={{
         color: 'rgba(255, 255, 255, 0.5)',
         fontSize: '11px',
       }}>
-        {t('auth.saveProgress')}
+        {t('auth.or')}
+      </span>
+
+      <button
+        onClick={() => setShowEmailAuth(true)}
+        style={{
+          padding: variant === 'compact' ? '8px 14px' : '10px 20px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRadius: '10px',
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontSize: variant === 'compact' ? '12px' : '13px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        {t('auth.signInWithEmail')}
+      </button>
+
+      <button
+        onClick={() => {
+          localStorage.setItem('goiko_guest_session', JSON.stringify({ isGuest: true, isPro: false }));
+          window.location.reload();
+        }}
+        style={{
+          marginTop: '4px',
+          background: 'none',
+          border: 'none',
+          color: 'rgba(255, 255, 255, 0.5)',
+          fontSize: '11px',
+          cursor: 'pointer',
+          textDecoration: 'none',
+        }}
+      >
+        {t('auth.playAsGuest')} →
+        <br />
+        <span style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>
+          (limited features — no progress saved)
+        </span>
+      </button>
+
+      <span style={{
+        color: 'rgba(255, 255, 255, 0.5)',
+        fontSize: '11px',
+        marginTop: '4px',
+      }}>
+        {t('auth.guestNudge')}
       </span>
     </div>
   );
