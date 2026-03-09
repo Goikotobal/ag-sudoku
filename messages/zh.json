@@ -239,7 +239,13 @@
       "saveProgress": "登录以在所有AlexGoiko应用中保存进度",
       "guest": "以访客身份游玩",
       "notYouSignOut": "不是您？退出登录",
-      "editAvatarProfile": "编辑头像和个人资料"
+      "editAvatarProfile": "编辑头像和个人资料",
+      "continueWithGoogle": "使用Google继续",
+      "signInWithEmail": "使用邮箱登录",
+      "createAccount": "创建账户",
+      "or": "或",
+      "playAsGuest": "以访客身份游玩",
+      "guestNudge": "登录以保存进度并获得经验"
     },
     "profile": {
       "level": "等级 {level}",

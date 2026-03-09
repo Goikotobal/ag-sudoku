@@ -239,7 +239,13 @@
       "saveProgress": "すべてのAlexGoikoアプリで進捗を保存するにはログイン",
       "guest": "ゲストとしてプレイ",
       "notYouSignOut": "違いますか？ログアウト",
-      "editAvatarProfile": "アバターとプロフィールを編集"
+      "editAvatarProfile": "アバターとプロフィールを編集",
+      "continueWithGoogle": "Googleで続ける",
+      "signInWithEmail": "メールでログイン",
+      "createAccount": "アカウントを作成",
+      "or": "または",
+      "playAsGuest": "ゲストとしてプレイ",
+      "guestNudge": "ログインして進捗を保存しXPを獲得"
     },
     "profile": {
       "level": "レベル {level}",

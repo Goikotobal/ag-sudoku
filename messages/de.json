@@ -239,7 +239,13 @@
       "saveProgress": "Melden Sie sich an, um Ihren Fortschritt in allen AlexGoiko Apps zu speichern",
       "guest": "Als Gast spielen",
       "notYouSignOut": "Nicht Sie? Abmelden",
-      "editAvatarProfile": "Avatar und Profil bearbeiten"
+      "editAvatarProfile": "Avatar und Profil bearbeiten",
+      "continueWithGoogle": "Mit Google fortfahren",
+      "signInWithEmail": "Mit E-Mail anmelden",
+      "createAccount": "Konto erstellen",
+      "or": "oder",
+      "playAsGuest": "Als Gast spielen",
+      "guestNudge": "Melden Sie sich an, um Fortschritt zu speichern und XP zu verdienen"
     },
     "profile": {
       "level": "Stufe {level}",

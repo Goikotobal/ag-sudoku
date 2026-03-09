@@ -239,7 +239,13 @@
       "saveProgress": "Hasi saioa zure aurrerapenak AlexGoiko app guztietan gordetzeko",
       "guest": "Gonbidatu gisa",
       "notYouSignOut": "Ez zara zu? Amaitu saioa",
-      "editAvatarProfile": "Editatu Avatarra eta Profila"
+      "editAvatarProfile": "Editatu Avatarra eta Profila",
+      "continueWithGoogle": "Jarraitu Google-rekin",
+      "signInWithEmail": "Hasi saioa emailarekin",
+      "createAccount": "Sortu kontua",
+      "or": "edo",
+      "playAsGuest": "Jokatu gonbidatu gisa",
+      "guestNudge": "Hasi saioa aurrerapenak gordetzeko eta XP irabazi"
     },
     "profile": {
       "level": "Maila {level}",

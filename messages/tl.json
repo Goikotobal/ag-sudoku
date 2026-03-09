@@ -239,7 +239,13 @@
       "saveProgress": "Mag-sign in para i-save ang iyong progreso sa lahat ng AlexGoiko apps",
       "guest": "Naglalaro bilang bisita",
       "notYouSignOut": "Hindi ikaw? Mag-sign out",
-      "editAvatarProfile": "I-edit ang Avatar at Profile"
+      "editAvatarProfile": "I-edit ang Avatar at Profile",
+      "continueWithGoogle": "Magpatuloy gamit ang Google",
+      "signInWithEmail": "Mag-sign in gamit ang email",
+      "createAccount": "Gumawa ng account",
+      "or": "o",
+      "playAsGuest": "Maglaro bilang bisita",
+      "guestNudge": "Mag-sign in para i-save ang progreso at kumita ng XP"
     },
     "profile": {
       "level": "Antas {level}",

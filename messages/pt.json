@@ -239,7 +239,13 @@
       "saveProgress": "Entre para salvar seu progresso em todos os apps AlexGoiko",
       "guest": "Jogando como convidado",
       "notYouSignOut": "Não é você? Sair",
-      "editAvatarProfile": "Editar Avatar e Perfil"
+      "editAvatarProfile": "Editar Avatar e Perfil",
+      "continueWithGoogle": "Continuar com Google",
+      "signInWithEmail": "Entrar com email",
+      "createAccount": "Criar conta",
+      "or": "ou",
+      "playAsGuest": "Jogar como convidado",
+      "guestNudge": "Entre para salvar progresso e ganhar XP"
     },
     "profile": {
       "level": "Nível {level}",

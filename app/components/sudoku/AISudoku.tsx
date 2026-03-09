@@ -32,12 +32,23 @@ import {
     type GameSettings
 } from '@/utils/settingsManager'
 import { getDifficultyRules } from '@/utils/difficultyRules'
+import { createClient } from '@/lib/supabase/client'
 
 interface AISudokuProps {
     onQuit?: () => void;
     initialDifficulty?: 'medium' | 'expert' | 'pro';
     isPro?: boolean;
 }
+
+// Google icon SVG
+const GoogleIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+);
 
 export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: AISudokuProps) {
     // Debug: Log received props
@@ -1217,6 +1228,22 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
         setShowWelcomeScreen(false)
         newGame()
     }, [welcomeDifficulty, newGame])
+
+    // Handle Google Sign-In
+    const handleGoogleSignIn = async () => {
+        const supabase = createClient();
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/auth/callback`
+            }
+        });
+    };
+
+    // Handle Play as Guest
+    const handlePlayAsGuest = () => {
+        localStorage.setItem('ag_guest_mode', 'true');
+    };
 
     // Place number or note
     const placeNumber = useCallback(
@@ -2843,21 +2870,173 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             </div>
                         )}
 
-                        {/* Guest Sign-in Prompt */}
+                        {/* Auth Options (not logged in only) */}
                         {!isLoggedIn && !authLoading && (
                             <div style={{
                                 marginBottom: '20px',
-                                padding: '10px 16px',
-                                background: 'rgba(255, 255, 255, 0.08)',
-                                border: '1px solid rgba(255, 255, 255, 0.15)',
-                                borderRadius: '10px',
-                                textAlign: 'center',
                             }}>
+                                {/* Google Sign-In Button */}
+                                <button
+                                    onClick={handleGoogleSignIn}
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                        padding: '18px 24px',
+                                        background: 'rgba(255, 255, 255, 0.15)',
+                                        backdropFilter: 'blur(12px)',
+                                        WebkitBackdropFilter: 'blur(12px)',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        borderRadius: '16px',
+                                        color: 'rgba(255, 255, 255, 0.95)',
+                                        fontSize: '16px',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease',
+                                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                    }}
+                                >
+                                    <GoogleIcon />
+                                    <span>Continue with Google</span>
+                                </button>
+
+                                {/* Email & Create Account Row */}
                                 <div style={{
-                                    color: 'rgba(255, 255, 255, 0.7)',
-                                    fontSize: '13px',
+                                    display: 'flex',
+                                    flexDirection: isDesktop ? 'row' : 'column',
+                                    gap: '10px',
+                                    marginTop: '12px',
                                 }}>
-                                    Playing as Guest • <span style={{ color: '#a855f7' }}>Sign in</span> to save progress
+                                    <a
+                                        href="https://alexgoiko.com/login"
+                                        style={{
+                                            flex: 1,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: '14px 20px',
+                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            borderRadius: '12px',
+                                            color: '#ffffff',
+                                            fontSize: '14px',
+                                            fontWeight: 600,
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            textDecoration: 'none',
+                                            boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                        }}
+                                    >
+                                        Sign in with Email
+                                    </a>
+                                    <a
+                                        href="https://alexgoiko.com/signup"
+                                        style={{
+                                            flex: 1,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: '14px 20px',
+                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            borderRadius: '12px',
+                                            color: '#ffffff',
+                                            fontSize: '14px',
+                                            fontWeight: 600,
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            textDecoration: 'none',
+                                            boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                        }}
+                                    >
+                                        Create Account
+                                    </a>
+                                </div>
+
+                                {/* Divider */}
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    margin: '16px 0',
+                                }}>
+                                    <div style={{
+                                        flex: 1,
+                                        height: '1px',
+                                        background: 'rgba(255, 255, 255, 0.2)',
+                                    }} />
+                                    <span style={{
+                                        color: 'rgba(255, 255, 255, 0.5)',
+                                        fontSize: '12px',
+                                        textTransform: 'uppercase',
+                                        fontWeight: 500,
+                                    }}>or</span>
+                                    <div style={{
+                                        flex: 1,
+                                        height: '1px',
+                                        background: 'rgba(255, 255, 255, 0.2)',
+                                    }} />
+                                </div>
+
+                                {/* Play as Guest Button */}
+                                <button
+                                    onClick={handlePlayAsGuest}
+                                    style={{
+                                        width: '100%',
+                                        padding: '14px 20px',
+                                        background: 'transparent',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        borderRadius: '12px',
+                                        color: 'rgba(255, 255, 255, 0.7)',
+                                        fontSize: '14px',
+                                        fontWeight: 500,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                                        e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                                        e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
+                                    }}
+                                >
+                                    Play as Guest
+                                </button>
+
+                                {/* Nudge text */}
+                                <div style={{
+                                    marginTop: '8px',
+                                    textAlign: 'center',
+                                    color: 'rgba(255, 255, 255, 0.5)',
+                                    fontSize: '12px',
+                                }}>
+                                    Sign in to save progress & earn XP
                                 </div>
                             </div>
                         )}

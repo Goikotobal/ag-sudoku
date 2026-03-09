@@ -239,7 +239,13 @@
       "saveProgress": "सभी AlexGoiko ऐप्स में अपनी प्रगति सहेजने के लिए साइन इन करें",
       "guest": "अतिथि के रूप में",
       "notYouSignOut": "आप नहीं हैं? साइन आउट करें",
-      "editAvatarProfile": "अवतार और प्रोफ़ाइल संपादित करें"
+      "editAvatarProfile": "अवतार और प्रोफ़ाइल संपादित करें",
+      "continueWithGoogle": "Google के साथ जारी रखें",
+      "signInWithEmail": "ईमेल से साइन इन करें",
+      "createAccount": "खाता बनाएँ",
+      "or": "या",
+      "playAsGuest": "अतिथि के रूप में खेलें",
+      "guestNudge": "प्रगति सहेजने और XP अर्जित करने के लिए साइन इन करें"
     },
     "profile": {
       "level": "स्तर {level}",
