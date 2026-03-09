@@ -247,6 +247,15 @@
       "playAsGuest": "Als Gast spielen",
       "guestNudge": "Melden Sie sich an, um Fortschritt zu speichern und XP zu verdienen"
     },
+    "offline": {
+      "banner": "📶 Offline — Fortschritt wird lokal gespeichert",
+      "practiceMode": "Übungsmodus",
+      "aiHintsNeedConnection": "KI-Hinweise benötigen Verbindung",
+      "freeTitle": "🧩 Offline-Übung",
+      "freeBody": "Offline Sudoku ist eine Pro-Funktion. Verbinden Sie sich mit dem Internet, um kostenlos zu spielen, oder upgraden Sie auf Pro für Offline-Zugriff.",
+      "upgradeToPro": "Auf Pro upgraden",
+      "backToHome": "Zurück zur Startseite"
+    },
     "profile": {
       "level": "Stufe {level}",
       "xp": "{current}/{next} XP",

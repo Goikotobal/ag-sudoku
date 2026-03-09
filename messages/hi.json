@@ -291,21 +291,13 @@
       "upgradeBtn": "प्रीमियम में अपग्रेड करें"
     },
     "offline": {
-      "title": "ऑफ़लाइन मोड",
-      "enabled": "सक्षम",
-      "disabled": "अक्षम",
-      "proRequired": "PRO",
-      "description": "इंटरनेट कनेक्शन के बिना पहेलियाँ खेलें",
-      "enabledDescription": "सक्षम - इंटरनेट के बिना कहीं भी खेलें",
-      "upgradePrompt": "ऑफ़लाइन खेलने के लिए Pro में अपग्रेड करें",
-      "statusOnline": "ऑनलाइन",
-      "statusOffline": "ऑफ़लाइन",
-      "backOnline": "वापस ऑनलाइन - सिंक हो रहा है...",
-      "playingOffline": "आप ऑफ़लाइन हैं - स्थानीय रूप से खेल रहे हैं",
-      "installPrompt": "AG Sudoku इंस्टॉल करें",
-      "installDescription": "सर्वश्रेष्ठ ऑफ़लाइन अनुभव के लिए होम स्क्रीन पर जोड़ें",
-      "installButton": "ऐप इंस्टॉल करें",
-      "dismissButton": "बाद में"
+      "banner": "📶 ऑफ़लाइन — प्रगति स्थानीय रूप से सहेजी गई",
+      "practiceMode": "अभ्यास मोड",
+      "aiHintsNeedConnection": "AI संकेतों को कनेक्शन चाहिए",
+      "freeTitle": "🧩 ऑफ़लाइन अभ्यास",
+      "freeBody": "ऑफ़लाइन Sudoku एक Pro सुविधा है। मुफ्त खेलने के लिए इंटरनेट से कनेक्ट करें, या ऑफ़लाइन एक्सेस के लिए Pro में अपग्रेड करें।",
+      "upgradeToPro": "Pro में अपग्रेड करें",
+      "backToHome": "होम पर वापस जाएं"
     }
   }
 }

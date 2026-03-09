@@ -291,21 +291,13 @@
       "upgradeBtn": "プレミアムにアップグレード"
     },
     "offline": {
-      "title": "オフラインモード",
-      "enabled": "有効",
-      "disabled": "無効",
-      "proRequired": "PRO",
-      "description": "インターネット接続なしでパズルをプレイ",
-      "enabledDescription": "有効 - インターネットなしでどこでもプレイ",
-      "upgradePrompt": "オフラインプレイにはProへアップグレード",
-      "statusOnline": "オンライン",
-      "statusOffline": "オフライン",
-      "backOnline": "オンラインに復帰 - 同期中...",
-      "playingOffline": "オフラインです - ローカルでプレイ中",
-      "installPrompt": "AG Sudokuをインストール",
-      "installDescription": "ホーム画面に追加して最高のオフライン体験を",
-      "installButton": "アプリをインストール",
-      "dismissButton": "後で"
+      "banner": "📶 オフライン — 進行状況はローカルに保存されます",
+      "practiceMode": "練習モード",
+      "aiHintsNeedConnection": "AIヒントには接続が必要です",
+      "freeTitle": "🧩 オフライン練習",
+      "freeBody": "オフラインSudokuはProの機能です。無料でプレイするにはインターネットに接続するか、オフラインアクセスのためにProにアップグレードしてください。",
+      "upgradeToPro": "Proにアップグレード",
+      "backToHome": "ホームに戻る"
     }
   }
 }

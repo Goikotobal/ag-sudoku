@@ -291,21 +291,13 @@
       "upgradeBtn": "Passa a Premium"
     },
     "offline": {
-      "title": "Modalità Offline",
-      "enabled": "Attivata",
-      "disabled": "Disattivata",
-      "proRequired": "PRO",
-      "description": "Gioca ai puzzle senza connessione internet",
-      "enabledDescription": "Attivata - Gioca ovunque senza internet",
-      "upgradePrompt": "Passa a Pro per giocare offline",
-      "statusOnline": "Online",
-      "statusOffline": "Offline",
-      "backOnline": "Di nuovo online - sincronizzazione...",
-      "playingOffline": "Sei offline - gioco locale",
-      "installPrompt": "Installa AG Sudoku",
-      "installDescription": "Aggiungi alla schermata home per la migliore esperienza offline",
-      "installButton": "Installa App",
-      "dismissButton": "Forse dopo"
+      "banner": "📶 Offline — i progressi vengono salvati localmente",
+      "practiceMode": "Modalità Pratica",
+      "aiHintsNeedConnection": "I suggerimenti IA richiedono connessione",
+      "freeTitle": "🧩 Pratica Offline",
+      "freeBody": "Sudoku offline è una funzione Pro. Connettiti a Internet per giocare gratis, o passa a Pro per l'accesso offline.",
+      "upgradeToPro": "Passa a Pro",
+      "backToHome": "Torna alla home"
     }
   }
 }

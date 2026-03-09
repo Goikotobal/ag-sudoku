@@ -291,21 +291,13 @@
       "upgradeBtn": "升级到高级版"
     },
     "offline": {
-      "title": "离线模式",
-      "enabled": "已启用",
-      "disabled": "已禁用",
-      "proRequired": "PRO",
-      "description": "无需网络连接即可玩拼图",
-      "enabledDescription": "已启用 - 无需网络随时随地玩",
-      "upgradePrompt": "升级到Pro以离线游玩",
-      "statusOnline": "在线",
-      "statusOffline": "离线",
-      "backOnline": "已重新在线 - 同步中...",
-      "playingOffline": "您已离线 - 本地游玩",
-      "installPrompt": "安装AG Sudoku",
-      "installDescription": "添加到主屏幕以获得最佳离线体验",
-      "installButton": "安装应用",
-      "dismissButton": "稍后再说"
+      "banner": "📶 离线 — 进度本地保存",
+      "practiceMode": "练习模式",
+      "aiHintsNeedConnection": "AI提示需要连接",
+      "freeTitle": "🧩 离线练习",
+      "freeBody": "离线数独是Pro功能。连接互联网免费玩，或升级到Pro以获得离线访问。",
+      "upgradeToPro": "升级到Pro",
+      "backToHome": "返回主页"
     }
   }
 }

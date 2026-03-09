@@ -291,21 +291,13 @@
       "upgradeBtn": "Mag-upgrade sa Premium"
     },
     "offline": {
-      "title": "Offline Mode",
-      "enabled": "Naka-enable",
-      "disabled": "Naka-disable",
-      "proRequired": "PRO",
-      "description": "Maglaro ng puzzle kahit walang internet",
-      "enabledDescription": "Naka-enable - Maglaro kahit saan nang walang internet",
-      "upgradePrompt": "Mag-upgrade sa Pro para maglaro offline",
-      "statusOnline": "Online",
-      "statusOffline": "Offline",
-      "backOnline": "Bumalik online - nagsi-sync...",
-      "playingOffline": "Ikaw ay offline - naglalaro nang lokal",
-      "installPrompt": "I-install ang AG Sudoku",
-      "installDescription": "Idagdag sa home screen para sa pinakamahusay na offline na karanasan",
-      "installButton": "I-install ang App",
-      "dismissButton": "Mamaya na"
+      "banner": "📶 Offline — progress nase-save locally",
+      "practiceMode": "Practice Mode",
+      "aiHintsNeedConnection": "Kailangan ng AI hints ng connection",
+      "freeTitle": "🧩 Offline Practice",
+      "freeBody": "Offline Sudoku ay Pro feature. Kumonekta sa internet para maglaro nang libre, o mag-upgrade sa Pro para sa offline access.",
+      "upgradeToPro": "Mag-upgrade sa Pro",
+      "backToHome": "Bumalik sa Home"
     }
   }
 }

@@ -291,21 +291,13 @@
       "upgradeBtn": "프리미엄으로 업그레이드"
     },
     "offline": {
-      "title": "오프라인 모드",
-      "enabled": "활성화됨",
-      "disabled": "비활성화됨",
-      "proRequired": "PRO",
-      "description": "인터넷 연결 없이 퍼즐 플레이",
-      "enabledDescription": "활성화됨 - 인터넷 없이 어디서든 플레이",
-      "upgradePrompt": "오프라인 플레이를 위해 Pro로 업그레이드",
-      "statusOnline": "온라인",
-      "statusOffline": "오프라인",
-      "backOnline": "다시 온라인 - 동기화 중...",
-      "playingOffline": "오프라인입니다 - 로컬에서 플레이 중",
-      "installPrompt": "AG Sudoku 설치",
-      "installDescription": "최고의 오프라인 경험을 위해 홈 화면에 추가",
-      "installButton": "앱 설치",
-      "dismissButton": "나중에"
+      "banner": "📶 오프라인 — 진행 상황이 로컬에 저장됩니다",
+      "practiceMode": "연습 모드",
+      "aiHintsNeedConnection": "AI 힌트는 연결이 필요합니다",
+      "freeTitle": "🧩 오프라인 연습",
+      "freeBody": "오프라인 Sudoku는 Pro 기능입니다. 무료로 플레이하려면 인터넷에 연결하거나 오프라인 액세스를 위해 Pro로 업그레이드하세요.",
+      "upgradeToPro": "Pro로 업그레이드",
+      "backToHome": "홈으로 돌아가기"
     }
   }
 }
