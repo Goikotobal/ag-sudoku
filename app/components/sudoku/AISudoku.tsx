@@ -139,6 +139,14 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const [isSigningIn, setIsSigningIn] = useState(false)
     const [showSignUpForm, setShowSignUpForm] = useState(false)
 
+    // SIGN UP FORM STATE
+    const [signUpEmail, setSignUpEmail] = useState('')
+    const [signUpPassword, setSignUpPassword] = useState('')
+    const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('')
+    const [signUpError, setSignUpError] = useState('')
+    const [signUpSuccess, setSignUpSuccess] = useState(false)
+    const [isSigningUp, setIsSigningUp] = useState(false)
+
     // Fallback profile from localStorage while authProfile loads
     const [fallbackProfile, setFallbackProfile] = useState<any>(null)
     useEffect(() => {
@@ -1280,6 +1288,56 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             console.error('[Auth] Email sign-in error:', error);
             setAuthError('An error occurred during sign in');
             setIsSigningIn(false);
+        }
+    };
+
+    // Handle Email/Password Sign Up
+    const handleEmailSignUp = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSignUpError('');
+        setSignUpSuccess(false);
+
+        // Validate passwords match
+        if (signUpPassword !== signUpConfirmPassword) {
+            setSignUpError('Passwords do not match');
+            return;
+        }
+
+        // Validate password length
+        if (signUpPassword.length < 6) {
+            setSignUpError('Password must be at least 6 characters');
+            return;
+        }
+
+        setIsSigningUp(true);
+
+        try {
+            const supabase = createClient();
+            const { data, error } = await supabase.auth.signUp({
+                email: signUpEmail,
+                password: signUpPassword,
+                options: {
+                    emailRedirectTo: `${window.location.origin}/auth/callback`,
+                },
+            });
+
+            if (error) {
+                setSignUpError(error.message || 'Failed to create account');
+                setIsSigningUp(false);
+                return;
+            }
+
+            // Success - show confirmation message
+            console.log('[Auth] Email sign-up successful:', data);
+            setSignUpSuccess(true);
+            setSignUpEmail('');
+            setSignUpPassword('');
+            setSignUpConfirmPassword('');
+            setIsSigningUp(false);
+        } catch (error: any) {
+            console.error('[Auth] Email sign-up error:', error);
+            setSignUpError('An error occurred during sign up');
+            setIsSigningUp(false);
         }
     };
 
@@ -2948,150 +3006,354 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                     <span>Continue with Google</span>
                                 </button>
 
-                                {/* Email/Password Sign In Form */}
-                                <form onSubmit={handleEmailSignIn} style={{
-                                    marginTop: '16px',
-                                }}>
-                                    {/* Email Input */}
-                                    <input
-                                        type="email"
-                                        placeholder="Email"
-                                        value={signInEmail}
-                                        onChange={(e) => setSignInEmail(e.target.value)}
-                                        required
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px 16px',
-                                            background: 'rgba(255, 255, 255, 0.1)',
-                                            backdropFilter: 'blur(10px)',
-                                            WebkitBackdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.2)',
-                                            borderRadius: '12px',
-                                            color: '#ffffff',
-                                            fontSize: '14px',
-                                            outline: 'none',
-                                            transition: 'all 0.2s ease',
-                                            boxSizing: 'border-box',
-                                        }}
-                                        onFocus={(e) => {
-                                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                                        }}
-                                        onBlur={(e) => {
-                                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                                        }}
-                                    />
-
-                                    {/* Password Input */}
-                                    <input
-                                        type="password"
-                                        placeholder="Password"
-                                        value={signInPassword}
-                                        onChange={(e) => setSignInPassword(e.target.value)}
-                                        required
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px 16px',
-                                            background: 'rgba(255, 255, 255, 0.1)',
-                                            backdropFilter: 'blur(10px)',
-                                            WebkitBackdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.2)',
-                                            borderRadius: '12px',
-                                            color: '#ffffff',
-                                            fontSize: '14px',
-                                            outline: 'none',
-                                            transition: 'all 0.2s ease',
-                                            marginTop: '10px',
-                                            boxSizing: 'border-box',
-                                        }}
-                                        onFocus={(e) => {
-                                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                                        }}
-                                        onBlur={(e) => {
-                                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                                        }}
-                                    />
-
-                                    {/* Error Message */}
-                                    {authError && (
-                                        <div style={{
-                                            marginTop: '10px',
-                                            padding: '10px 12px',
-                                            background: 'rgba(239, 68, 68, 0.15)',
-                                            border: '1px solid rgba(239, 68, 68, 0.3)',
-                                            borderRadius: '8px',
-                                            color: '#fca5a5',
-                                            fontSize: '13px',
-                                            textAlign: 'center',
-                                        }}>
-                                            {authError}
-                                        </div>
-                                    )}
-
-                                    {/* Sign In Button */}
-                                    <button
-                                        type="submit"
-                                        disabled={isSigningIn}
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px 20px',
-                                            background: isSigningIn
-                                                ? 'rgba(16, 185, 129, 0.5)'
-                                                : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                                            borderRadius: '12px',
-                                            border: 'none',
-                                            color: '#ffffff',
-                                            fontSize: '15px',
-                                            fontWeight: 600,
-                                            cursor: isSigningIn ? 'not-allowed' : 'pointer',
-                                            transition: 'all 0.2s ease',
-                                            marginTop: '12px',
-                                            boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            if (!isSigningIn) {
-                                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                                e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
-                                            }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            if (!isSigningIn) {
-                                                e.currentTarget.style.transform = 'translateY(0)';
-                                                e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
-                                            }
-                                        }}
-                                    >
-                                        {isSigningIn ? 'Signing in...' : 'Sign In'}
-                                    </button>
-
-                                    {/* Sign Up Link */}
-                                    <div style={{
-                                        marginTop: '12px',
-                                        textAlign: 'center',
-                                        color: 'rgba(255, 255, 255, 0.6)',
-                                        fontSize: '13px',
+                                {/* Email/Password Auth Forms */}
+                                {!showSignUpForm ? (
+                                    // SIGN IN FORM
+                                    <form onSubmit={handleEmailSignIn} style={{
+                                        marginTop: '16px',
                                     }}>
-                                        Don't have an account?{' '}
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowSignUpForm(true)}
+                                        {/* Email Input */}
+                                        <input
+                                            type="email"
+                                            placeholder="Email"
+                                            value={signInEmail}
+                                            onChange={(e) => setSignInEmail(e.target.value)}
+                                            required
                                             style={{
-                                                background: 'none',
-                                                border: 'none',
-                                                color: '#a855f7',
-                                                cursor: 'pointer',
-                                                textDecoration: 'underline',
+                                                width: '100%',
+                                                padding: '14px 16px',
+                                                background: 'rgba(255, 255, 255, 0.1)',
+                                                backdropFilter: 'blur(10px)',
+                                                WebkitBackdropFilter: 'blur(10px)',
+                                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '12px',
+                                                color: '#ffffff',
+                                                fontSize: '14px',
+                                                outline: 'none',
+                                                transition: 'all 0.2s ease',
+                                                boxSizing: 'border-box',
+                                            }}
+                                            onFocus={(e) => {
+                                                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                            }}
+                                            onBlur={(e) => {
+                                                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                            }}
+                                        />
+
+                                        {/* Password Input */}
+                                        <input
+                                            type="password"
+                                            placeholder="Password"
+                                            value={signInPassword}
+                                            onChange={(e) => setSignInPassword(e.target.value)}
+                                            required
+                                            style={{
+                                                width: '100%',
+                                                padding: '14px 16px',
+                                                background: 'rgba(255, 255, 255, 0.1)',
+                                                backdropFilter: 'blur(10px)',
+                                                WebkitBackdropFilter: 'blur(10px)',
+                                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '12px',
+                                                color: '#ffffff',
+                                                fontSize: '14px',
+                                                outline: 'none',
+                                                transition: 'all 0.2s ease',
+                                                marginTop: '10px',
+                                                boxSizing: 'border-box',
+                                            }}
+                                            onFocus={(e) => {
+                                                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                            }}
+                                            onBlur={(e) => {
+                                                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                            }}
+                                        />
+
+                                        {/* Error Message */}
+                                        {authError && (
+                                            <div style={{
+                                                marginTop: '10px',
+                                                padding: '10px 12px',
+                                                background: 'rgba(239, 68, 68, 0.15)',
+                                                border: '1px solid rgba(239, 68, 68, 0.3)',
+                                                borderRadius: '8px',
+                                                color: '#fca5a5',
                                                 fontSize: '13px',
-                                                padding: 0,
+                                                textAlign: 'center',
+                                            }}>
+                                                {authError}
+                                            </div>
+                                        )}
+
+                                        {/* Sign In Button */}
+                                        <button
+                                            type="submit"
+                                            disabled={isSigningIn}
+                                            style={{
+                                                width: '100%',
+                                                padding: '14px 20px',
+                                                background: isSigningIn
+                                                    ? 'rgba(16, 185, 129, 0.5)'
+                                                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                borderRadius: '12px',
+                                                border: 'none',
+                                                color: '#ffffff',
+                                                fontSize: '15px',
+                                                fontWeight: 600,
+                                                cursor: isSigningIn ? 'not-allowed' : 'pointer',
+                                                transition: 'all 0.2s ease',
+                                                marginTop: '12px',
+                                                boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                if (!isSigningIn) {
+                                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (!isSigningIn) {
+                                                    e.currentTarget.style.transform = 'translateY(0)';
+                                                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                                }
                                             }}
                                         >
-                                            Sign up
+                                            {isSigningIn ? 'Signing in...' : 'Sign In'}
                                         </button>
-                                    </div>
-                                </form>
+
+                                        {/* Sign Up Link */}
+                                        <div style={{
+                                            marginTop: '12px',
+                                            textAlign: 'center',
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                            fontSize: '13px',
+                                        }}>
+                                            Don't have an account?{' '}
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowSignUpForm(true)}
+                                                style={{
+                                                    background: 'none',
+                                                    border: 'none',
+                                                    color: '#a855f7',
+                                                    cursor: 'pointer',
+                                                    textDecoration: 'underline',
+                                                    fontSize: '13px',
+                                                    padding: 0,
+                                                }}
+                                            >
+                                                Sign up
+                                            </button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    // SIGN UP FORM
+                                    <form onSubmit={handleEmailSignUp} style={{
+                                        marginTop: '16px',
+                                    }}>
+                                        {/* Success Message */}
+                                        {signUpSuccess ? (
+                                            <div style={{
+                                                padding: '16px',
+                                                background: 'rgba(16, 185, 129, 0.15)',
+                                                border: '1px solid rgba(16, 185, 129, 0.3)',
+                                                borderRadius: '12px',
+                                                color: '#6ee7b7',
+                                                fontSize: '14px',
+                                                textAlign: 'center',
+                                                marginBottom: '12px',
+                                            }}>
+                                                ✉️ Check your email to confirm your account
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {/* Email Input */}
+                                                <input
+                                                    type="email"
+                                                    placeholder="Email"
+                                                    value={signUpEmail}
+                                                    onChange={(e) => setSignUpEmail(e.target.value)}
+                                                    required
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '14px 16px',
+                                                        background: 'rgba(255, 255, 255, 0.1)',
+                                                        backdropFilter: 'blur(10px)',
+                                                        WebkitBackdropFilter: 'blur(10px)',
+                                                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                                                        borderRadius: '12px',
+                                                        color: '#ffffff',
+                                                        fontSize: '14px',
+                                                        outline: 'none',
+                                                        transition: 'all 0.2s ease',
+                                                        boxSizing: 'border-box',
+                                                    }}
+                                                    onFocus={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                                    }}
+                                                    onBlur={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                                    }}
+                                                />
+
+                                                {/* Password Input */}
+                                                <input
+                                                    type="password"
+                                                    placeholder="Password (min 6 characters)"
+                                                    value={signUpPassword}
+                                                    onChange={(e) => setSignUpPassword(e.target.value)}
+                                                    required
+                                                    minLength={6}
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '14px 16px',
+                                                        background: 'rgba(255, 255, 255, 0.1)',
+                                                        backdropFilter: 'blur(10px)',
+                                                        WebkitBackdropFilter: 'blur(10px)',
+                                                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                                                        borderRadius: '12px',
+                                                        color: '#ffffff',
+                                                        fontSize: '14px',
+                                                        outline: 'none',
+                                                        transition: 'all 0.2s ease',
+                                                        marginTop: '10px',
+                                                        boxSizing: 'border-box',
+                                                    }}
+                                                    onFocus={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                                    }}
+                                                    onBlur={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                                    }}
+                                                />
+
+                                                {/* Confirm Password Input */}
+                                                <input
+                                                    type="password"
+                                                    placeholder="Confirm Password"
+                                                    value={signUpConfirmPassword}
+                                                    onChange={(e) => setSignUpConfirmPassword(e.target.value)}
+                                                    required
+                                                    minLength={6}
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '14px 16px',
+                                                        background: 'rgba(255, 255, 255, 0.1)',
+                                                        backdropFilter: 'blur(10px)',
+                                                        WebkitBackdropFilter: 'blur(10px)',
+                                                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                                                        borderRadius: '12px',
+                                                        color: '#ffffff',
+                                                        fontSize: '14px',
+                                                        outline: 'none',
+                                                        transition: 'all 0.2s ease',
+                                                        marginTop: '10px',
+                                                        boxSizing: 'border-box',
+                                                    }}
+                                                    onFocus={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                                    }}
+                                                    onBlur={(e) => {
+                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                                    }}
+                                                />
+
+                                                {/* Error Message */}
+                                                {signUpError && (
+                                                    <div style={{
+                                                        marginTop: '10px',
+                                                        padding: '10px 12px',
+                                                        background: 'rgba(239, 68, 68, 0.15)',
+                                                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                                                        borderRadius: '8px',
+                                                        color: '#fca5a5',
+                                                        fontSize: '13px',
+                                                        textAlign: 'center',
+                                                    }}>
+                                                        {signUpError}
+                                                    </div>
+                                                )}
+
+                                                {/* Create Account Button */}
+                                                <button
+                                                    type="submit"
+                                                    disabled={isSigningUp}
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '14px 20px',
+                                                        background: isSigningUp
+                                                            ? 'rgba(16, 185, 129, 0.5)'
+                                                            : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                        borderRadius: '12px',
+                                                        border: 'none',
+                                                        color: '#ffffff',
+                                                        fontSize: '15px',
+                                                        fontWeight: 600,
+                                                        cursor: isSigningUp ? 'not-allowed' : 'pointer',
+                                                        transition: 'all 0.2s ease',
+                                                        marginTop: '12px',
+                                                        boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!isSigningUp) {
+                                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                                        }
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (!isSigningUp) {
+                                                            e.currentTarget.style.transform = 'translateY(0)';
+                                                            e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                                        }
+                                                    }}
+                                                >
+                                                    {isSigningUp ? 'Creating account...' : 'Create Account'}
+                                                </button>
+                                            </>
+                                        )}
+
+                                        {/* Sign In Link */}
+                                        <div style={{
+                                            marginTop: '12px',
+                                            textAlign: 'center',
+                                            color: 'rgba(255, 255, 255, 0.6)',
+                                            fontSize: '13px',
+                                        }}>
+                                            Already have an account?{' '}
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setShowSignUpForm(false);
+                                                    setSignUpSuccess(false);
+                                                    setSignUpError('');
+                                                }}
+                                                style={{
+                                                    background: 'none',
+                                                    border: 'none',
+                                                    color: '#a855f7',
+                                                    cursor: 'pointer',
+                                                    textDecoration: 'underline',
+                                                    fontSize: '13px',
+                                                    padding: 0,
+                                                }}
+                                            >
+                                                Sign in
+                                            </button>
+                                        </div>
+                                    </form>
+                                )}
 
                                 {/* Divider */}
                                 <div style={{
