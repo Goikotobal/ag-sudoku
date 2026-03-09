@@ -147,6 +147,22 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const [signUpSuccess, setSignUpSuccess] = useState(false)
     const [isSigningUp, setIsSigningUp] = useState(false)
 
+    // GUEST MODE DETECTION
+    const [isGuestMode, setIsGuestMode] = useState(false)
+    useEffect(() => {
+        const guestSession = localStorage.getItem('goiko_guest_session')
+        if (guestSession) {
+            try {
+                const session = JSON.parse(guestSession)
+                setIsGuestMode(session.isGuest === true)
+            } catch (e) {
+                setIsGuestMode(false)
+            }
+        } else {
+            setIsGuestMode(false)
+        }
+    }, [])
+
     // Fallback profile from localStorage while authProfile loads
     const [fallbackProfile, setFallbackProfile] = useState<any>(null)
     useEffect(() => {
@@ -1257,7 +1273,10 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
     // Handle Play as Guest
     const handlePlayAsGuest = () => {
-        localStorage.setItem('ag_guest_mode', 'true');
+        localStorage.setItem('goiko_guest_session', JSON.stringify({ isGuest: true, isPro: false }));
+        // Dismiss the welcome screen and start playing
+        setShowWelcomeScreen(false);
+        newGame();
     };
 
     // Handle Email/Password Sign In
@@ -2620,9 +2639,15 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
                 {/* Hint Button */}
                 <button
-                    onClick={giveHint}
+                    onClick={() => {
+                        if (isGuestMode) {
+                            alert('Create a free account to use AI hints')
+                        } else {
+                            giveHint()
+                        }
+                    }}
                     disabled={
-                        rules.hints === 0 || hintsRemaining === 0 || isAISolving
+                        rules.hints === 0 || hintsRemaining === 0 || isAISolving || isGuestMode
                     }
                     style={{
                         padding: isDesktop ? "8px 6px" : "6px 4px", // BIGGER!
@@ -2631,7 +2656,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         cursor:
                             rules.hints === 0 ||
                                 hintsRemaining === 0 ||
-                                isAISolving
+                                isAISolving ||
+                                isGuestMode
                                 ? "not-allowed"
                                 : "pointer",
                         fontWeight: 600,
@@ -2644,7 +2670,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         opacity:
                             rules.hints === 0 ||
                                 hintsRemaining === 0 ||
-                                isAISolving
+                                isAISolving ||
+                                isGuestMode
                                 ? 0.3
                                 : 1,
                         touchAction: "manipulation",
@@ -3404,17 +3431,17 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                         e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
                                     }}
                                 >
-                                    Play as Guest
+                                    Play as Guest →
                                 </button>
 
-                                {/* Nudge text */}
+                                {/* Guest Mode Subtitle */}
                                 <div style={{
                                     marginTop: '8px',
                                     textAlign: 'center',
                                     color: 'rgba(255, 255, 255, 0.5)',
-                                    fontSize: '12px',
+                                    fontSize: '11px',
                                 }}>
-                                    Sign in to save progress & earn XP
+                                    (limited features — no progress saved)
                                 </div>
                             </div>
                         )}
@@ -3487,8 +3514,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             {(['medium', 'expert', 'pro'] as const).map((diffKey) => {
                                 const diff = diffKey.charAt(0).toUpperCase() + diffKey.slice(1)
                                 const isSelected = welcomeDifficulty === diffKey
-                                // Pro difficulty requires subscription (unless already unlocked via gameplay)
-                                const isProLocked = diffKey === 'pro' && !isProSubscriber && !isProUnlocked && isOnline
+                                // Pro difficulty requires subscription (unless already unlocked via gameplay) or blocked for guests
+                                const isProLocked = diffKey === 'pro' && (!isProSubscriber && !isProUnlocked && isOnline || isGuestMode)
                                 return (
                                     <button
                                         key={diff}
@@ -4760,6 +4787,28 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                         Sign in to save XP
                                     </div>
                                 )}
+                            </div>
+                        )}
+
+                        {/* Guest Mode Nudge */}
+                        {isGuestMode && (
+                            <div
+                                style={{
+                                    background: "#fef3c7",
+                                    border: "2px solid #fbbf24",
+                                    padding: 16,
+                                    borderRadius: 12,
+                                    marginBottom: 24,
+                                    color: "#92400e",
+                                    textAlign: "center",
+                                }}
+                            >
+                                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
+                                    📝 Your progress wasn't saved
+                                </div>
+                                <div style={{ fontSize: 13, opacity: 0.9 }}>
+                                    Create a free account to save your progress and earn XP!
+                                </div>
                             </div>
                         )}
 
