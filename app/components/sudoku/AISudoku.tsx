@@ -132,6 +132,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const gameResultRecorded = useRef(false)
     const hasMigrated = useRef(false)
 
+    // AUTH FORM STATE - Email/password sign in
+    const [signInEmail, setSignInEmail] = useState('')
+    const [signInPassword, setSignInPassword] = useState('')
+    const [authError, setAuthError] = useState('')
+    const [isSigningIn, setIsSigningIn] = useState(false)
+    const [showSignUpForm, setShowSignUpForm] = useState(false)
+
     // Fallback profile from localStorage while authProfile loads
     const [fallbackProfile, setFallbackProfile] = useState<any>(null)
     useEffect(() => {
@@ -1243,6 +1250,37 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     // Handle Play as Guest
     const handlePlayAsGuest = () => {
         localStorage.setItem('ag_guest_mode', 'true');
+    };
+
+    // Handle Email/Password Sign In
+    const handleEmailSignIn = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setAuthError('');
+        setIsSigningIn(true);
+
+        try {
+            const supabase = createClient();
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: signInEmail,
+                password: signInPassword,
+            });
+
+            if (error) {
+                setAuthError(error.message || 'Invalid email or password');
+                setIsSigningIn(false);
+                return;
+            }
+
+            // Success - user will be automatically logged in via AuthContext
+            console.log('[Auth] Email sign-in successful:', data);
+            setSignInEmail('');
+            setSignInPassword('');
+            setIsSigningIn(false);
+        } catch (error: any) {
+            console.error('[Auth] Email sign-in error:', error);
+            setAuthError('An error occurred during sign in');
+            setIsSigningIn(false);
+        }
     };
 
     // Place number or note
@@ -2910,72 +2948,150 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                     <span>Continue with Google</span>
                                 </button>
 
-                                {/* Email & Create Account Row */}
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: isDesktop ? 'row' : 'column',
-                                    gap: '10px',
-                                    marginTop: '12px',
+                                {/* Email/Password Sign In Form */}
+                                <form onSubmit={handleEmailSignIn} style={{
+                                    marginTop: '16px',
                                 }}>
-                                    <a
-                                        href="https://alexgoiko.com/login"
+                                    {/* Email Input */}
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={signInEmail}
+                                        onChange={(e) => setSignInEmail(e.target.value)}
+                                        required
                                         style={{
-                                            flex: 1,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            padding: '14px 20px',
-                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            width: '100%',
+                                            padding: '14px 16px',
+                                            background: 'rgba(255, 255, 255, 0.1)',
+                                            backdropFilter: 'blur(10px)',
+                                            WebkitBackdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: '12px',
                                             color: '#ffffff',
                                             fontSize: '14px',
-                                            fontWeight: 600,
-                                            cursor: 'pointer',
+                                            outline: 'none',
                                             transition: 'all 0.2s ease',
-                                            textDecoration: 'none',
-                                            boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
+                                            boxSizing: 'border-box',
                                         }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                        onFocus={(e) => {
+                                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
                                         }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                        onBlur={(e) => {
+                                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                                         }}
-                                    >
-                                        Sign in with Email
-                                    </a>
-                                    <a
-                                        href="https://alexgoiko.com/signup"
+                                    />
+
+                                    {/* Password Input */}
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        value={signInPassword}
+                                        onChange={(e) => setSignInPassword(e.target.value)}
+                                        required
                                         style={{
-                                            flex: 1,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            padding: '14px 20px',
-                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            width: '100%',
+                                            padding: '14px 16px',
+                                            background: 'rgba(255, 255, 255, 0.1)',
+                                            backdropFilter: 'blur(10px)',
+                                            WebkitBackdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: '12px',
                                             color: '#ffffff',
                                             fontSize: '14px',
-                                            fontWeight: 600,
-                                            cursor: 'pointer',
+                                            outline: 'none',
                                             transition: 'all 0.2s ease',
-                                            textDecoration: 'none',
+                                            marginTop: '10px',
+                                            boxSizing: 'border-box',
+                                        }}
+                                        onFocus={(e) => {
+                                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                                        }}
+                                        onBlur={(e) => {
+                                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                                        }}
+                                    />
+
+                                    {/* Error Message */}
+                                    {authError && (
+                                        <div style={{
+                                            marginTop: '10px',
+                                            padding: '10px 12px',
+                                            background: 'rgba(239, 68, 68, 0.15)',
+                                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                                            borderRadius: '8px',
+                                            color: '#fca5a5',
+                                            fontSize: '13px',
+                                            textAlign: 'center',
+                                        }}>
+                                            {authError}
+                                        </div>
+                                    )}
+
+                                    {/* Sign In Button */}
+                                    <button
+                                        type="submit"
+                                        disabled={isSigningIn}
+                                        style={{
+                                            width: '100%',
+                                            padding: '14px 20px',
+                                            background: isSigningIn
+                                                ? 'rgba(16, 185, 129, 0.5)'
+                                                : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            borderRadius: '12px',
+                                            border: 'none',
+                                            color: '#ffffff',
+                                            fontSize: '15px',
+                                            fontWeight: 600,
+                                            cursor: isSigningIn ? 'not-allowed' : 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            marginTop: '12px',
                                             boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
                                         }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                            if (!isSigningIn) {
+                                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                                e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                                            }
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                            if (!isSigningIn) {
+                                                e.currentTarget.style.transform = 'translateY(0)';
+                                                e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                                            }
                                         }}
                                     >
-                                        Create Account
-                                    </a>
-                                </div>
+                                        {isSigningIn ? 'Signing in...' : 'Sign In'}
+                                    </button>
+
+                                    {/* Sign Up Link */}
+                                    <div style={{
+                                        marginTop: '12px',
+                                        textAlign: 'center',
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        fontSize: '13px',
+                                    }}>
+                                        Don't have an account?{' '}
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowSignUpForm(true)}
+                                            style={{
+                                                background: 'none',
+                                                border: 'none',
+                                                color: '#a855f7',
+                                                cursor: 'pointer',
+                                                textDecoration: 'underline',
+                                                fontSize: '13px',
+                                                padding: 0,
+                                            }}
+                                        >
+                                            Sign up
+                                        </button>
+                                    </div>
+                                </form>
 
                                 {/* Divider */}
                                 <div style={{
