@@ -27,7 +27,6 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
   const [showEmailAuth, setShowEmailAuth] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authSuccess, setAuthSuccess] = useState('');
 
@@ -47,35 +46,16 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
     setAuthSuccess('');
     const supabase = createClient();
 
-    if (isSignUp) {
-      // Sign up with email
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?redirect=/${locale}`
-        }
-      });
+    // Sign in with email
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error) {
-        setAuthError(error.message);
-      } else {
-        setAuthSuccess('Check your email to confirm your account ✉️');
-        setEmail('');
-        setPassword('');
-      }
+    if (error) {
+      setAuthError('Invalid email or password');
     } else {
-      // Sign in with email
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setAuthError('Invalid email or password');
-      } else {
-        window.location.reload();
-      }
+      window.location.reload();
     }
   };
 
@@ -203,7 +183,7 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
           fontWeight: 600,
           margin: 0,
         }}>
-          {isSignUp ? t('auth.createAccount') : t('auth.signInWithEmail')}
+          {t('auth.signInWithEmail')}
         </h3>
 
         {authError && (
@@ -284,12 +264,12 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
               cursor: 'pointer',
             }}
           >
-            {isSignUp ? t('auth.createAccount') : t('auth.signInWithEmail')}
+            {t('auth.signInWithEmail')}
           </button>
         </form>
 
         <button
-          onClick={() => setIsSignUp(!isSignUp)}
+          onClick={() => window.location.href = 'https://alexgoiko.com/en/signup'}
           style={{
             background: 'none',
             border: 'none',
@@ -299,7 +279,7 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
             textDecoration: 'underline',
           }}
         >
-          {isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign up"}
+          Don't have an account? Sign up
         </button>
 
         <button
