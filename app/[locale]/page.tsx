@@ -72,7 +72,7 @@ export default function Home() {
       minHeight: '100vh',
       backgroundImage: 'url(/images/Frame1.png)',
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      backgroundPosition: 'center top -100px',
       backgroundRepeat: 'no-repeat',
       backgroundAttachment: 'fixed',
       display: 'flex',

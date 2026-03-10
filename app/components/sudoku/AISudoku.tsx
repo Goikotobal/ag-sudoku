@@ -2768,7 +2768,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                 fontFamily: "system-ui, -apple-system, sans-serif",
                 backgroundImage: "url(/images/Frame1.png)",
                 backgroundSize: "cover",
-                backgroundPosition: "center",
+                backgroundPosition: "center top -100px",
                 backgroundRepeat: "no-repeat",
                 width: "100%",
                 height: "100vh",
