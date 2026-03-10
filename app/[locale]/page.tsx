@@ -357,46 +357,14 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Bottom Links */}
-        <div className="welcome-bottom-links" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
+        {/* Language Selector */}
+        <div className="welcome-language-selector" style={{
           marginTop: '20px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '6px',
         }}>
-          {/* Back to Website */}
-          <a
-            href="https://alexgoiko.com"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              background: 'transparent',
-              border: 'none',
-              color: 'rgba(255, 255, 255, 0.5)',
-              fontSize: '12px',
-              fontWeight: 500,
-              textDecoration: 'none',
-              cursor: 'pointer',
-              transition: 'color 0.2s ease',
-            }}
-          >
-            alexgoiko.com
-          </a>
-        </div>
-      </div>
-
-      {/* Language Selector */}
-      <div className="welcome-language-selector" style={{
-        marginTop: '24px',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: '6px',
-        maxWidth: '400px',
-      }}>
         {[
           { code: 'en', label: 'EN' },
           { code: 'es', label: 'ES' },
@@ -433,6 +401,37 @@ export default function Home() {
             {lang.label}
           </button>
         ))}
+        </div>
+
+        {/* Bottom Links */}
+        <div className="welcome-bottom-links" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '16px',
+        }}>
+          {/* Back to Website */}
+          <a
+            href="https://alexgoiko.com"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              background: 'transparent',
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '12px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'color 0.2s ease',
+            }}
+          >
+            alexgoiko.com
+          </a>
+        </div>
       </div>
 
       {/* CSS Animations */}
@@ -484,8 +483,13 @@ export default function Home() {
             }
 
             .welcome-language-selector {
-              margin-top: 16px !important;
-              gap: 5px !important;
+              margin-top: 12px !important;
+              gap: 4px !important;
+            }
+
+            .welcome-language-selector button {
+              padding: 4px 8px !important;
+              font-size: 11px !important;
             }
           }
         `}</style>

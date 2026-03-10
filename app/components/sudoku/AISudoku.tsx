@@ -1949,7 +1949,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     </a>
                 ) : (
                     <a
-                        href="https://alexgoiko.com"
+                        href="https://alexgoiko.com/login"
                         style={{
                             display: "flex",
                             alignItems: "center",
