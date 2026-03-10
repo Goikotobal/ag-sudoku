@@ -17,7 +17,7 @@ export default function SudokuPlayPage() {
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const { isOnline } = useOnlineStatus();
   const profileCache = useProfileCache();
   const [showGame, setShowGame] = useState(false);
@@ -28,6 +28,24 @@ export default function SudokuPlayPage() {
 
   // Determine Pro status: online from profile, offline from cache
   const isPro = isOnline ? profile?.subscription_tier === 'pro' : profileCache?.isPro;
+
+  // Guest mode detection: no Supabase session OR goiko_guest_session exists
+  const [isGuest, setIsGuest] = useState(false);
+  useEffect(() => {
+    const guestSession = localStorage.getItem('goiko_guest_session');
+    if (!user) {
+      setIsGuest(true);
+    } else if (guestSession) {
+      try {
+        const session = JSON.parse(guestSession);
+        setIsGuest(session.isGuest === true && !user);
+      } catch {
+        setIsGuest(!user);
+      }
+    } else {
+      setIsGuest(false);
+    }
+  }, [user]);
 
   // Check if user is offline and not Pro - show modal
   useEffect(() => {
@@ -47,8 +65,15 @@ export default function SudokuPlayPage() {
 
   const handleDifficultyClick = (difficulty: Difficulty) => {
     console.log('[Play Page] handleDifficultyClick called with:', difficulty);
+
+    // Block Pro difficulty for guests (unauthenticated users)
+    if (difficulty === 'pro' && isGuest) {
+      alert('Sign in to access Pro difficulty');
+      return;
+    }
+
     // Pro difficulty only available for Pro subscribers
-    if (difficulty === 'pro' && !isPro) {
+    if (difficulty === 'pro' && !isPro && !isGuest) {
       console.log('[Play Page] Pro difficulty blocked for free user');
       return;
     }
@@ -323,28 +348,28 @@ export default function SudokuPlayPage() {
               WebkitBackdropFilter: 'blur(15px)',
               borderRadius: '24px',
               padding: '28px 20px',
-              border: (isPro || !isOnline)
+              border: (isPro && !isGuest)
                 ? '2px solid rgba(239, 68, 68, 0.7)'
                 : '2px solid rgba(239, 68, 68, 0.5)',
               boxShadow: hoveredCard === 'pro'
                 ? '0 12px 40px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                 : '0 4px 20px rgba(239, 68, 68, 0.2)',
               transform: hoveredCard === 'pro'
-                ? ((isPro || !isOnline) ? 'translateY(-8px) scale(1.02)' : 'translateY(-4px)')
+                ? ((isPro && !isGuest) ? 'translateY(-8px) scale(1.02)' : 'translateY(-4px)')
                 : 'translateY(0)',
               transition: 'all 0.3s ease',
-              cursor: (isPro || !isOnline) ? 'pointer' : 'not-allowed',
+              cursor: (isPro && !isGuest) ? 'pointer' : 'not-allowed',
               position: 'relative',
-              opacity: (isPro || !isOnline) ? 1 : 0.85,
+              opacity: (isPro && !isGuest) ? 1 : 0.85,
             }}
-            onClick={() => (isPro || !isOnline) && handleDifficultyClick('pro')}
+            onClick={() => !isGuest && isPro && handleDifficultyClick('pro')}
           >
-            {/* Badge - Lock for Free (online only), Star for Pro or Offline */}
+            {/* Badge - Lock for guests/free users, Star for Pro */}
             <div style={{
               position: 'absolute',
               top: 12,
               right: 12,
-              background: (isPro || !isOnline)
+              background: (isPro && !isGuest)
                 ? 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'
                 : 'rgba(0, 0, 0, 0.6)',
               borderRadius: 8,
@@ -356,7 +381,7 @@ export default function SudokuPlayPage() {
               alignItems: 'center',
               gap: 4,
             }}>
-              {(isPro || !isOnline) ? '⭐ PRO' : '🔒 PRO'}
+              {(isPro && !isGuest) ? '⭐ PRO' : '🔒 PRO'}
             </div>
 
             <div style={{ fontSize: '48px', marginBottom: '16px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
@@ -387,7 +412,7 @@ export default function SudokuPlayPage() {
             }}>
               {t('difficultySelect.proDesc')}
             </p>
-            {(isPro || !isOnline) ? (
+            {(isPro && !isGuest) ? (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -430,7 +455,7 @@ export default function SudokuPlayPage() {
                   letterSpacing: '0.5px',
                 }}
               >
-                PRO ONLY
+                {isGuest ? 'SIGN IN TO ACCESS' : 'PRO ONLY'}
               </button>
             )}
           </div>

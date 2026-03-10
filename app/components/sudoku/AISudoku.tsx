@@ -149,20 +149,27 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const [isSigningUp, setIsSigningUp] = useState(false)
 
     // GUEST MODE DETECTION
+    // A user is a guest if: no Supabase session AND goiko_guest_session.isGuest is true, OR simply no Supabase session at all
     const [isGuestMode, setIsGuestMode] = useState(false)
     useEffect(() => {
         const guestSession = localStorage.getItem('goiko_guest_session')
-        if (guestSession) {
+        let isGuest = false
+
+        if (!user) {
+            // No Supabase session - user is a guest
+            isGuest = true
+        } else if (guestSession) {
+            // Check if localStorage has guest session flag
             try {
                 const session = JSON.parse(guestSession)
-                setIsGuestMode(session.isGuest === true)
+                isGuest = session.isGuest === true && !user
             } catch (e) {
-                setIsGuestMode(false)
+                isGuest = !user
             }
-        } else {
-            setIsGuestMode(false)
         }
-    }, [])
+
+        setIsGuestMode(isGuest)
+    }, [user])
 
     // Fallback profile from localStorage while authProfile loads
     const [fallbackProfile, setFallbackProfile] = useState<any>(null)
@@ -2066,12 +2073,14 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             </div>
             <div
                 style={{
-                    background:
-                        "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                    background: isGuestMode
+                        ? "linear-gradient(135deg, rgba(100, 100, 100, 0.6) 0%, rgba(80, 80, 80, 0.6) 100%)"
+                        : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
                     color: "white",
                     padding: "4px 6px",
                     borderRadius: 8,
                     textAlign: "center",
+                    opacity: isGuestMode ? 0.7 : 1,
                 }}
             >
                 <div
@@ -2089,7 +2098,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         marginTop: 1,
                     }}
                 >
-                    {Math.max(0, maxHints - hintsRemaining)}/{maxHints}
+                    {isGuestMode ? "🔒" : `${Math.max(0, maxHints - hintsRemaining)}/${maxHints}`}
                 </div>
             </div>
         </div>
@@ -2109,12 +2118,16 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             }}
         >
             {(["medium", "expert", "pro"] as const).map((diff) => {
-                const isProLocked = diff === "pro" && !isProSubscriber && !isProUnlocked && isOnline
+                const isProLocked = diff === "pro" && (!isProSubscriber && !isProUnlocked && isOnline || isGuestMode)
 
                 return (
                     <button
                         key={diff}
                         onClick={() => {
+                            if (diff === "pro" && isGuestMode) {
+                                alert('Sign in to access Pro difficulty')
+                                return
+                            }
                             if (diff === "pro" && !isProSubscriber && !isProUnlocked && isOnline) {
                                 alert(t.difficulties.locked)
                                 return
@@ -2696,11 +2709,13 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     >
                         {" "}
                         {/* BIGGER! */}
-                        {rules.hints === 0
-                            ? t.controls.none
-                            : hintsRemaining === 0
+                        {isGuestMode
+                            ? "🔒 LOCKED"
+                            : rules.hints === 0
                                 ? t.controls.none
-                                : t.controls.hint}
+                                : hintsRemaining === 0
+                                    ? t.controls.none
+                                    : t.controls.hint}
                     </span>
                 </button>
 
