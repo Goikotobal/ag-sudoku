@@ -1955,18 +1955,19 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             alignItems: "center",
                             gap: 6,
                             textDecoration: "none",
-                            padding: "6px 10px",
+                            padding: "6px 14px",
                             borderRadius: 8,
-                            background: "rgba(168, 85, 247, 0.1)",
-                            border: "1px dashed rgba(168, 85, 247, 0.3)",
+                            background: "linear-gradient(135deg, #a855f7, #ec4899)",
+                            border: "none",
+                            boxShadow: "0 2px 8px rgba(168, 85, 247, 0.4)",
                         }}
                     >
                         <div style={{ fontSize: 16 }}>👤</div>
                         <div
                             style={{
-                                fontSize: 10,
+                                fontSize: 13,
                                 fontWeight: 600,
-                                color: "#a855f7",
+                                color: "#ffffff",
                             }}
                         >
                             Sign in
