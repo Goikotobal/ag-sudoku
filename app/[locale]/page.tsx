@@ -68,7 +68,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{
+    <main className="welcome-main" style={{
       minHeight: '100vh',
       backgroundImage: 'url(/images/Frame1.png)',
       backgroundSize: 'cover',
@@ -83,7 +83,7 @@ export default function Home() {
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     }}>
       {/* Main Card */}
-      <div style={{
+      <div className="welcome-card" style={{
         background: 'rgba(255, 255, 255, 0.12)',
         borderRadius: '32px',
         padding: '40px 36px',
@@ -97,7 +97,7 @@ export default function Home() {
         animation: mounted ? 'fadeInUp 0.6s ease' : 'none',
       }}>
         {/* Header with Avatar and Title */}
-        <div style={{
+        <div className="welcome-header" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -230,7 +230,7 @@ export default function Home() {
         </div>
 
         {/* Login Button Section */}
-        <div style={{
+        <div className="welcome-login-section" style={{
           marginBottom: '28px',
         }}>
           {user && !loading ? (
@@ -291,7 +291,7 @@ export default function Home() {
         </button>
 
         {/* Difficulty Preview Cards */}
-        <div style={{
+        <div className="welcome-difficulty-cards" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '10px',
@@ -327,7 +327,7 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div style={{
+        <div className="welcome-features" style={{
           marginTop: '20px',
           display: 'flex',
           flexWrap: 'wrap',
@@ -358,7 +358,7 @@ export default function Home() {
         </div>
 
         {/* Bottom Links */}
-        <div style={{
+        <div className="welcome-bottom-links" style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -389,7 +389,7 @@ export default function Home() {
       </div>
 
       {/* Language Selector */}
-      <div style={{
+      <div className="welcome-language-selector" style={{
         marginTop: '24px',
         display: 'flex',
         flexWrap: 'wrap',
@@ -446,6 +446,46 @@ export default function Home() {
             to {
               opacity: 1;
               transform: translateY(0);
+            }
+          }
+
+          /* Mobile optimizations for screens < 768px */
+          @media (max-width: 767px) {
+            .welcome-main {
+              padding: 20px 16px !important;
+            }
+
+            .welcome-card {
+              padding: 24px 20px !important;
+              border-radius: 24px !important;
+            }
+
+            .welcome-header {
+              margin-bottom: 12px !important;
+              gap: 12px !important;
+            }
+
+            .welcome-login-section {
+              margin-bottom: 16px !important;
+            }
+
+            .welcome-difficulty-cards {
+              margin-top: 14px !important;
+              gap: 8px !important;
+            }
+
+            .welcome-features {
+              margin-top: 12px !important;
+              gap: 5px !important;
+            }
+
+            .welcome-bottom-links {
+              margin-top: 12px !important;
+            }
+
+            .welcome-language-selector {
+              margin-top: 16px !important;
+              gap: 5px !important;
             }
           }
         `}</style>
