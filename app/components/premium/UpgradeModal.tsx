@@ -126,7 +126,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
           </p>
         </div>
 
-        {/* Sign in prompt for guests */}
+        {/* Login prompt for guests */}
         {!user && (
           <div style={{
             background: 'rgba(245, 158, 11, 0.15)',
@@ -137,7 +137,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             textAlign: 'center',
           }}>
             <div style={{ color: '#f59e0b', fontSize: '14px', fontWeight: 600 }}>
-              Sign in to upgrade
+              Login to upgrade
             </div>
             <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginTop: '4px' }}>
               You need an account to subscribe

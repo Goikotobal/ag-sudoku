@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useSudokuTranslations } from '@/hooks/useSudokuTranslations'
 import { useAuth } from '@/context/AuthContext'
 import { useProfile, getLevelFromXP } from '@/hooks/useProfile'
@@ -60,6 +60,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
     // Router for navigation
     const router = useRouter()
+    const pathname = usePathname()
+    const locale = pathname?.split('/')[1] || 'en'
     const quitToHome = useCallback(() => {
         onQuit?.()
         router.push('/')
@@ -1948,8 +1950,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         </div>
                     </a>
                 ) : (
-                    <a
-                        href="https://alexgoiko.com/login"
+                    <button
+                        onClick={() => router.push(`/${locale}`)}
                         style={{
                             display: "flex",
                             alignItems: "center",
@@ -1960,6 +1962,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                             background: "linear-gradient(135deg, #a855f7, #ec4899)",
                             border: "none",
                             boxShadow: "0 2px 8px rgba(168, 85, 247, 0.4)",
+                            cursor: "pointer",
                         }}
                     >
                         <div style={{ fontSize: 16 }}>👤</div>
@@ -1970,9 +1973,9 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 color: "#ffffff",
                             }}
                         >
-                            Sign in
+                            Login
                         </div>
-                    </a>
+                    </button>
                 )}
 
                 {/* Home Button */}
@@ -2126,7 +2129,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         key={diff}
                         onClick={() => {
                             if (diff === "pro" && isGuestMode) {
-                                alert('Sign in to access Pro difficulty')
+                                alert('Login to access Pro difficulty')
                                 return
                             }
                             if (diff === "pro" && !isProSubscriber && !isProUnlocked && isOnline) {
@@ -3135,7 +3138,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                             </div>
                                         )}
 
-                                        {/* Sign In Button */}
+                                        {/* Login Button */}
                                         <button
                                             type="submit"
                                             disabled={isSigningIn}
@@ -3168,7 +3171,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                                 }
                                             }}
                                         >
-                                            {isSigningIn ? 'Signing in...' : 'Sign In'}
+                                            {isSigningIn ? 'Logging in...' : 'Login'}
                                         </button>
 
                                         {/* Sign Up Link */}
@@ -3181,7 +3184,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                             Don't have an account?{' '}
                                             <button
                                                 type="button"
-                                                onClick={() => setShowSignUpForm(true)}
+                                                onClick={() => window.location.href = 'https://alexgoiko.com/en/signup'}
                                                 style={{
                                                     background: 'none',
                                                     border: 'none',
@@ -3368,7 +3371,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                             </>
                                         )}
 
-                                        {/* Sign In Link */}
+                                        {/* Login Link */}
                                         <div style={{
                                             marginTop: '12px',
                                             textAlign: 'center',
@@ -3393,7 +3396,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                                     padding: 0,
                                                 }}
                                             >
-                                                Sign in
+                                                Login
                                             </button>
                                         </div>
                                     </form>
@@ -4801,7 +4804,7 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                 </div>
                                 {!isLoggedIn && (
                                     <div style={{ fontSize: 12, opacity: 0.8, marginTop: 8 }}>
-                                        Sign in to save XP
+                                        Login to save XP
                                     </div>
                                 )}
                             </div>

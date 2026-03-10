@@ -68,7 +68,7 @@ export default function SudokuPlayPage() {
 
     // Block Pro difficulty for guests (unauthenticated users)
     if (difficulty === 'pro' && isGuest) {
-      alert('Sign in to access Pro difficulty');
+      alert('Login to access Pro difficulty');
       return;
     }
 

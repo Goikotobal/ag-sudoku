@@ -252,7 +252,7 @@ export default function Home() {
               {t('sudoku.auth.notYouSignOut')}
             </button>
           ) : (
-            // Guest: Show Sign In with Google
+            // Guest: Show Login with Google
             <LoginButton variant="compact" selectedAvatar={validAvatarId} locale={locale} />
           )}
         </div>

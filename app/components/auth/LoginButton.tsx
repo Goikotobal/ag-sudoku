@@ -299,7 +299,7 @@ export function LoginButton({ variant = 'default', selectedAvatar, locale = 'en'
             textDecoration: 'underline',
           }}
         >
-          {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+          {isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign up"}
         </button>
 
         <button

@@ -1608,7 +1608,7 @@ export default function AISudoku() {
                             lineHeight: 1.2,
                         }}
                     >
-                        Sign in
+                        Login
                     </div>
                 </a>
             )}
