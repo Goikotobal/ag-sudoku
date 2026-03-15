@@ -26,6 +26,12 @@ import {
     fetchCloudStats,
 } from '@/utils/statsSyncManager'
 import {
+    getContextualMessage,
+    getXpEarned,
+    getDailyRankDelta,
+} from '@/utils/gameRewards'
+import { getAvatarColorFilter } from '@/utils/avatarColors'
+import {
     getSettings,
     updateSetting,
     resetSettings as resetSettingsData,
@@ -50,6 +56,48 @@ const GoogleIcon = () => (
         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
     </svg>
 );
+
+// XP Counter Animation Component
+const WinModalXPCounter = ({ xp, xpCounter, setXpCounter }: { xp: number; xpCounter: number; setXpCounter: (val: number) => void }) => {
+    useEffect(() => {
+        if (xpCounter >= xp) return;
+
+        const duration = 1200; // 1.2 seconds
+        const steps = 75; // 75 steps = ~16ms per step
+        const increment = xp / steps;
+        let current = 0;
+        let step = 0;
+
+        const timer = setInterval(() => {
+            step++;
+            current = Math.min(Math.round(step * increment), xp);
+            setXpCounter(current);
+
+            if (current >= xp) {
+                clearInterval(timer);
+            }
+        }, duration / steps);
+
+        return () => clearInterval(timer);
+    }, [xp, xpCounter, setXpCounter]);
+
+    return (
+        <div
+            style={{
+                background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                backdropFilter: "blur(10px)",
+                padding: "8px 16px",
+                borderRadius: 20,
+                fontSize: 14,
+                fontWeight: 600,
+                color: "white",
+                whiteSpace: "nowrap",
+            }}
+        >
+            +{xpCounter} XP
+        </div>
+    );
+};
 
 export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: AISudokuProps) {
     // Debug: Log received props
@@ -132,6 +180,9 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
     const isLoggedIn = !!user
     const [lastGameXP, setLastGameXP] = useState<number>(0)
     const [showLevelUp, setShowLevelUp] = useState(false)
+    const [didLevelUp, setDidLevelUp] = useState(false)
+    const [previousLevel, setPreviousLevel] = useState<number>(0)
+    const [xpCounter, setXpCounter] = useState<number>(0)
     const gameResultRecorded = useRef(false)
     const hasMigrated = useRef(false)
 
@@ -1130,6 +1181,24 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
             // Calculate and store XP for display
             const xp = calculateXP(gameResult)
             setLastGameXP(xp)
+            setXpCounter(0) // Reset for animation
+
+            // Check for level-up
+            if (profile && levelInfo) {
+                const currentXP = profile.xp || 0
+                const currentLevelNum = levelInfo.level
+                const newXP = currentXP + xp
+                const newLevelInfo = getLevelFromXP(newXP)
+
+                if (newLevelInfo.level > currentLevelNum) {
+                    setDidLevelUp(true)
+                    setPreviousLevel(currentLevelNum)
+                } else {
+                    setDidLevelUp(false)
+                }
+            } else {
+                setDidLevelUp(false)
+            }
 
             // Record to local and cloud (if logged in)
             recordCloudGame(gameResult, user?.id).then((result) => {
@@ -1458,6 +1527,8 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                         // Calculate and store XP for display (participation XP)
                         const xp = calculateXP(gameResult)
                         setLastGameXP(xp)
+                        setXpCounter(0) // Reset for animation
+                        setDidLevelUp(false) // No level-up on loss
 
                         // Record to local and cloud (if logged in)
                         recordCloudGame(gameResult, user?.id)
@@ -1532,6 +1603,24 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                     // Calculate and store XP for display
                     const xp = calculateXP(gameResult)
                     setLastGameXP(xp)
+                    setXpCounter(0) // Reset for animation
+
+                    // Check for level-up
+                    if (profile && levelInfo) {
+                        const currentXP = profile.xp || 0
+                        const currentLevelNum = levelInfo.level
+                        const newXP = currentXP + xp
+                        const newLevelInfo = getLevelFromXP(newXP)
+
+                        if (newLevelInfo.level > currentLevelNum) {
+                            setDidLevelUp(true)
+                            setPreviousLevel(currentLevelNum)
+                        } else {
+                            setDidLevelUp(false)
+                        }
+                    } else {
+                        setDidLevelUp(false)
+                    }
 
                     // Record to local and cloud (if logged in)
                     recordCloudGame(gameResult, user?.id)
@@ -4416,415 +4505,353 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
 
             {/* Win Modal */}
             {showWinModal && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "rgba(0, 0, 0, 0.85)",
-                        backdropFilter: "blur(10px)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                        padding: 20,
-                    }}
-                >
+                <>
+                    <style jsx>{`
+                        @keyframes bounce {
+                            0%, 100% { transform: translateY(0); }
+                            50% { transform: translateY(-12px); }
+                        }
+                        @keyframes confetti-burst {
+                            0% {
+                                transform: translate(0, 0) scale(0);
+                                opacity: 1;
+                            }
+                            100% {
+                                transform: var(--confetti-end-pos) scale(1);
+                                opacity: 0;
+                            }
+                        }
+                        .avatar-bounce {
+                            animation: bounce 0.6s ease infinite;
+                        }
+                        .confetti-dot {
+                            position: absolute;
+                            width: 8px;
+                            height: 8px;
+                            border-radius: 50%;
+                            animation: confetti-burst 0.8s ease-out forwards;
+                        }
+                    `}</style>
                     <div
                         style={{
-                            background: "white",
-                            padding: 40,
-                            borderRadius: 20,
-                            textAlign: "center",
-                            maxWidth: 420,
-                            width: "100%",
-                            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+                            position: "fixed",
+                            inset: 0,
+                            background: "rgba(0, 0, 0, 0.85)",
+                            backdropFilter: "blur(10px)",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            zIndex: 1000,
+                            padding: 20,
                         }}
-                        onClick={(e) => e.stopPropagation()}
                     >
-                        <div style={{ fontSize: 80, marginBottom: 20 }}>🎉</div>
-                        <h2
-                            style={{
-                                color: "#10b981",
-                                marginBottom: 12,
-                                fontSize: 32,
-                                fontWeight: 700,
-                            }}
-                        >
-                            {t.modals.win.title}
-                        </h2>
-                        <p
-                            style={{
-                                color: "#64748b",
-                                marginBottom: 24,
-                                fontSize: 16,
-                            }}
-                        >
-                            {t.modals.win.message}
-                        </p>
-
                         <div
                             style={{
-                                background: "#f0fdf4",
-                                padding: 20,
-                                borderRadius: 12,
-                                marginBottom: 24,
+                                background: "white",
+                                padding: 40,
+                                borderRadius: 20,
+                                textAlign: "center",
+                                maxWidth: 420,
+                                width: "100%",
+                                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+                                position: "relative",
                             }}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <div
-                                style={{
-                                    display: "grid",
-                                    gridTemplateColumns: "1fr 1fr",
-                                    gap: 16,
-                                }}
-                            >
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: 12,
-                                            color: "#64748b",
-                                            marginBottom: 4,
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {t.modals.win.time}
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: 20,
-                                            fontWeight: 700,
-                                            color: "#10b981",
-                                        }}
-                                    >
-                                        {formatTime(timer)}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: 12,
-                                            color: "#64748b",
-                                            marginBottom: 4,
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {t.modals.win.mistakes}
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: 20,
-                                            fontWeight: 700,
-                                            color: "#10b981",
-                                        }}
-                                    >
-                                        {mistakes}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            {/* Enhanced Avatar Section for Signed-In Users */}
+                            {isLoggedIn && (authProfile || profile) ? (
+                                <>
+                                    {/* Confetti Container */}
+                                    <div style={{ position: "relative", width: 80, height: 80, margin: "0 auto 20px" }}>
+                                        {/* Confetti Dots */}
+                                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => {
+                                            const angle = (i * 30) * Math.PI / 180;
+                                            const distance = 60;
+                                            const colors = ['#a855f7', '#ec4899', '#fbbf24', '#ffffff'];
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className="confetti-dot"
+                                                    style={{
+                                                        background: colors[i % colors.length],
+                                                        left: '50%',
+                                                        top: '50%',
+                                                        marginLeft: -4,
+                                                        marginTop: -4,
+                                                        // @ts-ignore
+                                                        '--confetti-end-pos': `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`
+                                                    }}
+                                                />
+                                            );
+                                        })}
 
-                        {/* XP Earned Section */}
-                        {lastGameXP > 0 && (
+                                        {/* Avatar with Bounce Animation */}
+                                        <img
+                                            src={`https://www.alexgoiko.com/avatars/${(authProfile?.avatar_id || profile?.avatar_id || 'shadow')}.png`}
+                                            alt="Avatar"
+                                            className="avatar-bounce"
+                                            style={{
+                                                width: 80,
+                                                height: 80,
+                                                borderRadius: '50%',
+                                                boxShadow: '0 0 20px rgba(251, 191, 36, 0.5)',
+                                                border: '3px solid #fbbf24',
+                                                position: 'relative',
+                                                zIndex: 1,
+                                                filter: getAvatarColorFilter(authProfile?.color_id || profile?.avatar_color),
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Contextual Headline */}
+                                    <h2
+                                        style={{
+                                            color: "#10b981",
+                                            marginBottom: 12,
+                                            fontSize: 28,
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        {getContextualMessage({
+                                            isWin: true,
+                                            difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
+                                            mistakes: mistakes,
+                                            timeSeconds: timer,
+                                            isPersonalBest: false,
+                                        })}
+                                    </h2>
+
+                                    {/* Stat Chips */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            gap: 8,
+                                            marginBottom: 24,
+                                            flexWrap: "wrap",
+                                        }}
+                                    >
+                                        {/* XP Earned Chip with Counter Animation */}
+                                        <WinModalXPCounter xp={lastGameXP} xpCounter={xpCounter} setXpCounter={setXpCounter} />
+
+                                        {/* Level Badge Chip */}
+                                        {levelInfo && (
+                                            <div
+                                                style={{
+                                                    background: didLevelUp
+                                                        ? "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"
+                                                        : "rgba(0, 0, 0, 0.1)",
+                                                    backdropFilter: "blur(10px)",
+                                                    padding: "8px 16px",
+                                                    borderRadius: 20,
+                                                    fontSize: 14,
+                                                    fontWeight: 600,
+                                                    color: didLevelUp ? "white" : "#374151",
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {didLevelUp ? `LEVEL UP! 🎉 Lv ${levelInfo.level}` : `Lv ${levelInfo.level}`}
+                                            </div>
+                                        )}
+
+                                        {/* Daily Rank Chip (Mock) */}
+                                        <div
+                                            style={{
+                                                background: "rgba(0, 0, 0, 0.1)",
+                                                backdropFilter: "blur(10px)",
+                                                padding: "8px 16px",
+                                                borderRadius: 20,
+                                                fontSize: 14,
+                                                fontWeight: 600,
+                                                color: "#374151",
+                                                whiteSpace: "nowrap",
+                                            }}
+                                        >
+                                            +{getDailyRankDelta().delta} today 📈
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    {/* Guest Mode - Original Modal */}
+                                    <div style={{ fontSize: 80, marginBottom: 20 }}>🎉</div>
+                                    <h2
+                                        style={{
+                                            color: "#10b981",
+                                            marginBottom: 12,
+                                            fontSize: 32,
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        {t.modals.win.title}
+                                    </h2>
+                                    <p
+                                        style={{
+                                            color: "#64748b",
+                                            marginBottom: 24,
+                                            fontSize: 16,
+                                        }}
+                                    >
+                                        {t.modals.win.message}
+                                    </p>
+
+                                    <div
+                                        style={{
+                                            background: "#f0fdf4",
+                                            padding: 20,
+                                            borderRadius: 12,
+                                            marginBottom: 24,
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "grid",
+                                                gridTemplateColumns: "1fr 1fr",
+                                                gap: 16,
+                                            }}
+                                        >
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: "#64748b",
+                                                        marginBottom: 4,
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {t.modals.win.time}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 20,
+                                                        fontWeight: 700,
+                                                        color: "#10b981",
+                                                    }}
+                                                >
+                                                    {formatTime(timer)}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: "#64748b",
+                                                        marginBottom: 4,
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {t.modals.win.mistakes}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 20,
+                                                        fontWeight: 700,
+                                                        color: "#10b981",
+                                                    }}
+                                                >
+                                                    {mistakes}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* XP Earned Section */}
+                                    {lastGameXP > 0 && (
+                                        <div
+                                            style={{
+                                                background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                                padding: 16,
+                                                borderRadius: 12,
+                                                marginBottom: 24,
+                                                color: "white",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 4 }}>
+                                                Potential XP
+                                            </div>
+                                            <div style={{ fontSize: 28, fontWeight: 700 }}>
+                                                +{lastGameXP} XP
+                                            </div>
+                                            <div style={{ fontSize: 12, opacity: 0.8, marginTop: 8 }}>
+                                                Login to save XP
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Guest Mode Nudge */}
+                                    {isGuestMode && (
+                                        <div
+                                            style={{
+                                                background: "#fef3c7",
+                                                border: "2px solid #fbbf24",
+                                                padding: 16,
+                                                borderRadius: 12,
+                                                marginBottom: 24,
+                                                color: "#92400e",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
+                                                📝 Your progress wasn't saved
+                                            </div>
+                                            <div style={{ fontSize: 13, opacity: 0.9 }}>
+                                                Create a free account to save your progress and earn XP!
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            {/* Buttons */}
                             <div
                                 style={{
-                                    background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-                                    padding: 16,
-                                    borderRadius: 12,
-                                    marginBottom: 24,
-                                    color: "white",
-                                    textAlign: "center",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 10,
                                 }}
                             >
-                                <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 4 }}>
-                                    {isLoggedIn ? "XP Earned" : "Potential XP"}
-                                </div>
-                                <div style={{ fontSize: 28, fontWeight: 700 }}>
-                                    +{lastGameXP} XP
-                                </div>
-                                {!isLoggedIn && (
-                                    <div style={{ fontSize: 12, opacity: 0.8, marginTop: 8 }}>
-                                        Login to save XP
-                                    </div>
+                                {currentDifficulty !== "pro" && (
+                                    <button
+                                        onClick={() => {
+                                            setShowWinModal(false)
+                                            const diffOrder = [
+                                                "medium",
+                                                "expert",
+                                                "pro",
+                                            ] as const
+                                            const currentIndex =
+                                                diffOrder.indexOf(currentDifficulty)
+                                            if (
+                                                currentIndex <
+                                                diffOrder.length - 1
+                                            ) {
+                                                setCurrentDifficulty(
+                                                    diffOrder[currentIndex + 1]
+                                                )
+                                            }
+                                        }}
+                                        style={{
+                                            padding: "14px 24px",
+                                            border: "none",
+                                            borderRadius: 10,
+                                            cursor: "pointer",
+                                            fontWeight: 600,
+                                            fontSize: 15,
+                                            background:
+                                                "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                            color: "white",
+                                            boxShadow:
+                                                "0 4px 12px rgba(16, 185, 129, 0.3)",
+                                        }}
+                                    >
+                                        {t.modals.win.tryHarderBtn}
+                                    </button>
                                 )}
-                            </div>
-                        )}
-
-                        {/* Guest Mode Nudge */}
-                        {isGuestMode && (
-                            <div
-                                style={{
-                                    background: "#fef3c7",
-                                    border: "2px solid #fbbf24",
-                                    padding: 16,
-                                    borderRadius: 12,
-                                    marginBottom: 24,
-                                    color: "#92400e",
-                                    textAlign: "center",
-                                }}
-                            >
-                                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
-                                    📝 Your progress wasn't saved
-                                </div>
-                                <div style={{ fontSize: 13, opacity: 0.9 }}>
-                                    Create a free account to save your progress and earn XP!
-                                </div>
-                            </div>
-                        )}
-
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 10,
-                            }}
-                        >
-                            {currentDifficulty !== "pro" && (
                                 <button
                                     onClick={() => {
                                         setShowWinModal(false)
-                                        const diffOrder = [
-                                            "medium",
-                                            "expert",
-                                            "pro",
-                                        ] as const
-                                        const currentIndex =
-                                            diffOrder.indexOf(currentDifficulty)
-                                        if (
-                                            currentIndex <
-                                            diffOrder.length - 1
-                                        ) {
-                                            setCurrentDifficulty(
-                                                diffOrder[currentIndex + 1]
-                                            )
-                                        }
-                                    }}
-                                    style={{
-                                        padding: "14px 24px",
-                                        border: "none",
-                                        borderRadius: 10,
-                                        cursor: "pointer",
-                                        fontWeight: 600,
-                                        fontSize: 15,
-                                        background:
-                                            "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                                        color: "white",
-                                        boxShadow:
-                                            "0 4px 12px rgba(16, 185, 129, 0.3)",
-                                    }}
-                                >
-                                    {t.modals.win.tryHarderBtn}
-                                </button>
-                            )}
-                            <button
-                                onClick={() => {
-                                    setShowWinModal(false)
-                                    newGame()
-                                }}
-                                style={{
-                                    padding: "14px 24px",
-                                    border: "2px solid #e2e8f0",
-                                    borderRadius: 10,
-                                    cursor: "pointer",
-                                    fontWeight: 600,
-                                    fontSize: 15,
-                                    background: "white",
-                                    color: "#64748b",
-                                }}
-                            >
-                                {t.modals.win.playAgainBtn}
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setShowWinModal(false)
-                                    quitToHome()
-                                }}
-                                style={{
-                                    padding: "14px 24px",
-                                    border: "2px solid #64748b",
-                                    borderRadius: 10,
-                                    cursor: "pointer",
-                                    fontWeight: 600,
-                                    fontSize: 15,
-                                    background: "white",
-                                    color: "#64748b",
-                                }}
-                            >
-                                {t.modals.win.quitBtn}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Game Over Modal */}
-            {showGameOverModal && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "rgba(0, 0, 0, 0.85)",
-                        backdropFilter: "blur(10px)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                        padding: 20,
-                    }}
-                >
-                    <div
-                        style={{
-                            background: "white",
-                            padding: 40,
-                            borderRadius: 20,
-                            textAlign: "center",
-                            maxWidth: 420,
-                            width: "100%",
-                            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div style={{ fontSize: 80, marginBottom: 20 }}>😔</div>
-                        <h2
-                            style={{
-                                color: "#ef4444",
-                                marginBottom: 12,
-                                fontSize: 32,
-                                fontWeight: 700,
-                            }}
-                        >
-                            {t.modals.gameOver.title}
-                        </h2>
-                        <p
-                            style={{
-                                color: "#64748b",
-                                marginBottom: 24,
-                                fontSize: 16,
-                            }}
-                        >
-                            {t.modals.gameOver.getMessage(maxMistakes)}
-                        </p>
-
-                        <div
-                            style={{
-                                background: "#fef2f2",
-                                padding: 20,
-                                borderRadius: 12,
-                                marginBottom: 24,
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "grid",
-                                    gridTemplateColumns: "1fr 1fr",
-                                    gap: 16,
-                                }}
-                            >
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: 12,
-                                            color: "#64748b",
-                                            marginBottom: 4,
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {t.modals.gameOver.time}
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: 20,
-                                            fontWeight: 700,
-                                            color: "#ef4444",
-                                        }}
-                                    >
-                                        {formatTime(timer)}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: 12,
-                                            color: "#64748b",
-                                            marginBottom: 4,
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {t.modals.gameOver.difficulty}
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: 16,
-                                            fontWeight: 700,
-                                            color: "#ef4444",
-                                        }}
-                                    >
-                                        {t.difficulties[currentDifficulty as keyof typeof t.difficulties]}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Participation XP Section */}
-                        {lastGameXP > 0 && isLoggedIn && (
-                            <div
-                                style={{
-                                    background: "#f8fafc",
-                                    border: "1px solid #e2e8f0",
-                                    padding: 12,
-                                    borderRadius: 10,
-                                    marginBottom: 24,
-                                    textAlign: "center",
-                                }}
-                            >
-                                <div style={{ fontSize: 13, color: "#64748b" }}>
-                                    Participation XP: <span style={{ fontWeight: 600, color: "#a855f7" }}>+{lastGameXP}</span>
-                                </div>
-                            </div>
-                        )}
-
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 10,
-                            }}
-                        >
-                            <button
-                                onClick={() => {
-                                    setShowGameOverModal(false)
-                                    newGame()
-                                }}
-                                style={{
-                                    padding: "14px 24px",
-                                    border: "none",
-                                    borderRadius: 10,
-                                    cursor: "pointer",
-                                    fontWeight: 600,
-                                    fontSize: 15,
-                                    background:
-                                        "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-                                    color: "white",
-                                    boxShadow:
-                                        "0 4px 12px rgba(168, 85, 247, 0.3)",
-                                }}
-                            >
-                                {t.modals.gameOver.tryAgainBtn}
-                            </button>
-                            {currentDifficulty !== "medium" && (
-                                <button
-                                    onClick={() => {
-                                        setShowGameOverModal(false)
-                                        const diffOrder = [
-                                            "medium",
-                                            "expert",
-                                            "pro",
-                                        ] as const
-                                        const currentIndex =
-                                            diffOrder.indexOf(currentDifficulty)
-                                        if (currentIndex > 0) {
-                                            setCurrentDifficulty(
-                                                diffOrder[currentIndex - 1]
-                                            )
-                                        }
+                                        newGame()
                                     }}
                                     style={{
                                         padding: "14px 24px",
@@ -4837,30 +4864,318 @@ export default function AISudoku({ onQuit, initialDifficulty, isPro = false }: A
                                         color: "#64748b",
                                     }}
                                 >
-                                    {t.modals.gameOver.tryEasierBtn}
+                                    {t.modals.win.playAgainBtn}
                                 </button>
-                            )}
-                            <button
-                                onClick={() => {
-                                    setShowGameOverModal(false)
-                                    quitToHome()
-                                }}
-                                style={{
-                                    padding: "14px 24px",
-                                    border: "2px solid #64748b",
-                                    borderRadius: 10,
-                                    cursor: "pointer",
-                                    fontWeight: 600,
-                                    fontSize: 15,
-                                    background: "white",
-                                    color: "#64748b",
-                                }}
-                            >
-                                {t.modals.gameOver.quitBtn}
-                            </button>
+                                <button
+                                    onClick={() => {
+                                        setShowWinModal(false)
+                                        quitToHome()
+                                    }}
+                                    style={{
+                                        padding: "14px 24px",
+                                        border: "2px solid #64748b",
+                                        borderRadius: 10,
+                                        cursor: "pointer",
+                                        fontWeight: 600,
+                                        fontSize: 15,
+                                        background: "white",
+                                        color: "#64748b",
+                                    }}
+                                >
+                                    {t.modals.win.quitBtn}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </>
+            )}
+
+            {/* Game Over Modal */}
+            {showGameOverModal && (
+                <>
+                    <style jsx>{`
+                        @keyframes shake {
+                            0%, 100% { transform: rotate(-5deg) translateX(0); }
+                            25% { transform: rotate(-5deg) translateX(-3px); }
+                            75% { transform: rotate(-5deg) translateX(3px); }
+                        }
+                        .avatar-shake {
+                            animation: shake 0.3s ease infinite;
+                        }
+                    `}</style>
+                    <div
+                        style={{
+                            position: "fixed",
+                            inset: 0,
+                            background: "rgba(0, 0, 0, 0.85)",
+                            backdropFilter: "blur(10px)",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            zIndex: 1000,
+                            padding: 20,
+                        }}
+                    >
+                        <div
+                            style={{
+                                background: "white",
+                                padding: 40,
+                                borderRadius: 20,
+                                textAlign: "center",
+                                maxWidth: 420,
+                                width: "100%",
+                                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Enhanced Avatar Section for Signed-In Users */}
+                            {isLoggedIn && (authProfile || profile) ? (
+                                <>
+                                    {/* Avatar with Shake Animation */}
+                                    <div style={{ width: 80, height: 80, margin: "0 auto 20px", position: "relative" }}>
+                                        <img
+                                            src={`https://www.alexgoiko.com/avatars/${(authProfile?.avatar_id || profile?.avatar_id || 'shadow')}.png`}
+                                            alt="Avatar"
+                                            className="avatar-shake"
+                                            style={{
+                                                width: 80,
+                                                height: 80,
+                                                borderRadius: '50%',
+                                                boxShadow: '0 0 20px rgba(168, 85, 247, 0.3)',
+                                                border: '3px solid #a855f7',
+                                                filter: getAvatarColorFilter(authProfile?.color_id || profile?.avatar_color),
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Contextual Headline */}
+                                    <h2
+                                        style={{
+                                            color: "#ef4444",
+                                            marginBottom: 12,
+                                            fontSize: 28,
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        {getContextualMessage({
+                                            isWin: false,
+                                            difficulty: currentDifficulty as 'medium' | 'expert' | 'pro',
+                                            mistakes: mistakes,
+                                            timeSeconds: timer,
+                                        })}
+                                    </h2>
+
+                                    {/* XP Stat Chip */}
+                                    {lastGameXP > 0 && (
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                marginBottom: 24,
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    background: "rgba(168, 85, 247, 0.1)",
+                                                    backdropFilter: "blur(10px)",
+                                                    padding: "8px 16px",
+                                                    borderRadius: 20,
+                                                    fontSize: 14,
+                                                    fontWeight: 600,
+                                                    color: "#a855f7",
+                                                }}
+                                            >
+                                                +{lastGameXP} XP
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    {/* Guest Mode - Original Modal */}
+                                    <div style={{ fontSize: 80, marginBottom: 20 }}>😔</div>
+                                    <h2
+                                        style={{
+                                            color: "#ef4444",
+                                            marginBottom: 12,
+                                            fontSize: 32,
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        {t.modals.gameOver.title}
+                                    </h2>
+                                    <p
+                                        style={{
+                                            color: "#64748b",
+                                            marginBottom: 24,
+                                            fontSize: 16,
+                                        }}
+                                    >
+                                        {t.modals.gameOver.getMessage(maxMistakes)}
+                                    </p>
+
+                                    <div
+                                        style={{
+                                            background: "#fef2f2",
+                                            padding: 20,
+                                            borderRadius: 12,
+                                            marginBottom: 24,
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "grid",
+                                                gridTemplateColumns: "1fr 1fr",
+                                                gap: 16,
+                                            }}
+                                        >
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: "#64748b",
+                                                        marginBottom: 4,
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {t.modals.gameOver.time}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 20,
+                                                        fontWeight: 700,
+                                                        color: "#ef4444",
+                                                    }}
+                                                >
+                                                    {formatTime(timer)}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: "#64748b",
+                                                        marginBottom: 4,
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {t.modals.gameOver.difficulty}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: 16,
+                                                        fontWeight: 700,
+                                                        color: "#ef4444",
+                                                    }}
+                                                >
+                                                    {t.difficulties[currentDifficulty as keyof typeof t.difficulties]}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Participation XP Section for Guests */}
+                                    {lastGameXP > 0 && (
+                                        <div
+                                            style={{
+                                                background: "#f8fafc",
+                                                border: "1px solid #e2e8f0",
+                                                padding: 12,
+                                                borderRadius: 10,
+                                                marginBottom: 24,
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <div style={{ fontSize: 13, color: "#64748b" }}>
+                                                Login to save progress
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            {/* Buttons */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 10,
+                                }}
+                            >
+                                <button
+                                    onClick={() => {
+                                        setShowGameOverModal(false)
+                                        newGame()
+                                    }}
+                                    style={{
+                                        padding: "14px 24px",
+                                        border: "none",
+                                        borderRadius: 10,
+                                        cursor: "pointer",
+                                        fontWeight: 600,
+                                        fontSize: 15,
+                                        background:
+                                            "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+                                        color: "white",
+                                        boxShadow:
+                                            "0 4px 12px rgba(168, 85, 247, 0.3)",
+                                    }}
+                                >
+                                    {t.modals.gameOver.tryAgainBtn}
+                                </button>
+                                {currentDifficulty !== "medium" && (
+                                    <button
+                                        onClick={() => {
+                                            setShowGameOverModal(false)
+                                            const diffOrder = [
+                                                "medium",
+                                                "expert",
+                                                "pro",
+                                            ] as const
+                                            const currentIndex =
+                                                diffOrder.indexOf(currentDifficulty)
+                                            if (currentIndex > 0) {
+                                                setCurrentDifficulty(
+                                                    diffOrder[currentIndex - 1]
+                                                )
+                                            }
+                                        }}
+                                        style={{
+                                            padding: "14px 24px",
+                                            border: "2px solid #e2e8f0",
+                                            borderRadius: 10,
+                                            cursor: "pointer",
+                                            fontWeight: 600,
+                                            fontSize: 15,
+                                            background: "white",
+                                            color: "#64748b",
+                                        }}
+                                    >
+                                        {t.modals.gameOver.tryEasierBtn}
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        setShowGameOverModal(false)
+                                        quitToHome()
+                                    }}
+                                    style={{
+                                        padding: "14px 24px",
+                                        border: "2px solid #64748b",
+                                        borderRadius: 10,
+                                        cursor: "pointer",
+                                        fontWeight: 600,
+                                        fontSize: 15,
+                                        background: "white",
+                                        color: "#64748b",
+                                    }}
+                                >
+                                    {t.modals.gameOver.quitBtn}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )}
 
             {/* CUSTOM CONFIRM MODAL */}
